@@ -1,0 +1,274 @@
+
+\section{Modelo de información de periodos de consumo de energía y agua}
+
+\subsection{Descripción general}
+ En la figura~\ref{fig:registroInfoBasePeriodo} se muestra la estructura de información que manejará el sistema para registrar la información de los periodos de consumo de agua y energía.
+ 
+\begin{figure}[htbp!]
+	\begin{center}
+		\fbox{\includegraphics[width=.6\textwidth]{images/clases/periodo}}
+		\caption{Modelo de información del registro de periodos de consumo de agua y energía.}
+		\label{fig:registroInfoBasePeriodo}
+	\end{center}
+\end{figure}
+
+\begin{BusinessEntity}{periodo-consumo}{Periodo de consumo}
+      \Battr{Anio}{Año}{\tdNumerico}{Año al que corresponde el periodo de consumo}{\requerido}
+      \Battr{consumo}{Consumo}{\tdNumerico{decimal}}{Cantidad de agua o energía expresada en metros cúbicos, o kilowatts-hora, consumida en el periodo}{\requerido}
+      \Battr{importe}{Importe}{\tdNumerico{decimal}}{Valor en pesos mexicanos del consumo de agua o energía en el periodo}{\requerido}
+\end{BusinessEntity}
+
+\subsubsection{Relaciones}
+
+\begin{BusinessFact}{periodo-consumo:Mensual}{Mensual}
+	\BRitem{Descripción}{Mensual es un tipo de \cdtRef{periodo-consumo}{Periodo de consumo}}
+	\BRitem{Tipo}{\relHerencia}
+\end{BusinessFact}
+
+\begin{BusinessFact}{periodo-consumo:Bimestral}{Bimestral}
+	\BRitem{Descripción}{Bimestral es un tipo de \cdtRef{periodo-consumo}{Periodo de consumo}}
+	\BRitem{Tipo}{\relHerencia}
+\end{BusinessFact}
+
+\begin{BusinessFact}{periodo-consumo:Semestral}{Semestral}
+      \BRitem{Descripción}{Semestral es un tipo de \cdtRef{periodo-consumo}{Periodo de consumo}}
+      \BRitem{Tipo}{\relHerencia}
+\end{BusinessFact}
+
+\begin{BusinessFact}{periodo-consumo:anual}{Anual}
+      \BRitem{Descripción}{Anual es un tipo de \cdtRef{periodo-consumo}{Periodo de consumo}}
+      \BRitem{Tipo}{\relHerencia}
+\end{BusinessFact}
+%---
+\begin{BusinessEntity}{mensual}{Mensual}
+      \Battr{mes}{Mes}{\tdCatalogo}{Mes del año al que corresponde el periodo de consumo, definido por el catálogo \cdtRef{gls:mes}{Mes}}{\requerido}
+\end{BusinessEntity}
+
+\begin{BusinessEntity}{bimestral}{Bimestral}
+      \Battr{bimestre}{Bimestre}{\tdCatalogo}{Bimestre del año al que corresponde el periodo de consumo, definido por el catálogo \cdtRef{gls:bimestre}{Bimestre}}{\requerido}
+\end{BusinessEntity}
+
+\begin{BusinessEntity}{semestral}{Semestral}
+      \Battr{semestre}{Semestre}{\tdCatalogo}{Semestre del año al que corresponde el periodo de consumo, definido por el catálogo \cdtRef{gls:semestre}{Semestre}}{\requerido}
+\end{BusinessEntity}
+
+%%================================================================================================
+\section{Modelo de información del registro de información base para indicadores de agua}
+
+\subsection{Descripción general}
+ En la figura~\ref{fig:registroInfoBaseAgua} se muestra la estructura de información que manejará el sistema para registrar la información base para indicadores de agua.
+ 
+\begin{figure}[htbp!]
+	\begin{center}
+		\fbox{\includegraphics[width=1\textwidth]{images/clases/agua}}
+		\caption{Modelo de información del registro de información base para indicadores de agua.}
+		\label{fig:registroInfoBaseAgua}
+	\end{center}
+\end{figure}
+
+\begin{BusinessEntity}{consumo-agua}{Consumo de agua}
+      \Battr{recibos}{Cuenta con recibos}{\tdBooleano}{Indica si la escuela cuenta con recibos del consumo de agua}{\requerido}
+      %\Battr{consumoAnual}{Consumo anual promedio}{\tdNumerico{decimal}}{Cantidad promedio de agua consumida anualmente expresada en metros cúbicos}{\requerido}
+      %\Battr{importeAnual}{Importe anual promedio}{\tdNumerico{decimal}}{Valor anual en pesos mexicanos del consumo anual de agua}{\requerido}
+      \Battr{tipoAbastecimiento}{Tipo de abastecimiento}{\tdCatalogo}{Método empleado para transportar y suministrar el agua a la escuela, definido por el catálogo \cdtRef{gls:tipoAbastecimiento}{Tipo de abastecimiento}}{\requerido}
+      \Battr{tipoDePeriodo}{Tipo de periodo}{\tdCatalogo}{Especifica el periodo utilizado para reportar el consumo de agua, definido por el catálogo \cdtRef{gls:tipoDePeriodo}{Tipo de periodo}}{\requerido}
+\end{BusinessEntity}
+
+\subsubsection{Relaciones}
+
+\begin{BusinessFact}{consumo-agua:periodo-consumo}{Periodo de consumo}
+	\BRitem{Descripción}{El Consumo de agua se compone de varios periodos de consumo, que pueden ser de tipo \cdtRef{mensual}{Mensual}, \cdtRef{bimestral}{Bimestral}, \cdtRef{semestral}{Semestral} o \cdtRef{periodo-consumo}{Anual}}
+	\BRitem{Tipo}{\relAsociacion}
+	\BRitem{Cardinalidad}{Uno a muchos}
+\end{BusinessFact}
+
+
+%%================================================================================================
+\section{Modelo de información del registro de información base para indicadores de energía}
+
+\subsection{Descripción general}
+ En la figura~\ref{fig:registroInfoBaseEnergia} se muestra la estructura de información que manejará el sistema para registrar la información base para indicadores de energía.
+ 
+\begin{figure}[htbp!]
+      \begin{center}
+            \fbox{\includegraphics[width=1\textwidth]{images/clases/energia}}
+            \caption{Modelo de información del registro de información base para indicadores de energía.}
+            \label{fig:registroInfoBaseEnergia}
+      \end{center}
+\end{figure}
+
+\begin{BusinessEntity}{energia}{Energía}
+      \Battr{cuentaConServicio}{Cuenta con servicio de energía}{\tdBooleano}{Indica si la escuela cuenta con servicio de energía}{\requerido}
+      \Battr{cuentaConRecibos}{Cuenta con recibos}{\tdBooleano}{Indica si la escuela cuenta con recibos del consumo de energía}{\requerido}
+      %\Battr{consumoAnual}{Consumo anual promedio}{\tdNumerico{decimal}}{Cantidad promedio de energía consumida anualmente, expresada en kilowatts-hora}{\requerido}
+      %\Battr{importeAnual}{Importe anual promedio}{\tdNumerico{decimal}}{Valor anual en pesos mexicanos del consumo anual de energía}{\requerido}
+      \Battr{tipoDePeriodo}{Tipo de periodo}{\tdCatalogo}{Especifica el periodo utilizado para reportar un consumo de energía, definido por el catálogo \cdtRef{gls:tipoDePeriodo}{Tipo de periodo}}{\requerido}
+\end{BusinessEntity}
+
+\subsubsection{Relaciones}
+
+\begin{BusinessFact}{energia:periodo-consumo}{Periodo de consumo}
+      \BRitem{Descripción}{El consumo de energía se compone de varios periodos de consumo, que pueden ser de tipo \cdtRef{mensual}{Mensual}, \cdtRef{bimestral}{Bimestral}, \cdtRef{semestral}{Semestral} o \cdtRef{periodo-consumo}{Anual}}
+      \BRitem{Tipo}{\relAsociacion}
+      \BRitem{Cardinalidad}{Uno a muchos}
+\end{BusinessFact}
+
+%\begin{BusinessEntity}{periodo-energia}{Periodo de consumo}
+%      \Battr{anio}{Año}{\tdNumerico{entero}}{Año al que corresponde el periodo del consumo}{\requerido}
+%      \Battr{consumo}{Consumo}{\tdNumerico{entero}}{Cantidad de energía expresada en kilowatts-hora consumida en el periodo}{\requerido}
+%      \Battr{importe}{Importe}{\tdNumerico{entero}}{Valor en pesos mexicanos del consumo de energía en el periodo}{\requerido}
+%\end{BusinessEntity}
+
+%%================================================================================================
+\section{Modelo de información del registro de información base para indicadores de biodiversidad}
+
+\subsection{Descripción general}
+ En la figura~\ref{fig:registroInfoBaseBiodiversidad} se muestra la estructura de información que manejará el sistema para registrar la información base para indicadores de biodiversidad.
+ 
+\begin{figure}[htbp!]
+	\begin{center}
+		\fbox{\includegraphics[width=.8\textwidth]{images/clases/biodiversidad}}
+		\caption{Modelo de información del registro de información base para indicadores de biodiversidad.}
+		\label{fig:registroInfoBaseBiodiversidad}
+	\end{center}
+\end{figure}
+
+\begin{BusinessEntity}{biodiversidad}{Biodiversidad}
+      \Battr{encuestados}{Personas encuestadas}{\tdNumerico{entero}}{Número de personas a las que se les aplicó la encuesta sobre biodiversidad}{\requerido}
+      \Battr{siConocenConcepto}{Personas que conocen el concepto}{\tdNumerico{entero}}{Número de personas encuestadas que conocen el significado de la palabra ``biodiversidad''}{\requerido}
+      %\Battr{noConocenConcepto}{Personas que no conocen el concepto}{\tdNumerico{entero}}{Número de personas que no conocen el significado de la palabra ``biodiversidad''}{\requerido}
+      \Battr{distanciaBosque}{Distancia al bosque}{\tdNumerico{decimal}}{Distancia hasta el bosque, medida en kilómetros desde la escuela}{\requerido}
+	  \Battr{ubicacionBosque}{Ubicación del bosque}{\tdParrafo}{Descripción de la ubicación del bosque}{\requerido}
+	  \Battr{distanciaSelva}{Distancia a la selva}{\tdNumerico{decimal}}{Distancia hasta la selva, medida en kilómetros desde la escuela}{\requerido}
+	  \Battr{ubicacionSelva}{Ubicación de la selva}{\tdParrafo}{Descripción de la ubicación de la selva}{\requerido}
+	  \Battr{distanciaMatorral}{Distancia al matorral}{\tdNumerico{decimal}}{Distancia hasta el matorral, medida en kilómetros desde la escuela}{\requerido}
+	  \Battr{ubicacionMatorral}{Ubicación del matorral}{\tdParrafo}{Descripción de la ubicación del matorral}{\requerido}
+	  \Battr{distanciaRio}{Distancia al río}{\tdNumerico{decimal}}{Distancia hasta el río, medida en kilómetros desde la escuela}{\requerido}
+      \Battr{ubicacionRio}{Ubicación del río}{\tdParrafo}{Descripción de la ubicación del río}{\requerido}
+      \Battr{distanciaEstanque}{Distancia al estanque o lago}{\tdNumerico{decimal}}{Distancia hasta el estanque o lago, medida en kilómetros desde la escuela}{\requerido}
+      \Battr{ubicacionEstanque}{Ubicación del estanque o lago}{\tdParrafo}{Descripción de la ubicación del estanque o lago}{\requerido}
+      \Battr{superficieAreasVerdes}{Superficie de áreas verdes}{\tdNumerico{decimal}}{Superficie total de las áreas verdes con las que cuenta la escuela}{\requerido}
+      % Catálogos
+      \Battr{tipoAreaVerde}{Tipo de área verde}{\tdCatalogo}{Tipos de espacios con áreas verdes con los que cuenta la escuela, definido por el catálogo \cdtRef{gls:tipoAreaVerde}{Tipo de área verde}}{\requerido}
+      \Battr{tipoDeEcosistema}{Tipo de ecosistema}{\tdCatalogo}{Tipos de ecosistemas con los que cuenta la escuela, definido por el catálogo \cdtRef{gls:tipoDeEcosistema}{Tipo de ecosistema}}{\requerido}
+\end{BusinessEntity}
+
+\subsubsection{Relaciones}
+
+\begin{BusinessFact}{biodiversidad:inventario}{Inventario}
+	\BRitem{Descripción}{Biodiversidad cuenta con un \cdtRef{inventario}{Inventario}}
+	\BRitem{Tipo}{\relAsociacion}
+	\BRitem{Cardinalidad}{Uno a uno}
+\end{BusinessFact}
+
+\begin{BusinessEntity}{inventario}{Inventario}
+      \Battr{nombreComun}{Nombre común}{\tdFrase}{El que se aplica a flora o fauna que pertenece a una misma clase, especie o familia, y con el que se conoce de forma popular}{\requerido}
+      \Battr{nombreCientifico}{Nombre científico}{\tdFrase}{Nombre que dentro de la comunidad científica se da a las diferentes especies de plantas o animales}{\requerido}
+      \Battr{cantidad}{Cantidad}{\tdNumerico{entero}}{Número de estas especies de flora o fauna con las que cuenta la escuela}{\requerido}
+      \Battr{ubicacion}{Ubicación}{\tdParrafo}{Descripción del lugar en donde se encuentra la especie de flora o fauna}{\requerido}
+      \Battr{riesgo}{Riesgo de desaparecer}{\tdCatalogo}{Indica si la especie de flora o fauna está en riesgo de desaparecer de la región, definido por el catálogo \cdtRef{gls:riesgo}{Riesgo de desaparecer}}{\requerido}
+      \Battr{endemico}{Endémico}{\tdCatalogo}{Indica si la especie de flora o fauna es endémica, definido por el catálogo \cdtRef{gls:endemico}{Endémico}}{\requerido}
+\end{BusinessEntity}
+
+\subsubsection{Relaciones}
+
+\begin{BusinessFact}{inventario:fauna}{Fauna}
+	\BRitem{Descripción}{Fauna es un tipo de \cdtRef{inventario}{Inventario}}
+	\BRitem{Tipo}{\relHerencia}
+\end{BusinessFact}
+
+\begin{BusinessFact}{inventario:flora}{Flora}
+	\BRitem{Descripción}{Flora es un tipo de \cdtRef{inventario}{Inventario}}
+	\BRitem{Tipo}{\relHerencia}
+\end{BusinessFact}
+
+\begin{BusinessEntity}{fauna}{Fauna}
+      \Battr{categoriaFauna}{Categoría de fauna}{\tdCatalogo}{Clase a la que pertenece la especie animal, definido por el catálogo \cdtRef{gls:categoriaFauna}{Categoría de fauna}}{\requerido}
+\end{BusinessEntity}
+
+\begin{BusinessEntity}{flora}{Flora}
+      \Battr{categoriaFlora}{Categoría de flora}{\tdCatalogo}{Clase a la que pertenece la especie de planta, definido por el catálogo \cdtRef{gls:categoriaFlora}{Categoría de flora}}{\requerido}
+\end{BusinessEntity}
+
+%%================================================================================================
+\section{Modelo de información del registro de información base para indicadores de ambiente escolar}
+
+\subsection{Descripción general}
+ En la figura~\ref{fig:registroInfoBaseAmbiente} se muestra la estructura de información que manejará el sistema para registrar la información base para indicadores de ambiente escolar.
+ 
+\begin{figure}[htbp!]
+	\begin{center}
+		\fbox{\includegraphics[width=.5\textwidth]{images/clases/ambiente-escolar}}
+		\caption{Modelo de información del registro de información base para indicadores de ambiente escolar.}
+		\label{fig:registroInfoBaseAmbiente}
+	\end{center}
+\end{figure}
+
+
+\begin{BusinessEntity}{ambiente}{Ambiente escolar}
+      \Battr{usoJardin}{Uso de jardín y áreas verdes}{\tdParrafo}{Descripción de las actividades que se realizan en los jardines y áreas verdes con los que cuenta la escuela}{\requerido}
+      \Battr{usoBiblioteca}{Uso de biblioteca}{\tdParrafo}{Descripción de las actividades que se realizan en la biblioteca de la escuela}{\requerido}
+      \Battr{usoPatio}{Uso de patio}{\tdParrafo}{Descripción de las actividades que se realizan en los patios con los que cuenta la escuela}{\requerido}
+      \Battr{usoPeriodicoMural}{Uso de área para periódico mural}{\tdParrafo}{Descripción de las actividades que se realizan en las áreas para periódico mural con el que cuenta la escuela}{\requerido}
+      \Battr{usoComedor}{Uso de comedor}{\tdParrafo}{Descripción de las actividades que se realizan en los comedores con los que cuenta la escuela}{\requerido}
+      \Battr{usoSalonMusica}{Uso de salones de música}{\tdParrafo}{Descripción de las actividades que se realizan en los salones de música con los que cuenta la escuela}{\requerido}
+      \Battr{usoSalonComputo}{Uso de salones de cómputo}{\tdParrafo}{Descripción de las actividades que se realizan en los salones de cómputo con los que cuenta la escuela}{\requerido}
+      \Battr{usoSalonAudiovisual}{Uso de salones de audiovisual}{\tdParrafo}{Descripción de las actividades que se realizan en los salones audiovisuales con los que cuenta la escuela}{\requerido}
+      \Battr{usoDeportivas}{Uso de instalaciones deportivas}{\tdParrafo}{Descripción de las actividades que se realizan en las instalaciones deportivas con las que cuenta la escuela}{\requerido}
+      \Battr{usoSalaJuntas}{Uso de sala de juntas}{\tdParrafo}{Descripción de las actividades que se realizan en la sala de juntas con la que cuenta la escuela}{\requerido}
+      \Battr{usoAulas}{Uso de aulas}{\tdParrafo}{Descripción de las actividades que se realizan en las aulas con las que cuenta la escuela}{\requerido}
+      \Battr{usoAdministrativa}{Uso de administrativa}{\tdParrafo}{Descripción de las actividades que se realizan en las áreas administrativas con las que cuenta la escuela}{\requerido}
+      \Battr{usoSanitarios}{Uso de sanitarios}{\tdParrafo}{Descripción de las actividades que se realizan en los sanitarios con los que cuenta la escuela}{\requerido}
+      \Battr{tipoEspacio}{Tipo de espacio}{\tdCatalogo}{Cada una de las diferentes áreas comunes con las que cuenta la escuela, definido por el catálogo \cdtRef{gls:tipoEspacio}{Tipo de espacio}}{\requerido}
+\end{BusinessEntity}
+
+
+%%================================================================================================
+\section{Modelo de información del registro de información base para indicadores de residuos sólidos}
+
+\subsection{Descripción general}
+ En la figura~\ref{fig:registroInfoBaseResiduos} se muestra la estructura de información que manejará el sistema para registrar la información base para indicadores de residuos sólidos.
+ 
+\begin{figure}[htbp!]
+	\begin{center}
+		\fbox{\includegraphics[width=.6\textwidth]{images/clases/residuos-solidos}}
+		\caption{Modelo de información del registro de información base para indicadores de residuos sólidos.}
+		\label{fig:registroInfoBaseResiduos}
+	\end{center}
+\end{figure}
+
+\begin{BusinessEntity}{residuoSolido}{Residuo sólido}
+      \Battr{cantidadSemanal}{Cantidad generada a la semana}{\tdNumerico{decimal}}{Cantidad de residuos sólidos generada semanalmente medida en kilogramos}{\requerido}
+      \Battr{cantidadReciclaje}{Cantidad separada para reciclaje}{\tdNumerico{decimal}}{Cantidad de residuos sólidos que son separados para ser reciclados semanalmente, medida en kilogramos}{\requerido}
+      \Battr{residuo}{Residuo}{\tdCatalogo}{Indica el origen del residuo sólido, definido por el catálogo \cdtRef{gls:residuo}{Residuo}}{\requerido}
+      \Battr{tipoDeResiduo}{Tipo de residuo sólido}{\tdCatalogo}{Indica el tipo de residuo sólido según su composición, definido por el catálogo \cdtRef{gls:tipoDeResiduo}{Tipo de residuo}}{\requerido}
+\end{BusinessEntity}
+
+%%================================================================================================
+\section{Modelo de información del registro de información base para indicadores de consumo responsable}
+
+\subsection{Descripción general}
+ En la figura~\ref{fig:registroInfoBaseConsumo} se muestra la estructura de información que manejará el sistema para registrar la información base para indicadores de consumo responsable.
+ 
+\begin{figure}[htbp!]
+	\begin{center}
+		\fbox{\includegraphics[width=.5\textwidth]{images/clases/consumo-responsable}}
+		\caption{Modelo de información del registro de información base para indicadores de consumo responsable.}
+		\label{fig:registroInfoBaseConsumo}
+	\end{center}
+\end{figure}
+
+\begin{BusinessEntity}{consumo}{Consumo}
+      \Battr{personasEncuestadas}{Personas encuestadas}{\tdNumerico{entero}}{Número de personas a las que se les aplicó la encuesta sobre consumo responsable}{\requerido}
+      \Battr{consumoAlimentosFrescos}{Consumo de alimentos frescos}{\tdNumerico{entero}}{Número de personas encuestadas que consumen alimentos frescos o naturales en la escuela}{\requerido}
+      %\Battr{consumoAlimentosCaseros}{Consumo de alimentos caseros}{\tdNumerico{entero}}{Número de personas encuestadas que consumen alimentos cocinados en la casa o en la escuela}{\requerido}
+      %\Battr{consumoAlimentosProcesados}{Consumo de alimentos procesados}{\tdNumerico{entero}}{Número de personas encuestadas que consumen alimentos industrializados procesados}{\requerido}
+      \Battr{realizaCompras}{Realiza compras}{\tdBooleano}{Indica si la escuela realiza compras de papelería, limpieza o cómputo}{\requerido}
+      \Battr{comprasAnioPapeleria}{Compras al año de papelería}{\tdNumerico{entero}}{Número de veces al año que se compran insumos de papelería}{\requerido}
+      \Battr{comprasReciclados}{Compras de reciclados}{\tdNumerico{entero}}{Número de veces, dentro de las compras anuales de papelería, que se cuida que los productos sean total o parcialmente fabricados con materiales reciclados}{\requerido}
+      \Battr{comprasAnioLimpieza}{Compras al año de limpieza}{\tdNumerico{entero}}{Número de veces al año que se compran insumos para limpieza}{\requerido}
+      \Battr{comprasNoToxicos}{Compras de no tóxicos}{\tdNumerico{entero}}{Número de veces, dentro de las compras anuales de limpieza, que se cuida que los productos no sean tóxicos al ambiente}{\requerido}
+      \Battr{comprasAnioElectronicos}{Compras al año de electrónicos}{\tdNumerico{entero}}{Número de veces al año que se compran equipos eléctricos y electrónicos}{\requerido}
+      \Battr{comprasBajoConsumo}{Compras de bajo consumo de energía}{\tdNumerico{entero}}{Número de veces, dentro de las compras anuales de equipos eléctricos o electrónicos, que se cuida que los productos sean de bajo consumo de energía}{\requerido}
+\end{BusinessEntity}
+

@@ -1,0 +1,59 @@
+%\DONE{} 
+	En esta sección se describen los mensajes utilizados en el prototipo actual del sistema. Los mensajes se refieren a todos
+	aquellos avisos que el sistema muestra al actor a través de la pantalla debido a diversas
+	razones, por ejemplo: informar acerca de algún fallo en el sistema o para notificar acerca de alguna operación importante sobre
+	la información.
+
+%===========================================================removiendo los puntos generados
+\subsection{Parámetros comunes}
+    Cuando un mensaje es recurrente se parametrizan sus elementos, por ejemplo los mensajes: ``Aún no existen registros de {\em escuelas} en el sistema.'', ``Aún no existen registros de {\em responsables del programa} en el sistema.'', 
+    ``Aún no existen registros de {\em integrantes de líneas de acción} en el sistema.'', tienen una estructura similar 
+    por lo que para definir el mensaje se utilizan parámentros, con el objetivo de que el mensaje sea genérico y  
+    pueda utilizarse en todos los casos que se considere necesario.\\
+    
+    Los parámetros también se utilizan cuando la redacción del mensaje tiene datos que son ingresados por el actor o que dependen del resultado de la operación, por ejemplo: 
+    ``La {\em escuela  15DPR2497K} ha sido {\em modificada} exitosamente.''. En este caso la redacción se presenta parametrizada de la forma: ``DETERMINADO ENTIDAD VALOR ha sido OPERACIÓN exitosamente.'' y los 
+    parámetros se describen de la siguiente forma:
+    
+    \begin{itemize}
+	\item DETERMINADO ENTIDAD: Es un artículo determinado más el nombre de la entidad sobre la cual se realizó la acción.
+	\item VALOR: Es el valor asignado al atributo de la entidad, generalmente es el nombre o la clave.
+	\item OPERACIÓN: Es la acción que el actor solicitó realizar.
+    \end{itemize}
+
+    En el ejemplo anterior se hace referencia a VALOR, es decir: {\em 15DPR2497K} es el {\bf valor}  de la entidad {\bf escuela}. Cada mensaje enlista los parámetros 
+    que utiliza, sin embargo aquí se definen los más comunes a fin de simplificar la descripción de los mensajes:
+
+    \begin{description}
+	\item [ARTÍCULO:] Se refiere a un {\em artículo} el cual puede ser DETERMINADO (El $\mid$ La $\mid$ Lo $\mid$ Los $\mid$ Las) o INDETERMINADO (Un $\mid$ Una $\mid$ 
+	Uno $\mid$ Unos $\mid$Unas) se aplica generalmente sobre una ENTIDAD, ATRIBUTO o VALOR.
+	\item [CAMPO:] Se refiere a un campo del formulario. Por lo regular es el nombre de un atributo en una entidad.
+	\item [CONDICIÓN:] Define una expresión booleana cuyo resultado deriva en {\em falso} o {\em verdadero} y suele ser la causa del mensaje.
+	\item [DATO:] Es un sustantivo y generalmente se refiere a un atributo de una entidad descrito en el modelo estructural del negocio, por ejemplo: número de incendio,
+	brigada de apoyo del incendio, uso de suelo autorizado del predio, etc. %ATRIBUTO
+	\item [ENTIDAD:] Es un sustantivo y generalmente se refiere a una entidad del modelo estructural del negocio, por ejemplo: incendio, pago por servicios ambientales hidrológicos, reforestación, etc.
+	\item [OPERACIÓN:] Se refiere a una acción que se debe realizar sobre los datos de una o varias entidades. Por ejemplo: registrar, eliminar, actualizar, etc. Comúnmente 
+	la OPERACIÓN va concatenada con el sustantivo, por ejemplo: Registro de un nuevo beneficio, registro de una actividad, eliminar una tarea, etc.
+	\item [VALOR:] Es un sustantivo concreto y generalmente se refiere a un valor en específico. Por ejemplo: ``2014-003'', que es un valor concreto del DATO de la 
+	ENTIDAD ``incendio''.
+	\item [TAMAÑO:] Es el tamaño del atributo de una entidad, el cual se encuentra definido en el diccionario de datos.
+	\item [MOTIVO:] Es una explicación acerca de la operación que se pretende realizar.
+    \end{description}
+
+
+\subsection{Mensajes a través de la pantalla}
+
+%===========================  MSG1 ==================================
+\begin{mensaje}{MSG1}{Operación realizada exitosamente}{Confirmación}
+    \item[Ubicación:] Formulario. Se muestra en la parte superior del formulario.
+    \item[Estatus:] Terminado
+    \item[Objetivo:] Notificar al actor que la acción solicitada fue realizada exitosamente.
+    \item[Redacción:] DETERMINADO ENTIDAD VALOR ha sido OPERACIÓN exitosamente.
+    \item[Parámetros:] El mensaje se muestra con base en los siguientes parámetros:
+    \begin{Citemize}
+	\item DETERMINADO ENTIDAD: Es un artículo determinado más el nombre de la entidad sobre la cual se realizó la acción.
+	\item VALOR: Es el valor asignado al atributo de la entidad, generalmente es el nombre o la clave.
+	\item OPERACIÓN: Es la acción que el actor solicitó realizar.
+    \end{Citemize}
+    \item[Ejemplo:] {\em La escuela 15DPR2497K} ha sido {\em registrada} exitosamente.
+\end{mensaje}

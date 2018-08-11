@@ -1,0 +1,445 @@
+% El tipo de regla de negocio (tercer parámetro del entorno 'BusinessRule') se describe en la siguiente tabla:
+%---------------------------------------------------------------------------------------------------------------,
+% TIPOS		|		DEFINICION		|	EJEMPLO						|
+%---------------|---------------------------------------|-------------------------------------------------------|
+% Habilitador   | La sentencia habilita o restringe 	| * Se pueden recibir solicitudes del tipo A, B y C.	|
+%		| hacer algo o  una funcionalidad.	| * Se permite hacer algo si se tiene el estado X.	|
+%---------------|---------------------------------------|-------------------------------------------------------|
+% Cronometrado	| Se permite de manera controlada 	| * Se permiten hasta dos solicitudes del tipo D	| 
+%		| por un contador.			|   por persona.					|
+% 		|					| * El acceso al sistema se permite si no se tiene 	|
+%  		|					|   más de X número de intentos fallidos.		|
+%---------------|---------------------------------------|-------------------------------------------------------|
+% Ejecutivo	| Autorizado por un superior, un perfil | * Se permite registrar extemporaneamente si lo 	|
+%		| particular debe autorizar.		|   autoriza X.						|
+%---------------|---------------------------------------|-------------------------------------------------------|
+% Derivación	| Son de cálculo e inferencia, 		| * Un alumno irregular es aquel que tiene las 		|
+%		| es un cálculo o conclusión derivados 	|   siguientes cacteristicas: A, B, C. 			|
+%		| de un conjunto de datos. Puede ser una| * El formato de un correo o CURP.			|
+%		| fórmula que dice cómo calcular algo 	|							|
+%		| o el formato de un dato.		|							|
+%---------------|---------------------------------------|-------------------------------------------------------|
+% Restricción	| Restringe una funcionalidad o relación| * Traslape de fechas o periodos empalmados.		|
+% 		| entre dos o mas objetos.		|							|
+%  		|					|							|
+%---------------------------------------------------------------------------------------------------------------'
+
+% No editar las reglas cuyo estatus es APROBADO.
+
+\section{Reglas de negocio}
+
+\subsection{Reglas derivadas del sistema}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-S1}{Información correcta}
+	{Restricción}
+	{Controla la operación}
+	\BRitem{Versión}{1.0}
+	\BRitem{Autor}{Victor Lozano Ortega}
+	\BRitem{Estatus}{Terminado}
+	\BRitem{Descripción}{Los datos proporcionados al sistema que son marcados como ``requeridos'' no se deben omitir. 
+		Todos los datos proporcionados al sistema deben respetar el formato y pertenecer al \cdtRef{gls:tipoDato}{tipo de dato} 
+		especificado en el modelo de información; así como estar dentro de la longitud máxima o mínima definida en el diccionario de datos}
+	\BRitem{Referenciado por}{
+	%CUR
+	\cdtIdRef{CUR 1}{Iniciar sesión},
+	\cdtIdRef{CUR 2}{Recuperar contraseña},
+	\cdtIdRef{CUR 3}{Solicitar inscripción},
+	\cdtIdRef{CUR 4}{Registrar coordinador del programa},
+	\cdtIdRef{CUR 6}{Completar información escolar},
+	\cdtIdRef{CUR 7}{Modificar información escolar},
+	\cdtIdRef{CUR 10}{Registrar responsable del programa},
+	\cdtIdRef{CUR 11}{Modificar responsable del programa},
+	\cdtIdRef{CUR 14}{Registrar integrante de línea de acción},
+	\cdtIdRef{CUR 15}{Modificar integrante de línea de acción},
+	\cdtIdRef{CUIBA 2}{Registrar información base para indicadores de agua},
+	\cdtIdRef{CUIBB 2}{Registrar información base para indicadores de biodiversidad},
+	\cdtIdRef{CUIBB 4}{Registrar fauna},
+	\cdtIdRef{CUIBB 7}{Registrar flora},
+	\cdtIdRef{CUIBR 2}{Registrar residuo sólido},
+	\cdtIdRef{CUIBR 3}{Modificar residuo sólido},
+	\cdtIdRef{CUIBCR 2}{Registrar información base para indicadores de consumo responsable},
+	\cdtIdRef{CUIBE 2}{Registrar información base para indicadores de energía},
+	\cdtIdRef{CUP 2}{Registrar objetivo},
+	\cdtIdRef{CUP 3}{Modificar objetivo},
+	\cdtIdRef{CUP 8}{Registrar acción},
+	\cdtIdRef{CUP 9}{Modificar acción},
+	\cdtIdRef{CUPAE 1}{Registrar meta de ambiente escolar},
+	\cdtIdRef{CUPAE 2}{Modificar meta de ambiente escolar},
+	\cdtIdRef{CUPB 1}{Registrar meta de biodiversidad},
+	\cdtIdRef{CUPB 2}{Modificar meta de biodiversidad},
+	\cdtIdRef{CUPCR 1}{Registrar meta de consumo responsable},
+	\cdtIdRef{CUPCR 2}{Modificar meta de consumo responsable},
+	\cdtIdRef{CUPRS 1}{Registrar meta de residuo sólido},
+	\cdtIdRef{CUPRS 2}{Modificar meta de residuo sólido},
+	\cdtIdRef{CUPR 1}{Registrar residuo sólido del plan de acción},
+	\cdtIdRef{CUPR 2}{Modificar residuo sólido del plan de acción},
+	\cdtIdRef{CUPL 1}{Registrar meta},
+	\cdtIdRef{CUPL 2}{Modificar meta},
+	\cdtIdRef{CUS 13}{Registrar fauna},
+	\cdtIdRef{CUS 16}{Registrar flora},
+	\cdtIdRef{CUS 19}{Registrar avances de acciones de agua},
+	\cdtIdRef{CUS 20}{Registrar avances de meta de agua},
+	\cdtIdRef{CUS 21}{Actualizar información del consumo de agua},
+	\cdtIdRef{CUS 23}{Registrar avances de acciones de energía},
+	\cdtIdRef{CUS 24}{Registrar avances de meta de energía},
+	\cdtIdRef{CUS 25}{Actualizar información del consumo de energía},
+	\cdtIdRef{CUS 27}{Registrar avances de acciones de residuo sólido},
+	\cdtIdRef{CUS 28}{Registrar avances de meta de residuo sólido},
+	\cdtIdRef{CUS 30}{Registrar residuo sólido},
+	\cdtIdRef{CUS 31}{Modificar residuo sólido},}
+	%\cdtIdRef{CUR20}{Aprobar solicitud de inscripción}}
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-S2}{Formato de correo electrónico}
+    {Derivación}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Victor Lozano Ortega}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:]El correo electrónico debe ser una cadena de caracteres con la siguiente estructura ordenada:
+    \begin{enumerate}
+	\item Cadena de caracteres.
+	\item Carácter ``@''.
+	\item Cadena de caracteres.
+	\item Carácter ``.''.
+	\item Cadena de caracteres.
+    \end{enumerate}
+    \item[Ejemplo:]{correo@dominio.com}
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUR 4}{Registrar coordinador del programa},
+    \cdtIdRef{CUR 10}{Registrar responsable del programa},
+    \cdtIdRef{CUR 11}{Modificar responsable del programa},
+    \cdtIdRef{CUR 14}{Registrar integrante de línea de acción},
+    \cdtIdRef{CUR 15}{Modificar integrante de línea de acción}}
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-S3}{Formato de la contraseña}
+    {Derivación}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Victor Lozano Ortega}
+    \BRitem{Estatus}{Terminado}
+    \BRitem{Descripción}{La longitud de la contraseña debe ser entre 8 y 16 caracteres, debe contener al menos una letra en mayúscula, 
+	un dígito y no debe contener la subcadena ``nombre propio del actor'' en ella. Se deberán considerar las siguientes restricciones: 
+	No debe haber caracteres especiales, no debe haber letras acentuadas y no deben existir espacios}
+    \BRitem{Ejemplo}{Bond007}
+    \BRitem{Referenciado por}{\cdtIdRef{CUR 19}{Verificar correo electrónico}}%PENDIENTE
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-S4}{Unicidad de identificadores}
+	{Restricción}
+	{Controla la operación}
+	\BRitem{Versión}{1.0}
+	\BRitem{Autor}{Victor Lozano Ortega}
+	\BRitem{Estatus}{Terminado}
+	\BRitem{Descripción}{En el conjunto de entidades del sistema, la \cdtRef{escuela:cct}{clave de centro de trabajo} y el \cdtRef{cuenta:usuario}{nombre de usuario} deben ser únicos}
+	\item[Ejemplo de cumplimiento:] El conjunto de escuelas:
+		\begin{Citemize}
+			\item (Nombre de la escuela: ``Antonio Camacho Salazar'', Clave de centro de trabajo: ``15DPR2497K'')
+			\item (Nombre de la escuela: ``Coatlicue'', Clave de centro de trabajo: ``27DPR4279H'')
+			\item (Nombre de la escuela: ``Antonio Camacho Salazar'', Clave de centro de trabajo: ``79DPR4251H'')
+		\end{Citemize}
+		Es correcto debido a que las escuelas tienen una clave de centro de trabajo diferente.
+		\item[Ejemplo de fallo:] El conjunto de escuelas:    
+		\begin{Citemize}
+			\item (Nombre de la escuela: ``Antonio Camacho Salazar'', Clave de centro de trabajo: ``15DPR2497K'')
+			\item (Nombre de la escuela: ``Coatlicue'', Clave de centro de trabajo: ``15DPR2497K'')
+			\item (Nombre de la escuela: ``Antonio Camacho Salazar'', Clave de centro de trabajo: ``79DPR4251H'')
+		\end{Citemize}
+		Es {\bf \underline{incorrecto}} debido a que hay dos escuelas con la misma clave de centro de trabajo.
+	\BRitem{Referenciado por}{
+	\cdtIdRef{CUR 3}{Solicitar inscripción},}
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-S5}{Archivos permitidos en el sistema}
+    {Derivación}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Natalia Giselle Hernández Sánchez}
+    \BRitem{Estatus}{Terminado}
+    \BRitem{Descripción}{Los archivos permitidos en el sistema son con formato ``PDF'' y tamaño máximo de 2 MB} %El tamaño es una propuesta
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUR 4}{Registrar coordinador del programa}}
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-S6}{Títulos de las administraciones}
+    {Derivación}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Natalia Giselle Hernández Sánchez}
+    \BRitem{Estatus}{Terminado}
+    \BRitem{Descripción}{Los títulos de la administración de metas y la administración de acciones especificarán la línea de acción a la que están asociadas, p.e. la administración de metas de la línea de acción ``Energía'' tendrá
+    como título ``Administrar metas {\em de energía}''} 
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUP 5}{Administrar metas},
+    \cdtIdRef{CUP 7}{Administrar acciones}}
+\end{BusinessRule}
+
+% %------------------------------------------------------------------------------------------------------------------
+% \begin{BusinessRule}{RN-S7}{Información el calculo de indicadores}
+%     {Derivación}
+%     {Controla la operación}
+%     \BRitem{Versión}{1.0}
+%     \BRitem{Autor}{Sergio Ramírez Camacho}
+%     \BRitem{Estatus}{Terminado}
+%     \BRitem{Descripción}{
+% 			  La información que se utilizará para el cálculo de los indicadores deber considerar los siguientes casos:
+% 			  \begin{itemize}
+% 			   \item
+% 			   \item
+% 			  \end{itemize}
+% 
+%     } 
+%     \BRitem{Referenciado por}{
+%     \cdtIdRef{CUP 5}{Administrar metas},
+%     \cdtIdRef{CUP 7}{Administrar acciones}}
+% \end{BusinessRule}
+%  
+\subsection{Reglas derivadas del negocio}
+ 
+\begin{BusinessRule}{RN-N1}{Nombre de usuario del Coordinador del programa}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Natalia Giselle Hernández Sánchez}
+    \BRitem{Estatus}{Terminado}
+    \BRitem{Descripción}{El nombre de usuario del \cdtRef{actor:usuarioEscuela}{Coordinador del programa} es la \cdtRef{escuela:cct}{clave de centro} de trabajo de la \cdtRef{escuela}{Escuela}}
+    \BRitem{Referenciado por}{\cdtIdRef{CUR 19}{Verificar correo electrónico}}%PENDIENTE
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+
+\begin{BusinessRule}{RN-N2}{Conformación del comité}
+	{Derivación}
+	{Controla la operación}
+	\BRitem{Versión}{1.0}
+	\BRitem{Autor}{Victor Lozano Ortega}
+	\BRitem{Estatus}{Terminado}
+	\item[Descripción:] Un comité debe estar conformado por:
+	\begin{itemize}
+		\item Un \cdtRef{actor:usuarioEscuela}{Coordinador del programa}.
+		\item Un \cdtRef{responsable}{Responsable del programa}.
+		\item Uno o dos integrantes por cada línea de acción y al menos uno de ellos debe ser \cdtRef{gls:alumno}{alumno}.
+	\end{itemize}
+	\BRitem{Referenciado por}{
+	\cdtIdRef{CUR 14}{Registrar integrante de línea de acción},
+	\cdtIdRef{CUR 15}{Modificar integrante de línea de acción}}
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+
+\begin{BusinessRule}{RN-N3}{Clave de centro de trabajo válida}
+    {Derivación}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Natalia Giselle Hernández Sánchez}
+    \BRitem{Estatus}{Terminado}
+    \BRitem{Descripción}{Una clave de centro de trabajo válida es aquella que pertenece a una escuela del Estado de México}
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUR 3}{Solicitar inscripción}}
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+
+\begin{BusinessRule}{RN-N4}{Formato de clave de centro de trabajo}
+    {Derivación}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Victor Lozano Ortega}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] La clave de centro de trabajo debe ser una cadena de caracteres con la siguiente estructura ordenada:
+    \begin{enumerate}
+	\item Un número de dos dígitos que representa la entidad federativa donde se encuentra la escuela.
+	\item Una letra mayúscula conocida como \cdtRef{gls:clasificador}{clasificador}.
+	\item Dos letras mayúsculas conocidas como \cdtRef{gls:identificadorCCT}{identificador}.
+	\item Un número de cuatro dígitos conocido como \cdtRef{gls:numeroProgresivo}{número progresivo}.
+	\item Una letra mayúscula conocida como \cdtRef{gls:elementoVerificador}{elemento verificador}.
+    \end{enumerate}
+    \BRitem{Ejemplo}{15DPR2497K}
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUR 3}{Solicitar inscripción}}
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+
+\begin{BusinessRule}{RN-N5}{Unicidad de integrantes del comité}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Natalia Giselle Hernández Sánchez}
+    \BRitem{Estatus}{Terminado}
+    \BRitem{Descripción}{Una persona no puede estar registrada más de una vez dentro de un comité, esto se verificará con el nombre, el primer apellido, el segundo apellido y la fecha de nacimiento del integrante}
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUR 14}{Registrar integrante de línea de acción},
+    \cdtIdRef{CUR 15}{Modificar integrante de línea de acción}}
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N6}{Superficies del predio}
+    {Derivación}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Victor Lozano Ortega}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] Las superficies relacionadas a una escuela son la \cdtRef{escuela:superficieTotal}{superficie total del predio}, 
+    y la \cdtRef{escuela:superficieConstruida}{superficie total construida}. 
+    La superficie total del predio debe ser mayor o igual a la superficie total construida.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUR 6}{Completar información escolar},
+    \cdtIdRef{CUR 7}{Modificar información escolar}} %PENDIENTE
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N7}{Tiempo para activar una cuenta recién creada}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Natalia Giselle Hernández Sánchez}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] El usuario cuenta con 5 días naturales para activar su cuenta mediante correo electrónico.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUR 19}{Verificar correo electrónico}}
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N8}{Unicidad de nombres}
+	{Restricción de operación}
+	{Controla la operación}
+	\BRitem{Versión}{1.0}
+	\BRitem{Autor}{Jessica Stephany Becerril Delgado}
+	\BRitem{Estatus}{Terminado}
+	\BRitem{Descripción}{Los nombres científicos de las especies animales y vegetales deben tener nombres que los identifiquen de una manera única en el ámbito en el que se manejen, sin considerar que sean mayúsculas o minúsculas}
+	\BRitem{Referenciado por}{
+	\cdtIdRef{CUIBB 4}{Registrar fauna}, 
+	\cdtIdRef{CUIBB 7}{Registrar flora},
+	\cdtIdRef{CUS 13}{Registrar fauna}, 
+	\cdtIdRef{CUS 16}{Registrar flora}}
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N9}{Unicidad de objetivos por línea de acción}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Natalia Giselle Hernández Sánchez}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] Por cada línea de acción se podrá registrar solamente un objetivo.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUP 2}{Registrar objetivo},
+    \cdtIdRef{CUP 3}{Modificar objetivo},}
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N10}{Calcular total de especies}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Jessica Stephany Becerril Delgado}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] El número total de especies es la suma de todas las especies animales o vegetales registradas, según sea el caso, para los inventarios de fauna o flora respectivamente.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUIBB 3}{Administrar inventario de fauna}, 
+    \cdtIdRef{CUIBB 6}{Administrar inventario de flora},
+    \cdtIdRef{CUS 12}{Administrar inventario de fauna}, 
+    \cdtIdRef{CUS 15}{Administrar inventario de flora}}
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N11}{Calcular total de especies endémicas}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Jessica Stephany Becerril Delgado}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] El número total de especies endémicas es la suma de todas las especies animales o vegetales endémicas, según sea el caso, registradas para los inventarios de fauna o flora respectivamente.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUIBB 3}{Administrar inventario de fauna}, 
+    \cdtIdRef{CUIBB 6}{Administrar inventario de flora},
+    \cdtIdRef{CUS 12}{Administrar inventario de fauna}, 
+    \cdtIdRef{CUS 15}{Administrar inventario de flora}}
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N12}{Calcular consumo total}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Jessica Stephany Becerril Delgado}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] El consumo total de agua o energía eléctrica, según sea el caso, se calcula sumando el consumo bimestral de cada uno de los recibos ingresados al sistema.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUIBA 2}{Registrar información base para indicadores de agua}, 
+    \cdtIdRef{CUIBE 2}{Registrar información base para indicadores de energía},
+    \cdtIdRef{CUS 21}{Actualizar información del consumo de agua}, 
+    \cdtIdRef{CUS 25}{Actualizar información del cosumo de energía},}
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N13}{Calcular importe total}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Jessica Stephany Becerril Delgado}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] El importe total de agua o energía eléctrica, según sea el caso, se calcula sumando el importe bimestral de cada uno de los recibos ingresados al sistema.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUIBA 2}{Registrar información base para indicadores de agua}, 
+    \cdtIdRef{CUIBE 2}{Registrar información base para indicadores de energía},
+    \cdtIdRef{CUS 21}{Actualizar información del consumo de agua}, 
+    \cdtIdRef{CUS 25}{Actualizar información del cosumo de energía},}
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N14}{Reducción de la generación o reciclaje de residuos}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Natalia Giselle Hernández Sánchez}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] Cuando una meta esté enfocada a la reducción de la generación o reciclaje de residuos, es necesario registrar al menos un residuo sólido asociado a la meta.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUPRS 1}{Registrar meta de residuos sólidos}
+    \cdtIdRef{CUPRS 2}{Modificar meta de residuos sólidos}}
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N15}{Restricción de envío del plan de acción}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Natalia Giselle Hernández Sánchez}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] Para el envío del plan de acción, es necesario que exista registrado al menos un objetivo, al menos una meta y al menos una acción.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUP 11}{Enviar plan de acción}}
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N16}{Calcular avance acumulado}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Jessica Stephany Becerril Delgado}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] El avance acumulado se calcula sumando el valor del avance que se tiene registrado hasta ese momento para la acción o meta y el valor ingresado por el actor al registrar avances.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUS 4}{Registrar avance de meta de ambiente escolar}, \cdtIdRef{CUS 3}{Registrar avance de acciones de ambiente escolar},  \cdtIdRef{CUS 6}{Registrar avance de acciones de consumo responsable}, \cdtIdRef{CUS 7}{Registrar avance de meta de consumo responsable}, \cdtIdRef{CUS 9}{Registrar avance de acciones de biodiversidad},  \cdtIdRef{CUS 10}{Registrar avance de meta de biodiversidad}, \cdtIdRef{CUS 19}{Registrar avance de acciones de agua}, \cdtIdRef{CUS 20}{Registrar avance de meta de agua}, \cdtIdRef{CUS 23}{Registrar avance de acciones de energía}, \cdtIdRef{CUS 24}{Registrar avance de meta de energía}, \cdtIdRef{CUS 27}{Registrar avance de acciones de residuos sólidos}, \cdtIdRef{CUS 28}{Registrar avance de meta de residuos sólidos}}
+\end{BusinessRule}
+
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N17}{Calcular avance de la meta}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Jessica Stephany Becerril Delgado}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] El avance de la meta se calcula con la siguiente fórmula $\frac{\textrm{Acciones finalizadas de la meta}}{\textrm{Total de acciones de la meta}}\times 100$
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUS 10}{Registrar avance de meta de biodiversidad}, \cdtIdRef{CUS 18}{Administrar avances de agua}, \cdtIdRef{CUS 20}{Registrar avance de meta de agua}, \cdtIdRef{CUS 22}{Administrar avances de energía}, \cdtIdRef{CUS 24}{Registrar avance de meta de energía}, \cdtIdRef{CUS 26}{Administrar avances de residuos sólidos}, \cdtIdRef{CUS 28}{Registrar avance de meta de residuos sólidos}, \cdtIdRef{CUS 4}{Registrar avance de meta de ambiente escolar}, \cdtIdRef{CUS 7}{Registrar avance de meta de consumo responsable}}
+\end{BusinessRule}
+%------------------------------------------------------------------------------------------------------------------
+\begin{BusinessRule}{RN-N18}{Restricción de envío del seguimiento del plan de acción}
+    {Restricción}
+    {Controla la operación}
+    \BRitem{Versión}{1.0}
+    \BRitem{Autor}{Natalia Giselle Hernández Sánchez}
+    \BRitem{Estatus}{Terminado}
+    \item[Descripción:] Para el envío del seguimiento del plan de acción, es necesario que exista registrado al menos el avance de una meta y de una acción.
+    \BRitem{Referenciado por}{
+    \cdtIdRef{CUS 33}{Enviar seguimiento del plan de acción}}
+\end{BusinessRule}

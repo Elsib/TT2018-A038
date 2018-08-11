@@ -1,0 +1,124 @@
+
+%=========================================================
+\section{Módulos del sistema}
+
+    El sistema se encuentra organizado por módulos con la finalidad de agrupar y administrar de mejor manera los requerimientos funcionales del sistema. Dividir el sistema en módulos permite visualizar e identificar rápidamente aquellos aspectos funcionales que pueden tratarse conjuntamente. \\
+
+    La figura \ref{fig:ModulosPAEAR} muestra los módulos propuestos de manera inicial para el. Cada uno de estos módulos agrupan los casos de uso que poseen funcionalidad similar o que trabajan en conjunto para alcanzar un aspecto funcional del sistema. Cada uno de los módulos que se muestran en la figura se describen a continuación:
+
+
+    \begin{itemize}
+	\item {\bf Registro de escuelas:} Agrupa los casos de uso que tienen que ver con el registro de la información de las escuelas y de su comité asociado. % así como los casos de uso que permiten a la SMAGEM la aprobación de la inscripción de las escuelas al programa.
+
+	\item {\bf Información base para los indicadores:} Agrupa los casos de uso que proporcionan información ambiental base para los indicadores respecto a cada una de las líneas de acción. %También incluye los casos de uso que permiten a la SMAGEM la revisión, aprobación o rechazo de la información base para los indicadores.
+
+	\item {\bf Plan de acción:} Agrupa los casos de uso que tienen que ver con la definición del plan de acción respecto a cada una de las líneas de acción por parte de las escuelas.% así como los casos de uso que permiten a la SMAGEM la revisión, aprobación o rechazo de un plan de acción ambiental.
+
+	\item {\bf Seguimiento y Acreditación ambiental:} Contiene los casos de uso correspondientes al seguimiento de la ejecución del plan de acción de cada una de las escuelas registradas en el programa.%, así como de la acreditación de las mismas de acuerdo al informe final de actividades revisado por SMAGEM.
+
+	\item {\bf indicadores:} Integra los casos de uso referentes a los indicadores ambientales y de sustentabilidad de la escuela.
+
+%	\item {\bf Administración de usuarios:} Integra los casos de uso referentes a la administración de los usuarios y al control de acceso al sistema.
+
+	%El presente documento expone en detalle la información correspondiente al módulo de \textbf{Registro de escuelas}.
+
+    \end{itemize}
+
+%=========================================================
+\section{Actores del sistema}\label{sec:Comportamiento:ActoresSistema}
+
+Los actores son los perfiles asociados a las diversas áreas y/u organizaciones que intervienen en el proceso. Se han identificado los actores de acuerdo a las actividades y responsabilidades dentro del, los cuales se muestran en la figura \ref{fig:perfilesPAEAR} y se describen a continuación.
+
+%    Los actores son los perfiles asociados a las diversas áreas y/u organizaciones que intervienen en el proceso. Se han identificado los actores de acuerdo a las actividades y responsabilidades dentro del \paear respecto al módulo de \textbf{Registro de escuelas}, los cuales se muestran en la figura \ref{fig:perfilesPAEAR} y se describen a continuación. 
+    %y responsabilidades dentro del \paear - \saear, los cuales se describen a continuación.
+
+%    \begin{figure}[htbp!]
+%      \begin{center}
+%	  \fbox{\includegraphics[width=0.6\textwidth]{images/actores/Actores.png}}
+%      \caption{Perfiles identificados.}
+%      \label{fig:perfilesPAEAR}
+%      \end{center}
+%    \end{figure}
+
+%--------------------------------------------------------------------------------------------------
+    \begin{actor}{Coordinador del programa}{usuarioEscuela}{Persona designada por la escuela para operar todo lo referente a la participación de la escuela y de su comité en el PAEAR.}
+
+	\item[Área:] Escuela participante.
+
+	\item[Responsabilidades:] \hspace{1pt}
+	
+		\begin{itemize}
+
+		    %%%%%%%%%%%% REGISTRO %%%%%%%%%%%%
+		    %Escuela
+		    \item Solicitar la inscripción de su escuela en el programa.
+		    \item Registrar y modificar la información de su escuela en el programa durante el periodo de registro.
+		    %Coordinador del programa
+		    \item Registrar al coordinador y al responsable del programa dentro del periodo de registro.
+		    % Responsable del programa
+		    \item Modificar la información del responsable del programa dentro del periodo de registro.	
+		    %Integrantes de las líneas de acción
+		    \item Registrar o dar de baja a los integrantes de las líneas de acción dentro del periodo de registro.
+		    \item Modificar la información de los integrantes de las líneas de acción dentro del periodo de registro.
+		    %General: información escolar, coordinador, responsable e integrantes de líneas de acción
+		    \item Visualizar la información de registro de su escuela y de los miembros del comité asociado.
+
+		    %%%%%%%%%%%% DIAGNÓSTICO %%%%%%%%%%%%
+		    %Descargar fotmatos y cuestionarios			
+		    %\item Descargar los formatos y cuestionarios de diagnóstico dentro del periodo asignado.
+		    %Registro formatos y cuestionarios
+%			\item Registrar la información correspondiente a los formatos y cuestionarios de diagnóstico dentro del periodo asignado.
+		    %Modificación formatos y cuestionarios
+%			\item Modificar la información registrada en los formatos y cuestionarios de diagnóstico dentro del periodo asignado.
+		    %Envío de diagnóstico
+%			\item Enviar su diagnóstico para su aprobación.
+
+			%%%%%%%%%%%% INFORMACIÓN BASE PARA INDICADORES %%%%%%%%%%%%
+			\item Registrar y modificar la información base para indicadores de agua dentro del periodo de registro de información base.
+			\item Registrar y modificar la información base para indicadores de residuos sólidos dentro del periodo de registro de información base.
+			\item Registrar y modificar la información base para indicadores de energía dentro del periodo de registro de información base.
+			\item Registrar y modificar la información base para indicadores de biodiversidad dentro del periodo de registro de información base.
+			\item Registrar y modificar la información base para indicadores de ambiente escolar dentro del periodo de registro de información base.
+			\item Registrar y modificar la información base para indicadores de consumo responsable	dentro del periodo de registro de información base.
+
+			
+		    %%%%%%%%%%%% PLAN DE ACCIÓN %%%%%%%%%%%%
+			\item Registrar, modificar y eliminar los objetivos asociados a las líneas de acción dentro del periodo de registro del plan de acción.
+			\item Registrar, modificar y eliminar las metas asociadas a cada línea de acción dentro del periodo de registro del plan de acción.
+			\item Registrar, modificar y eliminar las acciones asociadas a las metas de cada línea de acción dentro del periodo de registro del plan de acción.
+
+		    %%%%%%%% SEGUIMIENTO Y ACREDITACIÓN %%%%%%%%
+			\item Registrar, modificar y eliminar el avance de las metas asociadas a cada línea de acción dentro del periodo de registro de informe de avance.
+			\item Registrar, modificar y eliminar las acciones asociadas a las metas de cada línea de acción  dentro del periodo de registro de informe de avance.
+			\item Actualizar la información para el cálculo de los indicadores.
+
+			\item Enviar la información base para indicadores, el plan de acción y los informes de avances del plan de acción para su revisión por parte de SMAGEM.
+			\item Consultar los indicadores ambientales y de sustentabilidad.
+		\end{itemize}
+
+
+	\item[Perfil:] \hspace{1pt}
+		\begin{itemize}
+		    \item Conocer el objetivo del PAEAR.
+		    \item Conocimientos básicos en materia ambiental.
+		    \item Conocimientos en el uso de computadora.
+		    \item Contar con una cuenta de correo electrónico.
+	    \end{itemize}
+
+	\item[Cantidad:] Uno por escuela participante.
+
+\end{actor}
+
+
+
+%====================================================================================
+\section{Casos de Uso del módulo de Registro de Escuelas}
+
+    La figura \ref{fig:casosUso:registro} muestra los casos de uso que integran la funcionalidad del módulo de Registro de escuelas, que se refieren al registro, modificación y visualización de la información escolar y del comité asociado a cada escuela.
+%
+%    \begin{figure}[h!]
+%	\begin{center}
+%	    \fbox{\includegraphics[width=.9\textwidth]{images/CasosUso/Registro.png}}
+%	\caption{Diagrama de casos de uso para el módulo de Registro de escuelas. \label{fig:casosUso:registro}}
+%	\end{center}
+%    \end{figure}
