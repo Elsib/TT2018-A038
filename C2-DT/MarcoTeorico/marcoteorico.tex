@@ -168,24 +168,49 @@
 			\item ECG
 		\end{itemize}
 	
-	\subsection{Comunicación y redes inalámbricas}
-	Se llama comunicación inalámbrica a aquella que se lleva a cabo sin el uso de cables de interconexión entre los participantes.\\
+	\subsection{Redes inalámbricas}	
+	Las redes inalámbricas son conjuntos de dispositivos informáticos comunicados entre sí  sin la necesidad de utilizar cables de ningún tipo. Las redes inalámbricas funcionan de manera similar a las redes cableadas, sin embargo, las redes inalámbricas deben convertir las señales de información en una forma adecuada para la transmisión a través del medio de aire. \\
 	
-	Las redes inalámbricas son redes que utilizan ondas de radio para conectar los dispositivos, sin la necesidad de utilizar cables de ningún tipo. Las redes inalámbricas funcionan de manera similar a las redes cableadas, sin embargo, las redes inalámbricas deben convertir las señales de información en una forma adecuada para la transmisión a través del medio de aire. 
+	Las redes inalámbricas se pueden clasificar en cuatro grupos específicos según el área de aplicación y el alcance de la señal, como se muestra en la figura . Se llama alcance a la distancia máxima a la que pueden situarse las dos partes de la comunicación inalámbrica.
 	
+	\begin{figure}[htbp!]
+		\centering
+		\fbox{\includegraphics[width=0.8\textwidth]{images/marcoTeorico/redesInalambricas.png}}
+		\caption{Arquitectura del sistema.}
+		\label{fig:tiposRedes}
+	\end{figure}
+	
+	
+	\subsubsection{\textbf{Redes inalámbricas de área personal (Wireless Personal-Area Networks - WPAN)}}
+	Las redes inalámbricas de área personal permiten la comunicación en un rango de distancias muy corto, unos 10 metros, baja velocidad, menos de 1 Mbps y con necesidad de visión sin obstáculos.\\
+	
+	Una conexión realizada a través de una WPAN implica poca o ninguna infraestructura o conectividad directa fuera del enlace establecido. Esto permite soluciones pequeñas, eficientes en energía y de bajo coste que pueden ser implementadas en una amplia gama de dispositivos informáticos y de comunicación portátil y móvil, como ordenadores, PDA, impresoras, ratones, micrófonos, auriculares, etc.
+	
+	\subsubsection{\textbf{Redes inalámbricas de área local (Wireless Local-Area Networks - WLAN)}}
+	Las redes inalámbricas de área local (WLAN) están diseñadas para proporcionar acceso inalámbrico en zonas con un rango típico de hasta 100 metros y son utilizadas dentro de un mismo edificio o grupo de edificios. Esto proporciona a los usuarios la capacidad de moverse dentro de un área de cobertura local y permanecer conectado a la red. 
+	
+	\subsubsection{\textbf{Redes inalámbricas de área metropolitana (Wireless Metropolitan-Area Networks - WMAN)}}
+	Las redes inalámbricas de área metropolitana (WMAN) forman el tercer grupo de redes inalámbricas. Se llama redes inalámbricas de área metropolitana, WMAN (Wireless Metropolitan Area Networks), a aquellas redes que tienen una cobertura desde unos cientos de metros hasta varios kilómetros. El objetivo es poder cubrir el área de una ciudad o entorno metropolitano. 
+	
+	\subsubsection{\textbf{inalámbricas de área amplia (Wireless Wide-Area Networks - WWAN)}}
+	Las redes inalámbricas de área amplia se extienden a miles de kilómetros y suelen utilizar frecuencias con licencia. Este tipo de redes se pueden mantener en grandes áreas, tales como ciudades o países, a través de los múltiples sistemas de satélites o ubicaciones con antena atendidos por un proveedor de servicios de Internet. Las WWAN permiten la interconexión de varios sistemas de comunicaciones ayudando a que ésta sea cada vez más globalizada.
+
 	\subsection{Tecnologías inalámbricas}
-	Las redes inalámbricas se pueden clasificar en cuatro grupos específicos según el área de aplicación y el alcance de la señal:
-	\begin{enumerate}
-		\item Redes inalámbricas de área personal (Wireless Personal-Area Networks - WPAN).
-		\item Redes inalámbricas de área local (Wireless Local-Area Networks - WLAN).
-		\item Redes inalámbricas de área metropolitana (Wireless Metropolitan-Area Networks - WMAN).
-		\item Redes inalámbricas de área amplia (Wireless Wide-Area Networks - WWAN).
-	\end{enumerate}
+	Existen muchas tecnologías diferentes que difieren en la frecuencia de transmisión utilizada, la velocidad y el alcance de sus transmisiones. Cada una de esas tecnologías posee diferentes características que la hacen adecuada para diferentes tipos de aplicaciones. Asimismo existen diferentes tecnologías que pueden ser implementadas al mismo tipo de aplicación. Algunas de las tecnologías más significativas y con mayor penetración en el mercado son las siguientes:
 	
-	Existen muchas tecnologías diferentes que difieren en la frecuencia de transmisión utilizada, la velocidad y el alcance de sus transmisiones. 
+	\subsubsection{Bluetooth}
+	Bluetooth es un enlace radio de corto alcance que aparece asociado a las Redes de Área Personal Inalámbricas (WPAN) y pertenece al estándar IEEE 802.15.1. Originalmente Bluetooth fue diseñado para comunicaciones omnidireccionales (punto a multipunto), de bajo consumo de energía, corto alcance y con dispositivos baratos, reemplazando el uso de cables y conectando los dispositivos a través de una conexión ad hoc por radio. \\
+		
+	Bluetooth trabaja en el rango de frecuencias de 2,402 GHz a 2,480 GHz (Banda ISM). Los terminales pueden estar en movimiento y no tener línea de vista entre sí; además, las velocidades de transmisión oscilan entre 720kbps y 1 Mbps. 
 	
-		\begin{itemize}
-			\item Wi-Fi
-			\item GSM
-			\item ZigBee
-		\end{itemize}	
+	\subsubsection{Zigbee}
+	ZigBee está basado en el estándar IEEE 802.15.4 que fue desarrollado como un estándar global abierto para abordar las necesidades de fácil aplicación, alta fiabilidad, bajo costo, bajo consumo y bajas velocidades de transmisión de datos en redes de dispositivos inalámbricos.\\
+		
+	Zigbee fue creado con  con la finalidad de promover el desarrollo e implantación de una tecnología inalámbrica bidireccional de bajo coste vía radio, para usarla en dispositivos de domótica, automatización de edificios (inmótica), control industrial, periféricos de PC o sensores médicos.  Tiene velocidades comprendidas entre 20Kbps y 250Kbps y rangos de 10 m a 75 m y opera en las bandas sin licencia 2.4 GHz, 900 MHz y 868 MHz, lo suficiente para satisfacer las necesidades de un sensor y de automatización usando redes inalámbricas.
+	
+	\subsubsection{Familia IEEE 802.11 (WI-FI)}
+	
+	
+	\subsubsection{WiMAX}
+	
+	\subsubsection{GSM (Global System for Mobile Comunications)}
