@@ -3,7 +3,6 @@
 \usepackage{requerimientos}
 \usepackage{paear}
 \usepackage{subfigure}
-\usepackage{cite}
 \usepackage[spanish]{babel}
 
 
@@ -82,14 +81,17 @@
 
 % Para esconder la información del documentador se descomenta el \hideControlVersion
  \hideControlVersion
+
+\section{Introduction}
+This document illustrates the use of BibTeX\@.  You may want to refer to \cite{ab94}.
  
 %=========================================================
-\chapter{Introducción}\label{chp:introduccion}
-    \cfinput{Introduccion/introduccion}
+%\chapter{Introducción}\label{chp:introduccion}
+  %  \cfinput{Introduccion/introduccion}
    
 %=========================================================
-\chapter{Marco Teórico}\label{chp:marcoTeorico}
-    \cfinput{MarcoTeorico/marcoteorico}
+%\chapter{Marco Teórico}\label{chp:marcoTeorico}
+%   \cfinput{MarcoTeorico/marcoteorico}
     
 %=========================================================
 %\chapter{Glosario de términos}\label{chp:glosarioTerminos}
@@ -131,9 +133,9 @@
 % \cfinput{ModeloInteraccion/mensajes}
 
 %% Referencias
-% \bibliographystyle{plain}
-% \bibliography{referencias}
-%\addcontentsline{toc}{chapter}{Referencias}
-
+\renewcommand{\bibname}{Referencias}
+\bibliographystyle{plain}
+\bibliography{referencias}
+\addcontentsline{toc}{chapter}{Referencias}
 
 \end{document}
