@@ -5,4 +5,6 @@
 *.toc
 *.lot
 *.gz
+*.bbl
+*.blg
 *.pdf
