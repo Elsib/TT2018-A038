@@ -9,18 +9,38 @@
 	
 	Algunos de los tipos más comunes de sensores de temperatura son los siguientes:
 	
-		\begin{itemize}
-			\item \textbf{Termistores:} Un termistor es un elemento con una resistencia eléctrica que cambia en respuesta a la temperatura. Este nombre se deriva del término más descriptivo "resistencia térmicamente sensible".\\
+	\subsection{Termistores}
+	Un termistor es un elemento con una resistencia eléctrica que cambia en respuesta a la temperatura. Este nombre se deriva del término más descriptivo "resistencia térmicamente sensible".\\
 						
-			Los termistores son un tipo de semiconductor, lo que significa que tienen mayor resistencia que los materiales conductores, pero menor resistencia que los materiales aislantes. La relación entre la temperatura de un termistor y su resistencia depende en gran medida de los materiales de los que está compuesta.\\
+	Los termistores son un tipo de semiconductor, lo que significa que tienen mayor resistencia que los materiales conductores, pero menor resistencia que los materiales aislantes. La relación entre la temperatura de un termistor y su resistencia depende en gran medida de los materiales de los que está compuesta.\\
 			
-			Existen dos clases de termistores los que presentan un coeficiente negativo de temperatura (NTC), cuya resistencia disminuye con la temperatura y coeficiente positivo con la temperatura  (PTC) cuya resistencia aumenta con la temperatura. Los termistores NTC son los más usados para medición de temperatura.
+	Existen dos clases de termistores los que presentan un coeficiente negativo de temperatura (NTC), cuya resistencia disminuye con la temperatura y coeficiente positivo con la temperatura  (PTC) cuya resistencia aumenta con la temperatura. Los termistores NTC son los más usados para medición de temperatura.
 			
-			\item \textbf{Circuitos integrados:}
-			\item \textbf{Termopares:} Los termopares se usan comúnmente para medir temperaturas más altas y rangos de temperatura más grandes.\\
+	\subsection{Circuitos integrados}
+	Un sensor de temperatura IC es un transductor de temperatura de circuito integrado de dos terminales que produce una corriente de salida proporcional a la temperatura absoluta. Debido a que son circuitos activos construidos utilizando procesos de semiconductores convencionales, pueden tomar una variedad de formas e incluir una variedad de características (como interfaces digitales y entradas ADC) no disponibles en otras tecnologías. El rango de temperatura de funcionamiento para este tipo de sensores se extiende desde -55 $^{\circ}$C y hasta 125 $^{\circ}$C, con algunos productos operando hasta un límite superior de alrededor de 150 $^{\circ}$C. Dependiendo de la salida que proporcione el sensor, puede clasificarse como analógico o digital:
+	
+	\subsubsection{Sensor de temperatura analógico}
+				Los sensores de temperatura analógicos convierten la temperatura en voltaje o, en algunos casos, en corriente. Los más simples tienen sólo tres conexiones activas: tierra, alimentación y salida. Otros sensores analógicos con características mejoradas pueden tener entradas o salidas adicionales, por ejemplo, salidas de referencia de voltaje o comparador. Estos utilizan las características térmicas de los transistores bipolares para desarrollar un voltaje de salida proporcional a la temperatura.
+				
+	\subsubsection{Sensor de temperatura digital}
+	Se denomina sensor de temperatura digital a un dispositivo que integra un sensor de temperatura analógico con un convertidor analógico-digital (ADC), lo que proporciona una interfaz digital directa.\\
+				
+    \textbf{Otras características del sensor de temperatura digital}\\
+    Además de la función básica de detección de temperatura, los sensores digitales pueden incluir otras características útiles, algunas de las más comunes son:
+    \begin{itemize}
+    	\item \textbf{Salidas dependiendo de la temperatura:} La mayoría de los sensores de temperatura digitales incluyen una o más salidas que indican que la temperatura medida ha superado un límite preestablecido (generalmente programable por software). La salida puede comportarse como una salida de comparador, con un estado cuando la temperatura está por encima del umbral y el otro estado cuando la temperatura está por debajo del umbral.
+    	
+    	\item \textbf{Cola de fallos:} Cuando comúnmente ocurren variaciones de temperatura a corto plazo, es posible que prefiera que la salida dependiendo de la temperatura no se afirme como resultado de una única medición de umbral. En su lugar, puede ser mejor afirmar la salida solo después de que hayan tenido lugar algunas mediciones de umbral por encima consecutivas. Una cola de fallas le permite seleccionar el número de mediciones de umbral por encima del umbral requerido antes de que se confirme la salida.
+    	
+    	\item \textbf{Interfaces:} Los sensores de temperatura digitales están disponibles con una amplia variedad de interfaces digitales que incluyen I2C, SMBus ™, SPI ™, 1-Wire® y PWM.
+    \end{itemize}
+	
 			
-			Este tipo de sensor de temperatura consta de dos cables de diferentes metales conectados en dos puntos. La tensión variable entre estos dos puntos refleja cambios proporcionales en la temperatura. La precisión es baja, de 0.5 $^{\circ}$C a 5 $^{\circ}$C. Sin embargo, operan en el rango de temperatura más amplio, de -200 $^{\circ}$C a 1750 $^{\circ}$C.			
-		\end{itemize}
+	\subsection{Termopares}
+	Los termopares se usan comúnmente para medir temperaturas más altas y rangos de temperatura más grandes.\\
+			
+	Este tipo de sensor de temperatura consta de dos cables de diferentes metales conectados en dos puntos. La tensión variable entre estos dos puntos refleja cambios proporcionales en la temperatura. La precisión es baja, de 0.5 $^{\circ}$C a 5 $^{\circ}$C. Sin embargo, operan en el rango de temperatura más amplio, de -200 $^{\circ}$C a 1750 $^{\circ}$C.			
+	
 	
 	\section{Sensores de pulso}
 		\begin{itemize}
@@ -28,6 +48,17 @@
 			\item ECG
 		\end{itemize}
 	
-	\section{Módulos de comunicación}
 	\section{Microcontroladores}
+	Un microcontrolador es  un  circuito  integrado  que  contiene  un  microprocesador  de  forma  interna,  con  todos  los  componentes  para  poder  funcionar  de  forma  autónoma. Aunque los recursos internos del microcontrolador no pueden ser modificados, es posible agregar nuevos recursos de forma externa mediante el uso de interfaces de comunicación como UART, I2C y SPI.\\
+	
+	Los  elementos  que  normalmente  integran  un  microcontrolador  son:
+	\begin{itemize}
+		\item Microprocesador.
+		\item Memoria  de  datos  RAM.
+		\item Memoria  de  programa  ROM/PROM/EPROM.
+		\item Módulos  de  E/S  para  comunicarse  con  el  exterior.
+		\item Módulos  para  el  control  de  procesos.
+		\item Oscilador  interno  para  generar  la  señal  de  reloj.
+	\end{itemize}
+
 	
