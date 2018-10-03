@@ -45,20 +45,20 @@
 %Entorno para escribir los requerimientos del sistema
 %----------------------------------------------------
 \newenvironment{ReqSist}{%
-    \begin{longtable}{| p{0.09\textwidth}| p{0.2\textwidth}| p{0.35\textwidth}| p{0.079\textwidth}| p{0.12\textwidth}|}
+    \begin{longtable}{| p{0.09\textwidth}| p{0.35\textwidth}| p{0.079\textwidth}| p{0.12\textwidth}|}
     \hline
     \rowcolor{colorPrincipal}
-    \multicolumn{5}{|c|}{\bf\color{white}{Requerimientos del Sistema}}\\\hline
+    \multicolumn{4}{|c|}{\bf\color{white}{Requerimientos del Sistema}}\\\hline
     \endhead
     \rowcolor{colorGris}
     \color{white}
-    Id & \color{white}Nombre&\color{white}Descripción & \color{white}Prioridad & \color{white}Tipo\\ \hline
+    Id & \color{white}Descripción & \color{white}Prioridad & \color{white}Tipo\\ \hline
 }{\end{longtable}}
 
 %----------------------------------------------------
 %Comando para agregar un renglón a la tabla de requerimientos del sistema
 %----------------------------------------------------
-\newcommand{\reqSistItem}[6]{\hypertarget{ReqSist:#1}{#1} & #2 & #3 & #4 & #5 \\\hline}
+\newcommand{\reqSistItem}[5]{\hypertarget{ReqSist:#1}{#1} & #2 & #3 & #4 \\\hline}
 %----------------------------------------------------
 %Comando para referenciar al requerimiento del sistema
 %----------------------------------------------------
