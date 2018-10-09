@@ -10,7 +10,7 @@ A continuación de describen las tecnologías y requerimientos de software y har
 \subsubsection{Software}
 Para identificar las diferentes tecnologías de la información que serán usadas para el desarrollo del trabajo, éstas fueron evaluadas y clasificadas en 4 diferentes aspectos.\\
 
-\paragraph{1. Entorno de Desarrollo Integrado.}
+\paragraph{1. Entorno de Desarrollo Integrado.} \textcolor{White}{.} \newline
 Para el desarrollo de este trabajo terminal, se hará uso totalmente plataformas libres o en su versión de prueba, con el fin de no necesitar ninguna inversión inicial para su adquisición. En la tabla \ref{disenoEstructura:IDE} se describen los entornos de desarrollo elegidos para trabajar.
 
 \begin{table}[htbp]
@@ -34,7 +34,7 @@ Para el desarrollo de este trabajo terminal, se hará uso totalmente plataformas
 	\end{center}
 \end{table}
 
-\paragraph{2. Sistema Operativo.}
+\paragraph{2. Sistema Operativo}  \textcolor{White}{.} \newline
 Puesto que la mayoría de los entornos de desarrollo integrado a usar son multiplataforma, se puede hacer uso de múltiples sistemas operativos para su implementación. En la tabla \ref{disenoEstructura:SO} se muestran las versiones de sistemas operativos que serán evaluados para usar.\\
 
 \begin{table}[htbp]
@@ -60,7 +60,7 @@ Puesto que la mayoría de los entornos de desarrollo integrado a usar son multip
 
 Después de este análisis, se determinó que se puede hacer uso de más de un sistema operativo, por lo que en cada uno de los equipos se tendrá instalado el sistema operativo Linux en su distribución Zorin OS 12.4 64-bit y Windows 10®.
 
-\paragraph{3. Lenguaje de Programación}
+\paragraph{3. Lenguaje de Programación} \textcolor{White}{.} \newline
 En la tabla \ref{disenoEstructura:lenguajes} se muestran describen los lenguajes de programación que serán usados dependiendo de \\
 
 
@@ -91,6 +91,216 @@ En la tabla \ref{disenoEstructura:lenguajes} se muestran describen los lenguajes
 Debido a la naturaleza del presente trabajo terminal, es necesario el uso de más de un lenguaje de programación. Para la programación del microcontrolador, se hará uso de los lenguajes C y Ensamblador, los cuales son soportados por el entorno de desarrollo integrado MPLAB X. Adicionalmente, se hará uso del lenguaje java, implementado para el desarrollo de la aplicación móvil a través de Android Studio. Y para la ejecución de las pruebas unitarias, el lenguaje utilizado será M, en el IDE de MATLAB.
 
 
-\paragraph{4. Gestor de Base de Datos}
+\paragraph{4. Gestor de Base de Datos} \textcolor{White}{.} \newline
 
+\subsubsection{Hardware}
+Evaluando el equipo de cómputo con el que se cuenta y analizando las especificaciones y requisitos de los entornos de desarrollo elegidos, no es necesario realizar una inversión inicial para la adquisición de nuevos equipos pues las características con las que cuentan, satisfacen los requerimientos necesarios para el desarrollo del trabajo. Sin embargo, para el hardware que será implementado en el sistema embebido, sí es necesario realizar una inversión inicial por el costo unitario de cada uno.\\
+
+En la tabla \ref{disenoEstructura:equipos} se describen las especificaciones de los equipos que se tienen y que serán utilizados para el diseño, desarrollo e implementación del trabajo.
+
+\begin{table}[htbp]
+	\begin{center}
+		\begin{tabular}{|c|p{5cm}|p{7cm}|}
+			\hline
+			%			\rowcolor{colorSecundario}
+			%			\color{green}
+			Cantidad&Equipo&Características\\
+			\hline
+			\hline
+			1 & Sony VAIO Pro SVP132A1CU & \begin{UClist}
+				\UCli Procesador: Intel® Core i5-4200U CPU $@$ 1.60 GHz x 4
+				\UCli RAM: 8GB
+				\UCli Sistema Operativo: Windows 10 64-bit / Zorin OS 64bit
+				\end{UClist} \\
+			\hline
+			1 & Asus VivoBook S510U & \begin{UClist}
+				\UCli Procesador: Intel® Core i7-8550U CPU $@$ 1.80 GHz x 8
+				\UCli RAM: 8GB
+				\UCli Sistema Operativo: Windows 10 64-bit / Zorin OS 64bit
+			\end{UClist}\\
+			\hline 
+			1 & Smartphone Motorola G3 & \begin{UClist}
+				\UCli Procesador: Snapdragon 410
+				\UCli RAM: 1GB
+				\UCli Sistema Operativo: Android 6.0 Mashmallow
+			\end{UClist}\\
+			\hline
+			1 & Smartphone Xiaomi Mi A2 &\begin{UClist}
+				\UCli Procesador: Snapdragon 660
+				\UCli RAM: 4GB
+				\UCli Sistema Operativo: Android 8.1 Oreo con Android One
+			\end{UClist}\\
+			\hline
+		\end{tabular}
+		\caption{Características del equipo disponible}
+		\label{disenoEstructura:equipos}
+	\end{center}
+\end{table}
+
+En la tabla \ref{disenoEstructura:recursosHardware} se listan los recursos de hardware que, según el análisis realizado en el capítulo \ref{chp:analisis} es necesario adquirir para el diseño, desarrollo e implementación del trabajo.\\
+
+\begin{table}[htbp]
+	\begin{center}
+		\begin{tabular}{|c|p{10cm}|}
+			\hline
+			%			\rowcolor{colorSecundario}
+			%			\color{green}
+			\thead{Cantidad}&\thead{Recurso}\\
+			\hline
+			\hline
+			1 & Microcontrolador dsPIC30F4013 \\
+			\hline
+			1 & Módulo GSM \\
+			\hline
+			1 & SIM telefónico para módulo GSM\\
+			\hline
+			1 & Sensor de temperatura MAX30205\\
+			\hline
+			1 & Sensor de pulso\\
+			\hline
+			1 & Programador para microcontrolador\\
+			\hline
+			1 & Módulo FT232 \\
+			\hline
+		\end{tabular}
+		\caption{Recursos de hardware necesarios}
+		\label{disenoEstructura:recursosHardware}
+	\end{center}
+\end{table}
+
+Como resultado del análisis de factibilidad técnica, se determinó que se cuenta con la infraestructura tecnológica necesaria para el desarrollo del trabajo terminal.
+
+%==============================================ECONÓMICA==================================================
+\subsection{Factibilidad Económica}
+El análisis de la factibilidad económica determina si los recursos económicos y financieros  son suficientes para llevar a cabo las actividades o procesos, además permite conocer los costos estimados para el desarrollo del trabajo.\\
+
+Para determinar la factibilidad económica del presente trabajo terminal se realizó un análisis describiendo los gastos totales, los cuales fueron clasificados en las siguientes categorías:
+
+\begin{enumerate}
+	\item Gastos tecnológicos
+	\item Gastos por servicios
+\end{enumerate}
+
+Debido a este proyecto tiene fines académicos, en los gastos descritos no se consideran sueldos.
+
+
+\paragraph{1. Gastos tecnológicos} \textcolor{White}{.} \newline
+En esta sección se consideran todos los gastos relacionados con el software y hardware implementado en el desarrollo del proyecto. Todas las cantidades descritas están consideradas en pesos mexicanos.\\
+
+En la tabla \ref{disenoEstructura:gastosDepreciacion} se describen tos gastos del equipo que fue utilizado pero que no se realizó una inversión inicial pues ya se contaba con él. Para estos equipos se consideró únicamente el gasto de la depreciación durante los meses de trabajo
+
+\begin{table}[htbp]
+	\begin{center}
+		\begin{tabular}{|p{4cm}|p{3cm}|p{3cm}|p{3cm}|}
+			\hline
+			%			\rowcolor{colorSecundario}
+			%			\color{green}
+			\thead{Equipo}&\thead{Precio de compra\\(\$)}&\thead{Depreciación mensual\\(\$)}&\thead{Depreciación total\\(\$)} \\
+			\hline
+			\hline
+			Sony VAIO Pro SVP132A1CU & && \\
+			\hline
+			Asus VivoBook S510U & && \\
+			\hline
+			Smartphone Motorola G3 & &&\\
+			\hline
+			Smartphone Xiaomi Mi A2 & &&\\
+			\hline
+			\hline
+			TOTAL & &&\\
+			\hline
+		\end{tabular}
+		\caption{Gastos tecnológicos por depreciación}
+		\label{disenoEstructura:gastosDepreciacion}
+	\end{center}
+\end{table}
+
+En la tabla \ref{disenoEstructura:gastosHardware} se describen los gastos relacionados con la compra del equipo de hardware específico para el desarrollo del sistema embebido.
+
+\begin{table}[htbp]
+	\begin{center}
+		\begin{tabular}{|c|p{4cm}|p{3cm}|p{3cm}|}
+			\hline
+			%			\rowcolor{colorSecundario}
+			%			\color{green}
+			\thead{Cantidad}&\thead{Recurso}&\thead{Precio unitario\\(\$)}&\thead{Subtotal\\(\$)} \\
+			\hline
+			\hline
+			1 &Microcontrolador dsPIC30F4013&& \\
+			\hline
+			1 & Módulo GSM&& \\
+			\hline
+			1 &SIM telefónico para módulo GSM&&\\
+			\hline
+			1 &Sensor de temperatura MAX30205&&\\
+			\hline
+			1 &Sensor de pulso&&\\
+			\hline
+			1 &Programador para microcontrolador&&\\
+			\hline
+			1 &Módulo FT232&&\\
+			\hline
+			\hline
+			TOTAL & &&\\
+			\hline
+		\end{tabular}
+		\caption{Gastos de hardware}
+		\label{disenoEstructura:gastosHardware}
+	\end{center}
+\end{table}
+
+
+\paragraph{2. Gastos por servicios} \textcolor{White}{.} \newline
+El desarrollo del trabajo implica gastos para los servicios con los que funcionarán los recursos de hardware y software mencionados anteriormente. El gasto estimado por los servicios a utilizar se describe en la tabla \ref{disenoEstructura:gastosServicios}.\\
+
+
+\begin{table}[htbp]
+	\begin{center}
+		\begin{tabular}{|p{4cm}|p{3cm}|p{3cm}|}
+			\hline
+			%			\rowcolor{colorSecundario}
+			%			\color{green}
+			\thead{Servicio}&\thead{Gasto mensual\\(\$)}&\thead{Gasto total\\(\$)}\\
+			\hline
+			\hline
+			Internet & & \\
+			\hline
+			Luz eléctrica & & \\
+			\hline
+			SIM telefónica & &\\
+			\hline
+			\hline
+			TOTAL & &\\
+			\hline
+		\end{tabular}
+		\caption{Gastos por servicios}
+		\label{disenoEstructura:gastosServicios}
+	\end{center}
+\end{table}
+
+\paragraph{Gastos totales} \textcolor{White}{.} \newline
+Para obtener el monto total de los gastos para el proyecto, se sumaron los gastos mencionados anteriormente, como se muestra en la tabla \ref{disenoEstructura:gastosTotales}, por lo tanto el costo total estimado del proyecto es:  pesos mexicanos.
+
+\begin{table}[htbp]
+	\begin{center}
+		\begin{tabular}{|p{4cm}|p{4cm}|}
+			\hline
+			%			\rowcolor{colorSecundario}
+			%			\color{green}
+			\thead{Concepto}&\thead{Gasto\\(\$)}\\
+			\hline
+			\hline
+			Gastos tecnológicos &  \\
+			\hline
+			Gastos por servicios & \\
+			\hline
+			\hline
+			TOTAL & \\
+			\hline
+		\end{tabular}
+		\caption{Gastos totales}
+		\label{disenoEstructura:gastosTotales}
+	\end{center}
+\end{table}
+  
 
