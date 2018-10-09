@@ -43,15 +43,58 @@
 	
 	
 	\section{Sensores de pulso}
-		\begin{itemize}
-			\item Fotopletismógrafos
-			\item ECG
-		\end{itemize}
 	
+	Para medir el ciclo cardíaco y obtener medidas de la frecuencia cardíaca, existen múltiples técnicas basadas en sensores, sin embargo los dos métodos más utilizados son la electrocardiografía (ECG, también conocida como EKG) y la fotopletismografía (PPG). \\
+	
+	El sensor de pulso básico de ECG consiste, por lo general, en un bloque de acondicionamiento de señal integrado para ECG, diseñado para extraer, amplificar y filtrar pequeñas señales biopotenciales. Aunque la cantidad de electricidad es, de hecho, muy pequeña, se puede medir de manera confiable con electrodos de ECG adheridos a la piel. El electrodo Ag/AgCl es el más utilizado para todas las aplicaciones de sistemas de electrodos biológicos usados para monitorear y registrar biopotenciales. \\
+	
+	Por otra parte, el sensor de pulso básico de PPG consiste en un diodo emisor de luz y un detector como una resistencia de detección de luz o un fotodiodo. 
+
+	\subsection{Electrocardiografía}
+		La electrocardiografía mide la actividad eléctrica del corazón mediante el uso de electrodos colocados en la piel. Para que el corazón se contraiga y bombee sangre, el sistema nervioso autónomo envía al corazón una serie de señales eléctricas coordinadas. \\
+		
+		A pesar de que se producen en el interior del cuerpo, estas señales se pueden medir al nivel de la piel utilizando dos o más electrodos colocados en varias posiciones en el pecho y las extremidades. Lo que resulta es un patrón informativo de actividad eléctrica llamado onda de ECG. \\
+		
+		Aunque hay muchos aspectos de esta señal que pueden cuantificarse, la característica más prominente se conoce como el complejo QRS, que indica las principales contracciones de bombeo del corazón. En la imagen \ref{fig:ECGwave} se muestra la curva de ECG clásica con sus formas de onda más comunes, intervalos importantes y puntos de medición. \\
+		
+		\begin{figure}[htbp!]
+			\centering
+			\fbox{\includegraphics[width=0.6\textwidth]{MarcoTeorico/imagenes/ECGwave.png}}
+			\caption{Ondas del ECG.}
+			\label{fig:ECGwave}
+		\end{figure}
+		
+		Dentro del complejo QRS, podemos ver el pico R, el componente más prominente dentro de la forma de onda del ECG. Esto es lo que utilizan los algoritmos de frecuencia cardíaca para medir la cantidad de tiempo que ocurre entre cada pulso cardiaco. \\
+		
+		Debido a que las mediciones basadas en ECG son de señales eléctricas, son generalmente precisas en un par de milisegundos, lo que la convierte en una medida confiable de la frecuencia cardíaca.
+		
+		\subsection{Fotopletismografía}
+			La fotopletismografía mide el cambio volumétrico del corazón midiendo la transmisión de luz o la reflexión. A medida que el corazón se contrae, la presión arterial dentro del ventrículo izquierdo, la cámara de bombeo principal, aumenta. Este aumento obliga a un "pulso" a las arterias del cuerpo, lo que hace que se inflamen ligeramente antes de volver una vez más a su estado anterior. La fotopletismografía puede clasificarse en dos tipos: \\
+			
+			\begin{itemize}
+				\item Transmisión: la luz emitida desde el dispositivo emisor de luz se transmite a través de cualquier región vascular del cuerpo como el lóbulo de la oreja y es recibida por el detector.
+				\item Reflexión: la luz emitida desde el dispositivo emisor de luz se refleja en alguna región.
+			\end{itemize}
+			
+			Simplemente al iluminar una región de piel con una fuente de luz LED, el aumento de la presión del pulso causará una diferencia en la cantidad de luz reflejada o transmitida a través de un sensor de luz. La luz LED debe colocarse en un área donde las arterias estén cerca de la piel, como la punta de un dedo o el lóbulo de una oreja. \\
+			
+			La amplitud de esta señal es directamente proporcional a la presión del pulso: cuanto más alto es el pico, más fuerte es el pulso. Aunque la señal puede ser menos aparente si se mide en la piel en un punto alejado del corazón (como un dedo del pie), el cambio en la presión es suficiente para expandir estas arterias hasta un grado que sea medible. \\
+			
+			Cada pico en la señal resultante puede identificarse mediante un algoritmo especial de frecuencia cardíaca que puede determinar en última instancia la cantidad de tiempo que ocurre entre cada pico sucesivo, lo que proporciona otra medida de la frecuencia cardíaca. En la imagen \ref{fig:PPGwave} se muestra la curva de PPG con sus formas de onda más comunes y puntos de medición. \\
+		
+		\begin{figure}[htbp!]
+			\centering
+			\fbox{\includegraphics[width=0.7\textwidth]{MarcoTeorico/imagenes/PPGwave.png}}
+			\caption{Ondas del PPG.}
+			\label{fig:PPGwave}
+		\end{figure}
+			
+			Debido a que la PPG es una técnica que no mide directamente la actividad cardiaca, no siempre es precisa al nivel de milisegundos como las mediciones del ECG, pero es una mancera sencilla para medir la frecuencia cardíaca de una persona ya que utilizan sensores secos y se pueden colocar más rápido en comparación con las configuraciones de ECG, lo que hace que su uso sea más fácil y menos molesto para el usuario.
+		
 	\section{Microcontroladores}
 	Un microcontrolador es  un  circuito  integrado  que  contiene  un  microprocesador  de  forma  interna,  con  todos  los  componentes  para  poder  funcionar  de  forma  autónoma. Aunque los recursos internos del microcontrolador no pueden ser modificados, es posible agregar nuevos recursos de forma externa mediante el uso de interfaces de comunicación como UART, I2C y SPI.\\
 	
-	Los  elementos  que  normalmente  integran  un  microcontrolador  son:
+	Los  elementos  que  generalmente  integran  un  microcontrolador  son:
 	\begin{itemize}
 		\item Microprocesador.
 		\item Memoria  de  datos  RAM.
