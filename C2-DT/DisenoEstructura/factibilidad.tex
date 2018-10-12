@@ -8,7 +8,7 @@ El propósito  de este análisis es recolectar información sobre los recursos d
 A continuación de describen las tecnologías y requerimientos de software y hardware que fueron implementados para el desarrollo del trabajo.
 
 \subsubsection{Software}
-Para identificar las diferentes tecnologías de la información que serán usadas para el desarrollo del trabajo, éstas fueron evaluadas y clasificadas en 4 diferentes aspectos.\\
+Para identificar las diferentes tecnologías de la información que serán usadas para el desarrollo del trabajo, éstas fueron evaluadas y clasificadas en 3 diferentes aspectos.\\
 
 \paragraph{1. Entorno de Desarrollo Integrado.} \textcolor{White}{.} \newline
 Para el desarrollo de este trabajo terminal, se hará uso totalmente plataformas libres o en su versión de prueba, con el fin de no necesitar ninguna inversión inicial para su adquisición. En la tabla \ref{disenoEstructura:IDE} se describen los entornos de desarrollo elegidos para trabajar.
@@ -93,7 +93,7 @@ En la tabla \ref{disenoEstructura:lenguajes} se muestran describen los lenguajes
 Debido a la naturaleza del presente trabajo terminal, es necesario el uso de más de un lenguaje de programación. Para la programación del microcontrolador, se hará uso de los lenguajes C y Ensamblador, los cuales son soportados por el entorno de desarrollo integrado MPLAB X. Adicionalmente, se hará uso del lenguaje java, implementado para el desarrollo de la aplicación móvil a través de Android Studio. Y para la ejecución de las pruebas unitarias, el lenguaje utilizado será M, en el IDE de MATLAB.
 
 
-\paragraph{4. Gestor de Base de Datos} \textcolor{White}{.} \newline
+%\paragraph{4. Gestor de Base de Datos} \textcolor{White}{.} \newline
 
 \subsubsection{Hardware}
 Evaluando el equipo de cómputo con el que se cuenta y analizando las especificaciones y requisitos de los entornos de desarrollo elegidos, no es necesario realizar una inversión inicial para la adquisición de nuevos equipos pues las características con las que cuentan, satisfacen los requerimientos necesarios para el desarrollo del trabajo. Sin embargo, para el hardware que será implementado en el sistema embebido, sí es necesario realizar una inversión inicial por el costo unitario de cada uno.\\
@@ -190,7 +190,7 @@ Debido a este proyecto tiene fines académicos, en los gastos descritos no se co
 \paragraph{1. Gastos tecnológicos} \textcolor{White}{.} \newline
 En esta sección se consideran todos los gastos relacionados con el software y hardware implementado en el desarrollo del proyecto. Todas las cantidades descritas están consideradas en pesos mexicanos.\\
 
-En la tabla \ref{disenoEstructura:gastosDepreciacion} se describen tos gastos del equipo que fue utilizado pero que no se realizó una inversión inicial pues ya se contaba con él. Para estos equipos se consideró únicamente el gasto de la depreciación durante los meses de trabajo
+En la tabla \ref{disenoEstructura:gastosDepreciacion} se describen los gastos del equipo que fue utilizado pero que no se realizó una inversión inicial pues ya se contaba con él. Para estos equipos se consideró únicamente el gasto de la depreciación durante los meses de trabajo. El porcentaje de depreciación anual que se consideró para todos los equipos fue del 20\% y el tiempo de trabajo en meses estimado para este trabajo terminal fue de 9.
 
 \begin{table}[htbp]
 	\begin{center}
@@ -201,16 +201,16 @@ En la tabla \ref{disenoEstructura:gastosDepreciacion} se describen tos gastos de
 			\thead{Equipo}&\thead{Precio de compra\\(\$)}&\thead{Depreciación mensual\\(\$)}&\thead{Depreciación total\\(\$)} \\
 			\hline
 			\hline
-			Sony VAIO Pro SVP132A1CU & && \\
+			Sony VAIO Pro SVP132A1CU &15,000.00 &250.00&2,250.00 \\
 			\hline
-			Asus VivoBook S510U & && \\
+			Asus VivoBook S510U & 24,000.00&400.00&3,600.00 \\
 			\hline
-			Smartphone Motorola G3 & &&\\
+			Smartphone Motorola G3 &3,000.00 &50.00&450.00\\
 			\hline
-			Smartphone Xiaomi Mi A2 & &&\\
+			Smartphone Xiaomi Mi A2 & 5,000.00&83.33&750.00\\
 			\hline
 			\hline
-			TOTAL & &&\\
+			TOTAL & &&7,050.00\\
 			\hline
 		\end{tabular}
 		\caption{Gastos tecnológicos por depreciación}
@@ -229,25 +229,25 @@ En la tabla \ref{disenoEstructura:gastosHardware} se describen los gastos relaci
 			\thead{Cantidad}&\thead{Recurso}&\thead{Precio unitario\\(\$)}&\thead{Subtotal\\(\$)} \\
 			\hline
 			\hline
-			1 &Microcontrolador dsPIC30F4013&& \\
+			1 &Microcontrolador dsPIC30F4013&143.39&143.39\\
 			\hline
-			1 & Módulo GSM&& \\
+			1 & Módulo GSM&1,072.00&1,072.00 \\
 			\hline
-			1 &SIM telefónico para módulo GSM&&\\
+			1 &SIM telefónico para módulo GSM&0.00&0.00\\
 			\hline
-			1 &Sensor de temperatura MAX30205&&\\
+			1 &Sensor de temperatura MAX30205&30.57&30.57\\
 			\hline
-			1 &Sensor de pulso&&\\
+			1 &Sensor de pulso&477.46&477.46\\
 			\hline
-			1 &Programador para microcontrolador&&\\
+			1 &Programador para microcontrolador&300.00&300.00\\
 			\hline
-			1 &Módulo FT232&&\\
+			1 &Módulo FT232&100.00&100.00\\
 			\hline
 			\hline
-			TOTAL & &&\\
+			TOTAL & &&2,123.42\\
 			\hline
 		\end{tabular}
-		\caption{Gastos de hardware}
+		\caption{Gastos tecnológicos por hardware}
 		\label{disenoEstructura:gastosHardware}
 	\end{center}
 \end{table}
@@ -266,14 +266,14 @@ El desarrollo del trabajo implica gastos para los servicios con los que funciona
 			\thead{Servicio}&\thead{Gasto mensual\\(\$)}&\thead{Gasto total\\(\$)}\\
 			\hline
 			\hline
-			Internet & & \\
+			Internet &150.00 &1,350.00 \\
 			\hline
-			Luz eléctrica & & \\
+			Luz eléctrica &135.00 &1,215.00 \\
 			\hline
-			SIM telefónica & &\\
+			SIM telefónica &50.00 &450.00\\
 			\hline
 			\hline
-			TOTAL & &\\
+			TOTAL & &3,015\\
 			\hline
 		\end{tabular}
 		\caption{Gastos por servicios}
@@ -282,7 +282,7 @@ El desarrollo del trabajo implica gastos para los servicios con los que funciona
 \end{table}
 
 \paragraph{Gastos totales} \textcolor{White}{.} \newline
-Para obtener el monto total de los gastos para el proyecto, se sumaron los gastos mencionados anteriormente, como se muestra en la tabla \ref{disenoEstructura:gastosTotales}, por lo tanto el costo total estimado del proyecto es:  pesos mexicanos.
+Para obtener el monto total de los gastos para el proyecto, se sumaron los gastos mencionados anteriormente, como se muestra en la tabla \ref{disenoEstructura:gastosTotales}, por lo tanto el costo total estimado del proyecto es: \$9,176  pesos mexicanos.
 
 \begin{table}[htbp]
 	\begin{center}
@@ -293,12 +293,12 @@ Para obtener el monto total de los gastos para el proyecto, se sumaron los gasto
 			\thead{Concepto}&\thead{Gasto\\(\$)}\\
 			\hline
 			\hline
-			Gastos tecnológicos &  \\
+			Gastos tecnológicos &  7,050.00\\
 			\hline
-			Gastos por servicios & \\
+			Gastos por servicios & 3,015.00\\
 			\hline
 			\hline
-			TOTAL & \\
+			TOTAL & 9,176.43\\
 			\hline
 		\end{tabular}
 		\caption{Gastos totales}
