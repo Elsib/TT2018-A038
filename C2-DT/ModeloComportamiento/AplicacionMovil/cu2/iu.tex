@@ -1,0 +1,18 @@
+\subsection{IUIR2 Gestionar Reinscripción a Especialidad}
+
+\subsubsection{Objetivo}
+	
+Esta pantalla permite al \cdtRef{Actor:SP}{Secretario de Posgrado} realizar la reinscripción de un alumno, que ha vuelto de una baja voluntaria, al programa académico de \cdtRef{ProgramaAcademicoE:ProgramaAcademicoE}{Especialidad} al que inicialmente se encontraba inscrito.
+
+\subsubsection{Diseño}
+	
+
+    En la figura \ref{IUIR2} se muestra la pantalla ``Gestionar Reinscripción a Especialidad'', en la cual aparece la sección ``Buscar programa académico''. En esta sección se presenta un catálogo con los programas académicos de la oferta vigente de \cdtRef{ProgramaAcademicoE:ProgramaAcademicoE}{Especialidad}. Una vez elegido un programa académico y tras presionar el botón \cdtButton{Buscar}, se mostrará la información de la Especialidad: el nombre de la misma, el plan de estudios vigente vinculado a la misma y el ciclo escolar que le corresponde al programa de Especialidad seleccionado; adicionalmente se desplegará una tabla, con las columnas de información Matrícula, Alumno y Estado, para los alumnos que se encuentren en el estado \textbf{sin inscripción}. Se podrán reinscribir alumnos en cualquier momento, si el \cdtRef{Actor:SP}{Secretario de Posgrado} lo requiere.\\
+    
+ \IUfig[.8]{../ModeloComportamiento/InscripcionReinscripcion/Reinscripcion/cuir4/imagenes/IUIR2.png}{IUIR2}{Gestionar Reinscripción a Especialidad}
+
+\subsubsection{Comandos}
+	\begin{itemize}
+		\item \cdtButton{Buscar}: Permite al actor buscar a los alumnos en el estado \textbf{sin inscripción} vinculados al programa académico de \cdtRef{ProgramaAcademicoE:ProgramaAcademicoE}{Especialidad} previamente seleccionado.
+		\item \btnReinscribir [Realizar Reinscripción a Especidalidad]: Permite al actor reinscribir a los alumnos del programa académico seleccionado, dirige a la pantalla \cdtIdRef{IUIR2.1}{Realizar Reinscripción a Especialidad}.
+	\end{itemize}

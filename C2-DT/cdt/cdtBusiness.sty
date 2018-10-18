@@ -11,7 +11,6 @@
 \RequirePackage{cdt/cdtAnalisis}
 
 
-
 %=====================================================================
 % REGLAS DE NEGOCIO
 % Es una sentencia que define o restringe algun aspecto del negocio. Puede ser un
@@ -272,7 +271,7 @@
 % Use:
 %     \Battr{id}{nombre}{tipo}{Descripción}{obligatorio/opcional}
 \newcommand{\Battr}[5]{%
-	\item[\hypertarget{\varBusinessEntityId:#1}{#2}] #4. #3 y este dato es #5.%
+	\item[\hypertarget{\varBusinessEntityId:#1}{#2}] #4. #3 y este dato es #5. %
 }
 
 %=====================================================================
@@ -284,12 +283,15 @@
 \newcommand{\tdFrase}{Es una \cdtRef{gls:frase}{frase} o enunciado}
 \newcommand{\tdParrafo}{Descrita en uno o más \cdtRef{gls:parrafo}{párrafos}}
 \newcommand{\tdNumerico}[1][]{Es un valor \cdtRef{gls:numerico}{numérico} #1}
+\newcommand{\tdDecimal}{Es un valor \cdtRef{gls:decimal}{decimal}}
 \newcommand{\tdBooleano}{Indica ``sí'' o ``no''}
 \newcommand{\tdFecha}{Especifica una \cdtRef{gls:fecha}{fecha}}
+\newcommand{\tdFechaCorta}{Especifica una \cdtRef{gls:fechacorta}{Fecha Corta}} 
 \newcommand{\tdNull}{}
 \newcommand{\tdCatalogo}{Es un \cdtRef{gls:catalogo}{catálogo}}
-
-
+\newcommand{\tdArchivo}{Es un \cdtRef{gls:archivoDigital}{Archivo digital}}
+\newcommand{\tdHora}{Especifica una \cdtRef{gls:hora}{hora}}
+\newcommand{\tdCorreo}{Es una cadena de caracteres con formato xxx@yyy.com o xxx@yyy.com.mx}
 %=====================================================================
 % Comandos: \requerido, \opcional, \na
 % Propósito: simplificar la especificación de
@@ -297,6 +299,16 @@
 \newcommand{\requerido}{\hyperlink{gls:requerido}{requerido} ({\em no se puede omitir})}
 \newcommand{\opcional}{\hyperlink{gls:opcional}{opcional} ({\em se puede omitir})}
 \newcommand{\na}{\hyperlink{gls:NA}{no aplica}}
+
+
+%=====================================================================
+% Comandos: \longitudExacta{longitud}{unidad}, \longitudMinMax{minima}{unidad}{maxima}{unidad}, \longitudMax{maxima}{unidad}
+% Propósito: simplificar la especificación de la longitud
+%=====================================================================
+\newcommand{\longitudExacta}[2]{Este atributo debe contener exactamente {#1} {#2}.}
+\newcommand{\longitudMinMax}[4]{Este atributo debe contener al menos {#1} {#2} y a lo más #3 #4.}
+\newcommand{\longitudMax}[2]{Este atributo debe contener a lo más {#1} {#2}.}
+
 
 %----------------------------------------------------------------------
 % Definir un Hecho del negocio (relación entre términos).
@@ -401,7 +413,7 @@
 % Para colocar un elemento dentro de una regla de negocio.
 % use: \BRitem{Elemento}{Descripción}
 \newcommand{\BRitem}[2]{%
-	\item[{#1}:]  {#2}.%
+	\item[{#1}:]  {#2}%
 }
 
 %----------------------------------------------------------------------
@@ -413,12 +425,12 @@
 
 %-------------------------------------------------------------------------
 % Utilice \hideControlVersion para eliminar de la salida toda la información de control de cambios.
-\renewcommand{\hideControlVersion}{%
-	\renewcommand{\RCitem}[3]{}
-	\renewcommand{\BRccitem}[2]{}
-	\renewcommand{\UCccitem}[2]{}
-	\renewcommand{\UCccsection}[1]{}
-}
+%\newcommand{\hideControlVersion}{%
+%	%\renewcommand{\RCitem}[3]{}
+%	%\renewcommand{\BRccitem}[2]{}
+%	\renewcommand{\UCccitem}[2]{}
+%	\renewcommand{\UCccsection}[1]{}
+%}
 
 
 % \noAplica{valor(es)}{condición}
