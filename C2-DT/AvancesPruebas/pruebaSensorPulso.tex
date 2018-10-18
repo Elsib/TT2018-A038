@@ -28,7 +28,7 @@ Se realizó una prueba unitaria para comprobar el correcto funcionamiento del se
 Una vez conectado correctamente, se colocaron los electrodos en el brazo derecho, brazo izquierdo y pierna derecha, respetando el color asignado a cada uno (verde, rojo y amarillo respectivamente) como se muestra en la figura \ref{fig:AD8232Electrodo}.
 \begin{figure}[htbp!]
 	\centering
-	\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/AD8232-2.jpg}}
+	\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/AD8232-2.png}}
 	\caption{Electrodos conectados el sensor de pulso AD8232.}
 	\label{fig:AD8232Electrodo}
 \end{figure}
@@ -112,7 +112,7 @@ A continuación se describen las etapas del diagrama de flujo junto con el códi
 	}
 	\end{lstlisting}
 	
-	\item \textbf{Configuración de reloj para ADC:} Se configura el \TODO{No sé qué poner}
+%	\item \textbf{Configuración de reloj para ADC:} Se configura el
 	
 	\item \textbf{Configuración UART:} Esta rutina configura el UART indicando que obtendrá los datos de los sensores de pulso a través de los pines configurados para eso. En esta sección se incluyen también las interrupciones correspondientes al UART.
 	\begin{lstlisting}[frame=single]
@@ -146,7 +146,7 @@ A continuación se describen las etapas del diagrama de flujo junto con el códi
 	\begin{figure}[htbp!]
 		\centering
 		\fbox{\includegraphics[width=0.4\textwidth]{AvancesPruebas/imagenes/ConfiguracionMicro.png}}
-		\caption{Diagrama de flujo del programa de confocuración del dsPIC40F4013.}
+		\caption{Diagrama de flujo del programa de configuración del dsPIC40F4013.}
 		\label{fig:ConfiguracionMicro}
 	\end{figure}
 \pagebreak
@@ -264,7 +264,7 @@ Diagrama de flujo para la obtención de datos de la interfaz serial.
 		
 Con los programas listos, se realizó la conexión de cada uno de los sensores para verificar el  correcto funcionamiento del convertidor analógico digital y obtener el archivo y gráfica de la señal de cada sensor.\\
 
-El primer sensor que fue conectado fue el AD8232, el diagrama de conexión se muestra en la figura \ref{fig:ConexionAD8232}. En ella se puede observar que la única entrada que tiene el microcontrolador para esta prueba es en el pin B2. el cual es tomado como entrada análogica y es de donde el ADC tomará los datos para convertirlos.\\
+El primer sensor que fue conectado fue el AD8232, el diagrama de conexión se muestra en la figura \ref{fig:ConexionAD8232}. En ella se puede observar que la única entrada que tiene el microcontrolador para esta prueba es en el pin B2, el cual es tomado como entrada analógica y es de donde el ADC tomará los datos para convertirlos.\\
 
 Es importante aclarar que este sensor fue alimentado con 3.3 V
 
