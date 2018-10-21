@@ -1,4 +1,4 @@
-\documentclass[10pt]{book}
+\documentclass[12pt]{book}
 \usepackage{cdt/cdtBusiness}
 \usepackage{requerimientos}
 \usepackage{paear}
@@ -9,6 +9,8 @@
 \usepackage{makecell}
 \usepackage{listings}
 \usepackage{pdfpages}
+%\usepackage[nosectionbib]{apacite}
+%\usepackage[square,numbers]{natbib}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Datos del proyecto
 
@@ -148,12 +150,22 @@
 
 %\section{Diseño de mensajes}
 % \cfinput{ModeloInteraccion/mensajes}
-
-%% Referencias
-
-%\renewcommand{\bibname}{Referencias}
-%\bibliographystyle{plain}
+%
+%\setlength{\biblabelsep}{0.5em}
+%\newcounter{MyBibCount}
+%\makeatletter
+%\renewcommand{\@biblabel}[1]{\stepcounter{MyBibCount}[\theMyBibCount]}
+%\makeatother
+%
+\newpage
+%%% Referencias
+\renewcommand{\bibname}{Referencias}
+%\bibliographystyle{apacite}
 %\bibliography{referencias}
-%\addcontentsline{toc}{chapter}{Referencias}
+
+\cfinput{referencias}
+
+\addcontentsline{toc}{chapter}{Referencias}
 
 \end{document}
+\grid
