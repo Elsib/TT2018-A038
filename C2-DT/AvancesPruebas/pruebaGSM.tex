@@ -52,35 +52,35 @@ Después de asegurar el funcionamiento del módulo GSM, se realizó el programa 
 La conexión fue realizada mediante el UART2 del microcontrolador y mediante comandos AT se creó la rutina para verificar el envío de un mensaje SMS a un número de teléfono específico.
 
 El código principal del módulo gsm se muestra a continuación:
-
+{\small 
 \begin{lstlisting}[frame=single]
 ; COMANDO AT PARA INICIALIZAR EL MODEM
 
-CMD_AT:    .BYTE 'A', 'T', 0X0D		;char CMD_AT[] = "AT\r"
+CMD_AT: .BYTE 'A','T', 0X0D	;char CMD_AT[] = "AT\r"
 
 ; DESHABILITAR EL ECO DEL COMANDO EN LA RESPUESTA DEL MODEM
 
-CMD_ATE0:    .BYTE 'A','T','E','0',0X0D
+CMD_ATE0: .BYTE 'A','T','E','0',0X0D
 
 ; COMANDO AT+CPIN=1111 MANDA EL CODIGO PIN DE LA TARJETA SIM
 
-CMD_AT_CPIN:    .BYTE 'A', 'T', '+', 'C', 'P', 'I', 'N'
+CMD_AT_CPIN: .BYTE 'A','T','+','C','P','I','N'
 
 .BYTE '=', '1','1','1','1',0X0D
 
 ; COMANDO AT+CMGF=1 ACTIVA EL MODO TEXTO PARA ENVIAR MENSAJES
 
-CMD_AT_CMGF:    .BYTE 'A', 'T', '+', 'C', 'M', 'G', 'F', '=', '1', 0X0D
+CMD_AT_CMGF: .BYTE 'A','T','+','C','M','G','F','=','1', 0X0D
 
 ; COMANDO AT+CMGS="+525543612094" PARA DEFINIR NO DE TELEFONO
 
-CMD_AT_CMGS:    .BYTE 'A','T','+','C','M','G','S','=','"'
+CMD_AT_CMGS: .BYTE 'A','T','+','C','M','G','S','=','"'
 
 .BYTE '+','5','2','5','5','4','3','6','1','2','0','9','4','"',0X0D
 
 ; MENSAJE "PROBANDO GSM CLICK^z"
 
-CMD_MSJ:        .BYTE 'H','O','L','A',' ','E','L','S','I','.',' ',' ',
+CMD_MSJ: .BYTE 'H','O','L','A',' ','E','L','S','I','.',' ',' ',
 
 .BYTE 'M','S','J',' ','E','N','V','I','A','D','O'
 
@@ -92,7 +92,7 @@ CAD_OK:         .STRING "OK"
 CAD_ERROR:      .STRING "ERROR"
 CAD_SIGNO_MAYOR:.STRING ">"
 \end{lstlisting}
-
+}
 La conexión del módulo GSM se realizó mediante un mikrobus conectado al microcontrolador. El esquema de esta conexión, así como la conexión física se muestran en las figuras \ref{fig:ConexionAD8232} y \ref{fig:ConexionFisicaGSM} respectivamente.
 
 	\begin{figure}[htbp!]

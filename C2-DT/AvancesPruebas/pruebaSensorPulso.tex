@@ -10,12 +10,12 @@ Las pruebas realizadas se dividieron en dos fases, las cuales se describen a con
 	\item \textbf{Obtención de señal analógica:} En esta fase se conectaron los sensores de acuerdo a lo especificado en su hoja de datos. La señal de salida de cada sensor fue visualizada en el osciloscopio.
 	\item \textbf{Digitalización de señal obtenida:} En esta fase de las pruebas se realizó el código en lenguaje ensamblador y c para digitalizar cada una de esas señales con el uso del ADC del microcontrolador.
 \end{itemize}
-\pagebreak
 
 \subsection{AD8232}
 El primer sensor que fue probado fue el AD8232, el cual es de tipo ECG y utiliza tres electrodos que se deben colocar en el brazo izquierdo y derecho, y la pierna derecha.\\
 
-Se realizó una prueba unitaria para comprobar el correcto funcionamiento del sensor, así como para verificar que la señal analógica entregada por el mismo sea de utilidad para calcular la frecuencia cardíaca del paciente. Para esta prueba el sensor fue alimentado con 3.3 V mediante las terminales 3.3v y GND,haciendo uso de un módulo FT232 como se muestra en la figura \ref{fig:AD8232Sensor}.
+Se realizó una prueba unitaria para comprobar el correcto funcionamiento del sensor, así como para verificar que la señal analógica entregada por el mismo sea de utilidad para calcular la frecuencia cardíaca del paciente. Para esta prueba el sensor fue alimentado con 3.3 V mediante las terminales 3.3v y GND,haciendo uso de un módulo FT232 como se muestra en la figura \ref{fig:AD8232Sensor}.\\
+
 	
 \begin{figure}[htbp!]
 	\centering
@@ -25,15 +25,15 @@ Se realizó una prueba unitaria para comprobar el correcto funcionamiento del se
 \end{figure}
 
 
-Una vez conectado correctamente, se colocaron los electrodos en el brazo derecho, brazo izquierdo y pierna derecha, respetando el color asignado a cada uno (verde, rojo y amarillo respectivamente) como se muestra en la figura \ref{fig:AD8232Electrodo}.
+Una vez conectado correctamente, se colocaron los electrodos en el brazo derecho, brazo izquierdo y pierna derecha, respetando el color asignado a cada uno (verde, rojo y amarillo respectivamente) como se muestra en la figura \ref{fig:AD8232Electrodo}.\\
 \begin{figure}[htbp!]
 	\centering
-	\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/AD8232-2.png}}
+	\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/AD8232-2.png}}
 	\caption{Electrodos conectados el sensor de pulso AD8232.}
 	\label{fig:AD8232Electrodo}
 \end{figure}
 
-La señal entregada por el sensor AD8232 se muestra en la figura \ref{fig:AD8232Osciloscopio}, a partir de esta señal podemos determinar que el sensor AD8232 proporciona una señal que puede ser útil para la detección de la frecuencia cardíaca, por lo que más adelante se realizarán pruebas con la señal digitalizada y procesada mediante un algoritmo.
+La señal entregada por el sensor AD8232 se muestra en la figura \ref{fig:AD8232Osciloscopio}, a partir de esta señal podemos determinar que el sensor AD8232 proporciona una señal que puede ser útil para la detección de la frecuencia cardíaca, por lo que más adelante se realizarán pruebas con la señal digitalizada y procesada mediante un algoritmo.\\
 \begin{figure}[htbp!]
 	\centering
 	\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/AD8232-3.jpg}}
@@ -46,11 +46,11 @@ La señal entregada por el sensor AD8232 se muestra en la figura \ref{fig:AD8232
 \subsection{Pulse sensor}
 La prueba del sensor Pulse Sensor, fue realizado de manera similar al sensor anterior, sin embargo al ser un sensor fotopletismógrafo, se realizaron modificaciones al ambiente de pruebas utilizado.\\
 
-Para esta prueba el sensor fue alimentado con 5V mediante las terminales indicadas en el sensor, al igual que en el sensor anterior, este fue alimentado haciendo uso de un módulo FT232 pero con un voltaje mayor. El sensor encendido se muestra en la figura \ref{fig:PulseSensor2}.\\
+Para esta prueba el sensor fue alimentado con 5V mediante las terminales indicadas en el sensor, al igual que en el sensor anterior, este fue alimentado haciendo uso de un módulo FT232 pero con un voltaje mayor. El sensor encendido se muestra en la figura \ref{fig:PulseSensor2}.
 
 	\begin{figure}[htbp!]
 		\centering
-		\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/PulseSensor2.jpg}}
+		\fbox{\includegraphics[width=0.65\textwidth]{AvancesPruebas/imagenes/PulseSensor2.jpg}}
 		\caption{Sensor de pulso Pulse Sensor.}
 		\label{fig:PulseSensor2}
 	\end{figure}
@@ -88,7 +88,7 @@ A continuación se describen las etapas del diagrama de flujo junto con el códi
 	\begin{lstlisting}[frame=single]
 	void iniPerifericos( void )
 	{
-		PORTA=0;
+        PORTA=0;
 		Nop();
 		TRISA=0;
 		Nop();
@@ -164,6 +164,8 @@ A continuación se describen las etapas del diagrama de flujo junto con el códi
 \pagebreak
 \lstset{language=c}
 Código para obtención y graficación de datos obtenidos a través de la interfaz serial.
+
+{\small 
 \begin{lstlisting}[frame=single]
 #include <stdio.h>
 #include <stdlib.h>
@@ -221,38 +223,38 @@ int config_serial( char *dispositivo_serial, speed_t baudios )
 	// Configura la velocidad de salida del UART
 	if( cfsetospeed( &newtermios, baudios ) == -1 )
 	{
-		printf("Error al establecer velocidad de salida \n");
-		exit( EXIT_FAILURE );
+	  printf("Error al establecer velocidad de salida \n");
+      exit( EXIT_FAILURE );
 	}
 	// Configura la velocidad de entrada del UART
 	if( cfsetispeed( &newtermios, baudios ) == -1 )
 	{
-		printf("Error al establecer velocidad de entrada \n" );
-		exit( EXIT_FAILURE );
+	  printf("Error al establecer velocidad de entrada \n" );
+	  exit( EXIT_FAILURE );
 	}
 	// Limpia el buffer de entrada
 	if( tcflush( fd, TCIFLUSH ) == -1 )
 	{
-		printf("Error al limpiar el buffer de entrada \n" );
-		exit( EXIT_FAILURE );
+	  printf("Error al limpiar el buffer de entrada \n" );
+	  exit( EXIT_FAILURE );
 	}
 	// Limpia el buffer de salida
 	if( tcflush( fd, TCOFLUSH ) == -1 )
 	{
-		printf("Error al limpiar el buffer de salida \n" );
-		exit( EXIT_FAILURE );
+	  printf("Error al limpiar el buffer de salida \n" );
+	  exit( EXIT_FAILURE );
 	}
 
 	if( tcsetattr( fd, TCSANOW, &newtermios ) == -1 )
 	{
-		printf("Error al establecer los parametros\n" );
-		exit( EXIT_FAILURE );
+      printf("Error al establecer los parametros\n" );
+	  exit( EXIT_FAILURE );
 	}
 	//Retorna el descriptor de archivo
 	return fd;
 }
 \end{lstlisting}
-
+}
 Diagrama de flujo para la obtención de datos de la interfaz serial.
 	\begin{figure}[htbp!]
 		\centering
