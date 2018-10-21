@@ -1,27 +1,16 @@
 %===============METODOLOGÍA==================
 %\section{Metodología}
-Para la realización del trabajo terminal se propone emplear el Modelo en V ya que ofrece una visión detallada de los diversos pasos e interacciones relacionados con el proceso de desarrollo y puede considerarse como un flujo de trabajo comúnmente utilizado. En la Figura \ref{fig:IntroduccionMetodologia} se muestran las principales actividades abordadas por el método. Convencionalmente, el lado izquierdo del modelo representa las fases del diseño del sistema, mientras que el lado derecho representa las fases de validación y verificación del sistema integrado.
+Para la realización del trabajo terminal se seguirá la metodología descrita por el Modelo en V ya que ofrece una visión detallada de los diversos pasos e interacciones relacionados con el proceso de desarrollo y puede considerarse como un flujo de trabajo comúnmente utilizado. \cite{perez2006V} \\
 
-%\TODO \textbf{Cambiar resolución de imagen.}
+En la Figura \ref{fig:IntroduccionMetodologia} se muestran las principales actividades abordadas por el método. Convencionalmente, el lado izquierdo del modelo representa las fases del diseño del sistema, mientras que el lado derecho representa las fases de validación y verificación del sistema. \\
+
 \begin{figure}[htbp!]
 	\centering
-	\fbox{\includegraphics[width=\textwidth]{Introduccion/imagenes/metodologia.png}}
-	\caption{Fases del modelo en V.}
+	\fbox{\includegraphics[width=\textwidth]{DisenoEstructura/imagenes/metodologiaV.png}}
+	\caption{Fases del Modelo en V.}
 	\label{fig:IntroduccionMetodologia}
 \end{figure}
 
-El desarrollo se llevará a cabo en las siguientes etapas:
+El desarrollo se llevará a cabo de la siguiente manera: \\
 
-\begin{enumerate}
-	\item Análisis de requerimientos. Esta fase consiste en establecer qué debe hacer el sistema ideal, sin determinar cómo se construirá o diseñará el software. 
-	\item Diseño de arquitectura del sistema. El diseño de la arquitectura del sistema consiste en varios pasos, como refinar las funciones del sistema y asignarlas a los diferentes componentes del sistema que pueden ser físicos o de hardware.
-	\item Diseño de arquitectura de SW y HW. En esta fase del desarrollo del sistema, se diseña el hardware y el software de los diversos elementos que constituyen los componentes del sistema global. Las actividades que se aplican son similares a las realizadas en la fase anterior, pero centrándose en un componente específico del sistema: 
-	\begin{itemize}
-		\item Refinamiento de los requerimientos funcionales y no funcionales del hardware y software.
-		\item Asignación de las funciones del software a los componentes de hardware.
-	\end{itemize}
-	\item Desarrollo del SW y Construcción del HW. Una vez que todos los componentes del sistema están diseñados, los elementos de hardware se construyen físicamente y los módulos de software son desarrollados en paralelo, y finalmente integrados con el hardware. Al final de este paso, los elementos de software y hardware deben estar disponibles para las actividades de verificación. Pueden realizarse algunas pruebas unitarias en paralelo con la implementación.
-	\item Integración y verificación del SW y HW. En este paso se ensamblan los componentes de hardware y software. Las pruebas de verificación se ejecutan para comprobar el cumplimiento de los objetivos de diseño.
-	\item Integración del sistema y prueba de verificación. En este paso, los elementos del sistema (HW, SW) se combinan y tiene lugar la verificación de los requisitos del sistema. 
-	\item Prueba del sistema y validación. Esta última de verificación tiene como objetivo validar si los resultados obtenidos cumplen con los requerimientos.
-\end{enumerate}
+Partiendo de la \textbf{Especificación de requisitos HW/SW}, se pretende definir y documentar los diferentes requerimientos del sistema a implementar, seguido de un diseño global o \textbf{Diseño de alto nivel} que permitirá obtener una visión general del sistema identificando las funciones que deberá cumplir y asignarlas a los diferentes componentes, ya sea de HW o SW. El \textbf{Diseño en detalle} consiste en detallar cada elemento que consituyen los componentes del sistema global, en donde se pretende especificar el diseño del sistema embebido con los componentes a implementar y de la aplicación móvil, seguida de la \textbf{Implementación} de cada uno de ellos, en donde los módulos de SW son desarrollados e integrados con el HW. En el \textbf{Test unitario} se verificará cada módulo de HW y SW de manera individual, en donde se depurará cada uno de ellos hasta obtener el resultado deseado. En la \textbf{Test de integración HW/SW} se acoplan los diferentes módulos del sistema para verificar su funcionamiento en conjunto y finalmente en el \textbf{Test operacional del sistema} se realizarán las últimas pruebas en un escenario real y así validar si los resultados obtenidos cumplen con los requerimientos. \\
