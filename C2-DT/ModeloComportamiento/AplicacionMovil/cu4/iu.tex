@@ -1,18 +1,27 @@
-\subsection{IUIR2 Gestionar Reinscripción a Especialidad}
+\subsection{IU4 Editar información del paciente}
 
 \subsubsection{Objetivo}
 	
-Esta pantalla permite al \cdtRef{Actor:SP}{Secretario de Posgrado} realizar la reinscripción de un alumno, que ha vuelto de una baja voluntaria, al programa académico de \cdtRef{ProgramaAcademicoE:ProgramaAcademicoE}{Especialidad} al que inicialmente se encontraba inscrito.
+Esta pantalla permite al \hyperlink{actor:usuario}{Usuario} de la aplicación móvil, modificar la información previamente registrada para un paciente, esto con el fin de mantener actualizada su información en caso de que algún dato haya sido registrado de forma errónea o haya sido actualizado.
 
 \subsubsection{Diseño}
-	
+En la figura \ref{IU4} se muestra la pantalla ''Editar información del paciente'', por medio de la cual el usuario podrá modificar los datos personales y número de teléfono de un paciente registrado anteriormente.\\
 
-    En la figura \ref{IUIR2} se muestra la pantalla ``Gestionar Reinscripción a Especialidad'', en la cual aparece la sección ``Buscar programa académico''. En esta sección se presenta un catálogo con los programas académicos de la oferta vigente de \cdtRef{ProgramaAcademicoE:ProgramaAcademicoE}{Especialidad}. Una vez elegido un programa académico y tras presionar el botón \cdtButton{Buscar}, se mostrará la información de la Especialidad: el nombre de la misma, el plan de estudios vigente vinculado a la misma y el ciclo escolar que le corresponde al programa de Especialidad seleccionado; adicionalmente se desplegará una tabla, con las columnas de información Matrícula, Alumno y Estado, para los alumnos que se encuentren en el estado \textbf{sin inscripción}. Se podrán reinscribir alumnos en cualquier momento, si el \cdtRef{Actor:SP}{Secretario de Posgrado} lo requiere.\\
+Al igual que en el registro, se validará que se ingresen todos los datos necesarios, los cuales son:
+\begin{enumerate}
+	\item Nombre del paciente que será monitoreado.
+	\item Número telefónico de la tarjeta SIM que tendrá integrada el módulo de comunicación GSM para en envío de mensajes.
+	\item Fecha de nacimiento del paciente, la cual debe encontrarse dentro del rango establecido con base en la regla de negocio \cdtIdRef{RN3}{Fecha de nacimiento válida}.
+	\item Sexo del paciente.
+\end{enumerate}
+
+Una vez validados todos los datos del paciente, éste será actualizado y podrá ser visualizado en la lista de pacientes de la pantalla \cdtIdRef{IU1}{Consultar pacientes}.
+
     
- \IUfig[.8]{../ModeloComportamiento/InscripcionReinscripcion/Reinscripcion/cuir4/imagenes/IUIR2.png}{IUIR2}{Gestionar Reinscripción a Especialidad}
+ \IUfig[.6]{../ModeloComportamiento/AplicacionMovil/cu4/iu4.png}{IU4}{Editar información del paciente}
 
 \subsubsection{Comandos}
 	\begin{itemize}
-		\item \cdtButton{Buscar}: Permite al actor buscar a los alumnos en el estado \textbf{sin inscripción} vinculados al programa académico de \cdtRef{ProgramaAcademicoE:ProgramaAcademicoE}{Especialidad} previamente seleccionado.
-		\item \btnReinscribir [Realizar Reinscripción a Especidalidad]: Permite al actor reinscribir a los alumnos del programa académico seleccionado, dirige a la pantalla \cdtIdRef{IUIR2.1}{Realizar Reinscripción a Especialidad}.
+		\item \btnRegistrar{} [Editar paciente]: Permite al actor confirmar los datos ingresados del paciente para finalizar su edición. Dirige a la pantalla \cdtIdRef{IU1}{Consultar pacientes}.
 	\end{itemize}
+\clearpage
