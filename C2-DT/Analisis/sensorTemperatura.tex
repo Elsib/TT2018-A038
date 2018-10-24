@@ -41,6 +41,14 @@ En la Tabla \ref{analisis:sensorTemperatura} se muestran los datos de los difere
 %	\end{sidewaystable}
 \pagebreak
 
-Se decidió seleccionar el sensor \textbf{MAX30205} debido a que el rango de medición de temperatura es el más cercano al rango de temperatura corporal, que su error es de $\pm0.1^{\circ}$C cuando realiza mediciones entre los 37$^{\circ}$C y los 39$^{\circ}$C y que tiene un bajo costo. \\
+Se decidió seleccionar el sensor \textbf{MAX30205} mostrado en la figura \ref{fig:AnalisisMax30205} debido a que el rango de medición de temperatura es el más cercano al rango de temperatura corporal, que su error es de $\pm0.1^{\circ}$C cuando realiza mediciones entre los 37$^{\circ}$C y los 39$^{\circ}$C y que tiene un bajo costo. \\
 
-Este sensor medirá la temperatura, convertirá los datos en formato digital y mediante la interfaz de comunicación I2C transmitirá los resultados de la conversión al microcontrolador cada que éste lo solicite.
+Este sensor medirá la temperatura, convertirá los datos en formato digital y mediante la interfaz de comunicación I2C transmitirá los resultados de la conversión al microcontrolador cada que éste lo solicite.\\
+
+		\begin{figure}[htbp!]
+			\centering
+			\fbox{\includegraphics[width=0.4\textwidth]{Analisis/imagenes/pulsesensor.png}}
+			\caption{MAX30205}
+			\label{fig:AnalisisMax30205}
+		\end{figure}
+	\clearpage
