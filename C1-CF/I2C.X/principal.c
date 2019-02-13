@@ -84,22 +84,32 @@ int var1 __attribute__ ((near));
 
 void iniPerifericos( void );
 void iniInterrupciones( void );
-unsigned char configuraSensor( unsigned char config );
-void START_I2C( void );
-void ENVIA_DATO_I2C( unsigned char dato );
+//unsigned char configuraSensor( unsigned char config );
+extern void START_I2C( void );
+extern void ENVIA_DATO_I2C( unsigned char dato );
+extern void RESTART_I2C( void );
+extern unsigned short int RECIBE_DATO_I2C( void );
+extern void ACK_MST_I2C( void );
+extern void NACK_MST_I2C( void );
+extern void STOP_I2C( void );
+    
+void configurarUART1(void);
+unsigned char configuraRTCC(void);
+
 int main (void)
 {
     unsigned char estado;
     
     iniPerifericos();
+    configurarUART1();
     iniInterrupciones();
     
     I2CCONbits.I2CEN = 1;
     
-    estado = configuraRTCC( );  
+    estado = configuraRTCC();
+    
     for(;EVER;)
     {
-       
         Nop();  
     }
     
@@ -109,18 +119,65 @@ int main (void)
  * al sensor
  * @param: config, Byte de configuracion
  */
-unsigned char configuraRTCC( )
+unsigned char configuraRTCC(void)
 {
+    unsigned short int temp_msb;
+    unsigned short int temp_lsb;
+    /*
+     * --MAX30205--
+     * 
+     * Start by master
+     * Address byte (10XXXXXRW.) -> 90h -> 10010000
+     * ACK by MAX
+     * Pointer byte (000000XX) -> 00000000
+     * ACK by MAX
+     * Repeat start by master
+     * Address byte (10XXXXXRW.) -> 90h -> 10010001 
+     * ACK by MAX
+     * MSB
+     * ACK by master
+     * LSB
+     * NACK by master
+     * Stop by master
+    */
+    
+ 
     START_I2C();
     
-    ENVIA_DATO_I2C(0XD0);   //direcccion del sensor+RW
-        
-    if( I2CSTATbits.ACKSTAT == 1 ) //NACK del sensor
+    ENVIA_DATO_I2C(0X90);   //direccción del sensor+RW
+    
+    if( I2CSTATbits.ACKSTAT == 1 ) //Preguntando por un ACK
         return NANCK;
-    ENVIA_DATO_I2C(0X00);   //seleccion del registro
-                            //de configuracion
-    //Continuara....
-    return EXITO;
+    
+    ENVIA_DATO_I2C(0X00);   //selección del registro de temperatura
+    
+    if( I2CSTATbits.ACKSTAT == 1 ) //Preguntando por un ACK
+        return NANCK;
+    
+    RESTART_I2C();
+                            
+    ENVIA_DATO_I2C(0X91);   //direccción del sensor+RW
+    
+    if( I2CSTATbits.ACKSTAT == 1 ) //Preguntando por un ACK
+        return NANCK;
+    
+    temp_msb = RECIBE_DATO_I2C();  //Recibe MSB
+    
+    ACK_MST_I2C();  //Genera ACK
+    
+    temp_lsb = RECIBE_DATO_I2C();  //Recibe LSB
+    
+    NACK_MST_I2C();  //Genera NACK
+    
+    STOP_I2C();
+    
+    U1TXREG = temp_msb;
+    U1TXREG = temp_lsb;
+    IFS0bits.U1TXIF = 0;
+    
+    while( IFS0bits.U1TXIF == 0 );
+    
+    return EXITO;   
 }
 /****************************************************************************/
 /* DESCRICION:	ESTA RUTINA INICIALIZA LAS INTERRPCIONES    				*/
@@ -131,6 +188,10 @@ void iniInterrupciones( void )
 {
     IFS0bits.T1IF = 0;
     IEC0bits.T1IE = 1;
+    
+    //--- UART ---
+    U1MODEbits.UARTEN=1;
+    U1STAbits.UTXEN=1;
     //INTCON2
     //Habilitacion de interrupcion del periférico 1
     //Habilitacion de interrupcion del periférico 2
@@ -158,8 +219,28 @@ void iniPerifericos( void )
     Nop();
     TRISF = 0;
     Nop();
+    TRISFbits.TRISF2 = 1;
+    Nop();
     
-    I2CBRG = 2;//VELOCIDAD DE 400KHZ
+    I2CBRG = 2;//VELOCIDAD DE 400KHZ que soporta el MAX30205
+    
+    //---- UART -----
+    Nop();
+    PORTC=0;
+    Nop();
+    TRISCbits.TRISC13=0;
+    Nop();
+    TRISCbits.TRISC14=1;
+    Nop();
+    
+}
+
+void configurarUART1()
+{
+    /*Inicializar el uart1*/
+    U1MODE=0X0420;
+    U1STA=0X8000;
+    U1BRG=5;
 }
 
 /********************************************************************************/
