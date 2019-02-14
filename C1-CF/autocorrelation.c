@@ -17,6 +17,7 @@ void aplicarOffset();
 void calcularVentana();
 void guardarArchivo();
 void graficar();
+void autocorrelacion();
 
 int main(){
     
@@ -29,7 +30,8 @@ int main(){
         vectorVentana[i] = vector[i] * ventana[i];
     }
 
-    //autocorrelación
+    //autocorrelación 
+    //Se deja para visualizar la gráfica. La función de autocorrelación calcula el valor del máximo y calcula la frecuencia
     float precalc = 0;
     for(int n = 0; n < N; n++){
         precalc = 0;
@@ -39,31 +41,9 @@ int main(){
         }
 
         vectorAC[n] = precalc/(float)N;
-        
-        //printf("Cxx[%d] = %f \n", n, vectorAC[n]);
     }
 
-    //obtener valor más alto
-    float max = 0;
-    float aux = 0;
-    int flag = 0;
-    int pos = 0;
-
-    for(int i = 0; i < N; i++){
-        if(vectorAC[i] < 0)
-            flag = 1;
-
-        if((vectorAC[i] > max) && flag == 1){
-            max = vectorAC[i];
-            pos = i;
-        }
-    }
-
-    printf("---------------------------------------------\n");
-    printf("\tValor máximo=%f en i=%d \n", max, pos);
-    printf("\tFrecuencia = %f \n", (float)FS/pos);
-    printf("\tlpm = %f \n", (float)FS/pos*60);
-    printf("---------------------------------------------\n");
+    autocorrelacion();
 
     guardarArchivo();
     graficar();
@@ -71,6 +51,9 @@ int main(){
     return 0;
 }
 
+/*
+* Función para leer los datos del archivo de entrada con los valores del sensor de pulso
+*/
 void leerArchivo(){
     fp = fopen("pruebaPulseSensor512.txt", "r");
 
@@ -81,7 +64,7 @@ void leerArchivo(){
 
     int i = 0;
     while((fscanf(fp, "%d", &val)) != EOF){
-        printf("%d \n", val);
+        //printf("%d \n", val);
         vector[i] = (float)val;
         i++;
     }
@@ -89,12 +72,18 @@ void leerArchivo(){
     fclose(fp);
 }
 
+/*
+* Función para aplicar el offset a los valores de entrada
+*/
 void aplicarOffset(){
     for(int i = 0; i<N; i++){
         vector[i] = vector[i] - (float)(4096/2);
     }
 }
 
+/*
+* Función para calcular los valores de la ventana de Hamming
+*/
 void calcularVentana(){
     for(int i = 0; i<N; i++){
         ventana[i] = 0.54 - (0.46 * cosf(2*M_PI*i/N));
@@ -125,6 +114,7 @@ void graficar(){
 void guardarArchivo(){
     FILE *ap_arch; 
     
+    //guardar valores de entrada con offset
     ap_arch = fopen("in.dat", "w");
 
     for (register int n = 0; n < N; n++){
@@ -133,6 +123,7 @@ void guardarArchivo(){
 
 	fclose(ap_arch);
 
+    //guardar valores de la ventana de hamming
     ap_arch = fopen("hamming.dat", "w");
 
     for (register int n = 0; n < N; n++){
@@ -141,7 +132,7 @@ void guardarArchivo(){
     
 	fclose(ap_arch);
 
-
+    //guardar valores después de aplicar la ventana
     ap_arch = fopen("ventaneo.dat", "w");
 
     for (register int n = 0; n < N; n++){
@@ -150,6 +141,7 @@ void guardarArchivo(){
     
 	fclose(ap_arch);
 
+    //guardar valores después de la autocorrelación
     ap_arch = fopen("out.dat", "w");
 
     for (register int n = 0; n < N; n++){
@@ -157,4 +149,53 @@ void guardarArchivo(){
 	}
     
 	fclose(ap_arch);
+}
+
+/*
+* Función para calcular la autocorrelación dado un vector de entrada.
+* Busca el valor más alto se detiene en ese punto para no recorrer todo el vector.
+* Caclula la frecuencia de a partir de la posición del valor máximo, dividiendo la frecuencia de muestreo entre la posición del valor máximo
+*/
+void autocorrelacion(){
+    float precalc = 0;
+    float max = 0;
+    int flag = 0;
+    int pos = 0;
+
+    for(int n = 0; n < N; n++){
+        precalc = 0;
+
+        //Autocorrelación parcial
+        for(int m = 0; m <= N-1-n; m++){
+            precalc += vectorVentana[m] * vectorVentana[m+n];
+        }
+
+        vectorAC[n] = precalc/(float)N;
+
+        printf("Cxx[%d] = %f \n", n, vectorAC[n]);
+
+        //Bandera para evitar que busque máximos desde el inicio, busca a partir de cruzar el 0
+        if(vectorAC[n] < 0)
+            flag = 1;
+
+        if(flag){
+            //Busca el valor máximo de la autocorrelación
+            if(vectorAC[n] > max){
+                max = vectorAC[n];
+                pos = n;
+            }
+            
+            //Si ya encontró un máximo y comienza a encontrar valores menores, termina el for
+            if(vectorAC[n-1] > vectorAC[n] && vectorAC[n] > 0)
+                break;
+        }
+        
+    }
+
+    printf("---------------------------------------------\n");
+    printf("\tValor máximo=%f en i=%d \n", max, pos);
+    printf("\tFrecuencia = %f \n", (float)FS/pos);
+    printf("\tlpm = %f \n", (float)FS/pos*60);
+    printf("---------------------------------------------\n");
+
 }
