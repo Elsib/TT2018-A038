@@ -40,7 +40,7 @@ int main(){
 
         vectorAC[n] = precalc/(float)N;
         
-        printf("Cxx[%d] = %f \n", n, vectorAC[n]);
+        //printf("Cxx[%d] = %f \n", n, vectorAC[n]);
     }
 
     //obtener valor más alto
@@ -63,7 +63,7 @@ int main(){
     printf("\tValor máximo=%f en i=%d \n", max, pos);
     printf("\tFrecuencia = %f \n", (float)FS/pos);
     printf("\tlpm = %f \n", (float)FS/pos*60);
-    printf("---------------------------------------------");
+    printf("---------------------------------------------\n");
 
     guardarArchivo();
     graficar();
