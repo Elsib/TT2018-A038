@@ -169,9 +169,11 @@ __reset:
         CALL    RETARDO_1S
         CALL    RETARDO_1S
 
-        MOV     #tblpage(CMD_ATE0),         W0
-        MOV     W0,                         TBLPAG
-        MOV     #tbloffset(CMD_ATE0),       W1
+	; Configurar el apuntador de la dirección al espacio de programa
+	
+        MOV     #tblpage(CMD_ATE0),         W0		; obtiene el valor de table page
+        MOV     W0,                         TBLPAG	; cargar el registro TBLPAG
+        MOV     #tbloffset(CMD_ATE0),       W1		; carga la dirección de la parte LS de la palabra 
         CALL    ENVIAR_COMANDO_GSM
 
         MOV     #tblpage(CMD_AT_CMGF),      W0
