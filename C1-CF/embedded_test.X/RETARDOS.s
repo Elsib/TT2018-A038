@@ -2,8 +2,8 @@
     
 .GLOBAL	RETARDO_5ms
 .GLOBAL	RETARDO_30ms
-.GLOBAL	RETARDO_300ms
-.GLOBAL	RETARDO_1S
+.GLOBAL	_RETARDO_300ms
+.GLOBAL	_RETARDO_1s
     
 ;******************************************************************************
 ;DESCRICION:	ESTA RUTINA GENERA UN RETARDO DE 30ms
@@ -26,7 +26,7 @@ RETARDO_30ms:
 ;PARAMETROS: 	NINGUNO
 ;RETORNO: 	NINGUNO
 ;******************************************************************************
-RETARDO_300ms:
+_RETARDO_300ms:
 
         DO  #9,     CICLO_RETARDO_300ms
             CALL	RETARDO_30ms
@@ -57,7 +57,7 @@ CICLO1_5ms:
 ;PARAMETROS: 	NINGUNO
 ;RETORNO: 	NINGUNO
 ;******************************************************************************
-RETARDO_1S:
+_RETARDO_1s:
 	    PUSH	W0
 	    PUSH	W1
 
@@ -75,3 +75,5 @@ CICLO1_1S:
 	    POP		W0
 
 	    RETURN
+
+	    

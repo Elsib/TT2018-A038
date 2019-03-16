@@ -8,7 +8,10 @@
  * @device: DSPIC30F4013
  * @oscillator: FRC, 7.3728MHz
  */
-#include "p30F4013.h"
+
+#include "xc.h"
+#include <stdio.h>
+#include <libpic30.h>
 
 /********************************************************************************/
 /* 						BITS DE CONFIGURACIÓN									*/	
@@ -58,12 +61,16 @@
 #define NANCK 1
 #define EXITO 0
 
+#define float double
+
 /********************************************************************************/
 /* DECLARACIONES GLOBALES														*/
 /********************************************************************************/
 /*DECLARACIÓN DE LA ISR DEL TIMER 1 USANDO __attribute__						*/
 /********************************************************************************/
-//void __attribute__((__interrupt__)) _T1Interrupt( void );
+void __attribute__((__interrupt__)) _T1Interrupt( void );
+
+void __attribute__((__interrupt__)) _U2RXInterrupt( void );
 
 /********************************************************************************/
 /* CONSTANTES ALMACENADAS EN EL ESPACIO DE LA MEMORIA DE PROGRAMA				*/
@@ -83,6 +90,20 @@ int y_input[MUESTRAS] __attribute__ ((space(ymemory)));
 /********************************************************************************/
 int var1 __attribute__ ((near));
 
+char CMD_AT[] = "AT\r";
+char CMD_ATE0[] = "ATE0\r";
+//char CMD_ATCPIN[] = "AT+CPIN=1111\r\0";
+char CMD_AT_CMGF[] = "AT+CMGF=1\r";
+char CMD_AT_CMGS[] = "AT+CMGS=\"+525543612094\"\r";
+//char CMD_MSG[] = "Temperatura: \x1A\r";
+char CMD_MSG[40];
+
+char respuestaGSM[40];
+unsigned char j;
+char count;
+
+unsigned short int temp_msb;
+unsigned short int temp_lsb;
 
 void iniPerifericos();
 void iniInterrupciones();
@@ -93,32 +114,62 @@ void configurarTimer3();
 void configurarUART1();
 void configurarUART2();
 
-unsigned char comunicacionMAX(void);
+unsigned char comunicacionMAX();
 
-extern void START_I2C( void );
-extern void ENVIA_DATO_I2C( unsigned char dato );
-extern void RESTART_I2C( void );
-extern unsigned short int RECIBE_DATO_I2C( void );
-extern void ACK_MST_I2C( void );
-extern void NACK_MST_I2C( void );
-extern void STOP_I2C( void );
+void iniGSM();
+void enviarComandoGSM(char comando[]);
+
+extern void START_I2C();
+extern void ENVIA_DATO_I2C(unsigned char dato);
+extern void RESTART_I2C();
+extern unsigned short int RECIBE_DATO_I2C();
+extern void ACK_MST_I2C();
+extern void NACK_MST_I2C();
+extern void STOP_I2C();
+extern void WREG_INIT();
+
+extern void RETARDO_300ms();
+extern void RETARDO_1s();
 
 int main(void) {
-    //unsigned char estado;
+    unsigned char estado;
     
     iniPerifericos();
-    configurarADC();
+    //configurarADC();
     configurarI2C();
-    configurarTimer3();
+    //configurarTimer3();
     configurarUART1();
     configurarUART2();
     iniInterrupciones();
     
-    //estado = comunicacionMAX();
+    estado = comunicacionMAX();
     
+    if(estado == EXITO){
+        float temperatura = 0.0;
+        
+        temperatura += temp_msb;
+        float pb = 0.00390625 * temp_lsb;
+		temperatura += pb;
+        
+        sprintf(CMD_MSG, "Temperatura: %f\x1A\r", temperatura);
+    }
+    
+    iniGSM();
+    
+    RETARDO_1s();
+    RETARDO_1s();
+    RETARDO_1s();
+    RETARDO_1s();
+    RETARDO_1s();
+    
+    enviarComandoGSM(CMD_ATE0);
+    enviarComandoGSM(CMD_AT_CMGF);
+    enviarComandoGSM(CMD_AT_CMGS);
+    enviarComandoGSM(CMD_MSG);
+  
     while(EVER){
-        Sleep(); //DUDA !!!! 
-        //Nop();
+        //Sleep(); //DUDA !!!! 
+        Nop();
     }
     
     return 0;
@@ -140,33 +191,19 @@ int main(void) {
             Una escritura en el registro LATx escribe el valor de los datos en el cierre (latch) del puerto.
             Una lectura del registro PORTx lee el valor de los datos en el pin de I/O.
             Una lectura del registro LATx lee el valor de los datos retenidos en el cierre (latch) del puerto.
-/****************************************************************************/
+****************************************************************************/
 void iniPerifericos(){
-    /*DUDA PARA QUITAR !!!!!!!
-    PORTA=0;
-    Nop();
-    TRISA=0;
-    Nop();
-    LATA=0;
-    Nop();
-    */
-    
     // Para la entrada analógica del pulse sensor (AN2) en PMOD1
     PORTB = 0;
     Nop();
     LATB = 0;
     Nop();
-    //DUDA PARA QUITAR !!!!!!!!!
-    //TRISBbits.TRISB0=1;
-    //Nop();
-    //TRISBbits.TRISB1=1;
-    //Nop();
-    TRISBbits.TRISB2=1;     //AN2
+    //TRISBbits.TRISB2=1;     //AN2     !!!! REVISAR QUÉ CAMBIAR EN ADPCFG
     Nop();
     //En GSM está esto, duda para quitar o cambiar analógico el canal que utilizamos!!!!
     //SETM	ADPCFG ; SETM = 0xFFFF, ADPCFG Analog input pin in Digital mode: 1
-    //ADPCFG = 0xFFFF;
-    //Nop();
+    ADPCFG = 0xFFFF;
+    Nop();
     
     // Para el UART1, transmite a PC
     PORTC=0;
@@ -175,15 +212,6 @@ void iniPerifericos(){
     Nop();
     TRISCbits.TRISC14=1;    //U1ARX
     Nop();
-    
-    /*DUDA PARA QUITAR !!!!!
-    PORTD = 0;
-    Nop();
-    LATD = 0;
-    Nop();
-    TRISDbits.TRISD0=0;
-    Nop();
-    */
     
     //Para I2C en mikroBUS1
     PORTD = 0;
@@ -195,25 +223,25 @@ void iniPerifericos(){
     TRISDbits.TRISD8 = 1;   //RD8, se configura como entrada para la interrupción (INT1 Hardware Interrupt)
     Nop();
     
-    //Para UART2 (GSM) en mikroBUS2
-    TRISDbits.TRISD9 = 1;   //RD9, se configura como entrada para la interrupción (INT2 Hardware Interrupt)
-    //DUDA. Ese pin en el módulo GSM es CTS -> UART Clear to send !!!!
-       
     PORTF = 0;
     Nop();
     LATF = 0;
     Nop();
     TRISF = 0;
     Nop();
-    TRISFbits.TRISF2 = 1;   //RF2, se configura como entrada para el MISO (SPI Master Input Slave Output)   DUDA!!!!!!!
+    TRISFbits.TRISF3 = 0;   //RF3, se configura como salida para el SCL
+    Nop();
+    TRISFbits.TRISF2 = 1;   //RF2, se configura como entrada para el SDA
     Nop();
     
     //Para UART2 (GSM) en mikroBUS2
+    TRISDbits.TRISD9 = 1;   //RD9, se configura como entrada para la interrupción (INT2 Hardware Interrupt)
+    //DUDA. Ese pin en el módulo GSM es CTS -> UART Clear to send !!!!
+    
     TRISFbits.TRISF4 = 1;    //U2ARX
     Nop();
     TRISFbits.TRISF5 = 0;    //U2ATX
     Nop();
-    
 }
 
 /******************************************************************************
@@ -256,40 +284,37 @@ void configurarADC(){
 void configurarTimer3(){
     PR3=0x0E10;     //Valor que se compara con el contador para lanzar la interrupción. Establece la frecuencia de 512Hz
     TMR3=0;         //Inicializa el registro. Éste guarda la Most Significant Word del valor de 32bits del timer
-    T3CON=0x000;    //DUDA PARA QUITAR!!!! Parece que con la configuración del Timer3 tipo C, se ignoran los bits. 32-bit timer operation, T3CON control bits are ignored
-                    //Contiene el preescalador en <5:4> con TCKPS<1:0> con 1:1, 1:8, 1:64, 1:256
-    
-    /*Frecuencia de 4Hz
-    PR3=0xE100;
-    TMR3=0;
-    T3CON=0x0010;
-    */
+    T3CON=0x000;    //Contiene el preescalador en <5:4> con TCKPS<1:0> con 1:1, 1:8, 1:64, 1:256
 }
 
 //Habilitar comunicaciones cuando se inicializan las interrupciones o cuando se configura?
 void iniInterrupciones(){
-    IFS0bits.T3IF=0;    //Timer3 Interrupt Flag Status bit
-    IEC0bits.T3IE=1;    //Timer3 Interrupt Enable bit (Interrupt request enabled)
+//    IFS0bits.T3IF=0;    //Timer3 Interrupt Flag Status bit
+//    IEC0bits.T3IE=1;    //Timer3 Interrupt Enable bit (Interrupt request enabled)
     
-    IFS0bits.ADIF=0;    //A/D Conversion Complete Interrupt Flag Status bit
-    IEC0bits.ADIE=1;    //A/D Conversion Complete Interrupt Enable bit (Interrupt request enabled)
+//    IFS0bits.ADIF=0;    //A/D Conversion Complete Interrupt Flag Status bit
+//    IEC0bits.ADIE=1;    //A/D Conversion Complete Interrupt Enable bit (Interrupt request enabled)
     
-    // DUDA PARA QUITAR!!!!
-    IFS0bits.T1IF = 0;      //Timer1 Interrupt Flag Status bit
-    IEC0bits.T1IE = 1;      //Timer1 Interrupt Enable bit (Interrupt request enabled)
+//    IFS0bits.T1IF = 0;      //Timer1 Interrupt Flag Status bit
+//    IEC0bits.T1IE = 1;      //Timer1 Interrupt Enable bit (Interrupt request enabled)
     
-    T3CONbits.TON=1;    //Activar el Timer3
+    IFS1bits.U2RXIF=0;    //UART2 Receiver Interrupt Flag Status bit
+    IEC1bits.U2RXIE=1;    //UART2 Receiver Interrupt Enable bit (Interrupt request enabled)
+    
+    //----- Habilitar ------
+    
+    //T3CONbits.TON=1;    //Activar el Timer3
     
     //Para UART1
-	U1MODEbits.UARTEN=1;    //UART Enable bit: 1 para habilitar
+	U1MODEbits.UARTEN=1;    //UART1 Enable bit: 1 para habilitar
     U1STAbits.UTXEN=1;      //Transmit Enable bit: 1 para habilitar
     
     //Para UART2
-    U2MODEbits.UARTEN=1;    //UART Enable bit: 1 para habilitar
+    U2MODEbits.UARTEN=1;    //UART2 Enable bit: 1 para habilitar
     U2STAbits.UTXEN=1;      //Transmit Enable bit: 1 para habilitar
     
     //Para ADC
-    ADCON1bits.ADON=1;      //A/D Operating Mode bit: 1 para activar
+   //ADCON1bits.ADON=1;      //A/D Operating Mode bit: 1 para activar
     
     //Para I2C
     I2CCONbits.I2CEN = 1;   //I2C Enable bit: 1 para habilitar y configurar SDA y SCL como puertos seriales
@@ -301,8 +326,6 @@ void iniInterrupciones(){
 /* RETORNO:     EXITO O NANCK                                               */
 /****************************************************************************/
 unsigned char comunicacionMAX(){
-    unsigned short int temp_msb;
-    unsigned short int temp_lsb;
     /*
      * --MAX30205--
      * 
@@ -320,6 +343,9 @@ unsigned char comunicacionMAX(){
      * NACK by master
      * Stop by master
     */
+    
+    temp_msb = 0;
+    temp_lsb = 0;
 
     START_I2C();
     
@@ -350,15 +376,11 @@ unsigned char comunicacionMAX(){
     
     STOP_I2C();
     
-    //Envía los valores enteros y decimales por UART1 a la PC
-    U1TXREG = temp_msb;
-    U1TXREG = temp_lsb;
-    IFS0bits.U1TXIF = 0;
+    printf("Temp: %d.%d", temp_msb, temp_lsb);
     
-    while(IFS0bits.U1TXIF == 0);
-    
-    return EXITO;   
+    return EXITO;
 }
+
 
 /// DUDA PARA QUITAR!!!!!!!!
 /********************************************************************************/
@@ -367,7 +389,79 @@ unsigned char comunicacionMAX(){
 /* SE USA PUSH.S PARA GUARDAR LOS REGISTROS W0, W1, W2, W3, C, Z, N Y DC EN LOS */
 /* REGISTROS SOMBRA																*/
 /********************************************************************************/
-void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt( void )
+void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt( void ){
+    IFS0bits.T1IF = 0;    //SE LIMPIA LA BANDERA DE INTERRUPCION DEL TIMER 1
+}
+
+
+void iniGSM(){
+    PORTDbits.RD8 = 0;  //Según RST_GSM
+    Nop();
+    
+    RETARDO_300ms();
+    
+    while(PORTDbits.RD9 == 0);  //Según PWRMON
+    
+    enviarComandoGSM(CMD_AT);
+}
+
+
+void enviarComandoGSM(char comando[]){
+    
+    count = 2;
+    j = 0;
+    IFS1bits.U2TXIF = 0;
+    
+    __C30_UART=1;
+    printf("\r\n");
+    printf(comando);
+    printf("\r\n");
+    
+    __C30_UART=2;
+    printf(comando);
+    
+    //Espera respuesta
+    while(count > 0){   //Disminuye con la interrupción U2RXInterrupt
+        U1TXREG = 'x';
+        RETARDO_1s();
+    }
+    
+}
+
+
+/********************************************************************************/
+/* DESCRICION:	ISR (INTERRUPT SERVICE ROUTINE) DEL UART 2						*/
+/* Esta rutina cuenta los caracteres <LF> recibidos para determinar la respuesta*/
+/*                                                                              */
+/* En general la respuesta del módulo GSM es: <CR><LF>OK<CR><LF>                */
+/* Para el mensaje: <CR><LF><greater_than><space>                               */
+/********************************************************************************/
+
+void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
 {
-        IFS0bits.T1IF = 0;    //SE LIMPIA LA BANDERA DE INTERRUPCION DEL TIMER 1                      
+    char resp;
+
+    resp = U2RXREG;
+    respuestaGSM[j] = resp;
+    
+    if(resp == 13){     //<CR>
+        resp = '.';
+    }
+    else if(resp == 10){     //<LF>
+        resp = '_';
+        count--;
+    }
+    else if(resp == 62){    //'>'
+        count--;
+    }
+    else if(resp == 32){   //' '
+        resp = '-';
+    }
+
+    U1TXREG = resp;
+    //U1TXREG = count+48; //Para ver el carácter
+    
+    j++;
+    
+    IFS1bits.U2RXIF = 0;
 }

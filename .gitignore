@@ -8,3 +8,11 @@
 *.bbl
 *.blg
 *.pdf
+/C1-CF/embedded_test.X/nbproject/private/
+/C1-CF/embedded_test.X/build/default/
+/C1-CF/embedded_test.X/dist/default/
+/C1-CF/DSP_test.X/nbproject/private/
+/C1-CF/DSP_test.X/dist/default/
+/C1-CF/GSM_C_test.X/nbproject/private/
+/C1-CF/GSM_C_test.X/build/default/
+/C1-CF/GSM_C_test.X/dist/default/

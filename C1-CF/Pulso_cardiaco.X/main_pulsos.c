@@ -106,23 +106,21 @@ int main (void)
     
     iniPerifericos();
     
-    //PR3=0x0E10;//Frecuencia de 512Hz
-    //TMR3=0;
-    //T3CON=0x000;
-    
-    PR3=0xE100;//Frecuencia de 4Hz
+    PR3=0x0E10;//Frecuencia de 512Hz
     TMR3=0;
-    T3CON=0x0010;
+    T3CON=0x000;
+    
+//    PR3=0xE100;//Frecuencia de 4Hz
+//    TMR3=0;
+//    T3CON=0x0010;
     
     configurarUART1();
     configurarADC();
     iniInterrupciones();
-    while(EVER)
-         {
-        
+    
+    while(EVER){
         sleep();
-       
-        }
+    }
     
     return 0;
 }
@@ -139,7 +137,8 @@ void iniInterrupciones( void )
     IEC0bits.T3IE=1;
     IEC0bits.ADIE=1;
     T3CONbits.TON=1;
-    U1MODEbits.UARTEN=1;
+    
+	U1MODEbits.UARTEN=1;
     U1STAbits.UTXEN=1;
     ADCON1bits.ADON=1;
        
@@ -151,7 +150,6 @@ void configurarUART1()
     U1MODE=0X0420;
     U1STA=0X8000;
     U1BRG=5;
-
 }
 
 void configurarADC()
@@ -200,9 +198,7 @@ void iniPerifericos( void )
     TRISCbits.TRISC13=0;
     Nop();
     TRISCbits.TRISC14=1;
-    Nop();
-    
-            
+    Nop();   
 }
     
     
@@ -218,7 +214,4 @@ void iniPerifericos( void )
 //        IFS0bits.T1IF = 0;    //SE LIMPIA LA BANDERA DE INTERRUPCION DEL TIMER 1     
 //        
 //}
-
-
-
 

@@ -6,7 +6,7 @@ Tool Name:
 Command:
   -p30F4013 \
   -o \
-  dist/default/production/Pulso_cardiaco.X.production.elf \
+  dist/default/debug/Pulso_cardiaco.X.debug.elf \
   -L/opt/microchip/xc16/v1.35/bin/bin/.. \
   -L/opt/microchip/xc16/v1.35/bin/bin/../../lib \
   -L/opt/microchip/xc16/v1.35/bin/bin/../../support/PIC24E/gld \
@@ -16,12 +16,15 @@ Command:
   -L/opt/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33C/gld \
   -L/opt/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33E/gld \
   -L/opt/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33F/gld \
-  build/default/production/delay.o \
-  build/default/production/espero.o \
-  build/default/production/libreria.o \
-  build/default/production/main_pulsos.o \
-  build/default/production/modes.o \
+  build/default/debug/delay.o \
+  build/default/debug/espero.o \
+  build/default/debug/libreria.o \
+  build/default/debug/main_pulsos.o \
+  build/default/debug/modes.o \
   --defsym=__MPLAB_BUILD=1 \
+  --defsym=__MPLAB_DEBUG=1 \
+  --defsym=__DEBUG=1 \
+  --defsym=__MPLAB_DEBUGGER_SIMULATOR=1 \
   -Tp30F4013.gld.00 \
   --stack=16 \
   --check-sections \
@@ -34,10 +37,10 @@ Command:
   --stackguard=16 \
   --no-force-link \
   --smart-io \
-  -Map=dist/default/production/Pulso_cardiaco.X.production.map \
+  -Map=dist/default/debug/Pulso_cardiaco.X.debug.map \
   --report-mem \
   --memorysummary \
-  dist/default/production/memoryfile.xml \
+  dist/default/debug/memoryfile.xml \
   -start-group \
   --library=lega-pic30-elf \
   --library=m-elf \
@@ -95,9 +98,9 @@ section                    address   length (PC units)   length (bytes) (dec)
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-_0xf7738f185c859953          0x800                   0            0x80  (128)
+_0xf7797f185c859dfc          0x800                   0            0x80  (128)
 .nbss                        0x880                   0            0x18  (24)
-_0xf7738f745c859953          0xf80                   0            0x80  (128)
+_0xf7797f745c859dfc          0xf80                   0            0x80  (128)
 
                  Total "data" memory used (bytes):          0x118  (280) 13%
 
@@ -213,12 +216,15 @@ FICD             0xf8000c           0x000002
 
 GuiÃ³n del enlazador y mapa de memoria
 
-LOAD build/default/production/delay.o
-LOAD build/default/production/espero.o
-LOAD build/default/production/libreria.o
-LOAD build/default/production/main_pulsos.o
-LOAD build/default/production/modes.o
+LOAD build/default/debug/delay.o
+LOAD build/default/debug/espero.o
+LOAD build/default/debug/libreria.o
+LOAD build/default/debug/main_pulsos.o
+LOAD build/default/debug/modes.o
                     0x0001                  __MPLAB_BUILD = 0x1
+                    0x0001                  __MPLAB_DEBUG = 0x1
+                    0x0001                  __DEBUG = 0x1
+                    0x0001                  __MPLAB_DEBUGGER_SIMULATOR = 0x1
 LOAD p30F4013
 LOAD /opt/microchip/xc16/v1.35/bin/bin/../../lib/libfx-elf.a
                     0x8005c0                  __FUID0 = 0x8005c0
@@ -302,7 +308,7 @@ __RESERVED2
 
 __FGS             0xf8000a          0x2
  *(__FGS.sec*)
- __FGS.sec        0xf8000a          0x2 /CW/_FGSð.Ñ	$/Ñ	__FGS.sec
+ __FGS.sec        0xf8000a          0x2 /CW/_FGS|	D|	__FGS.sec
                   0xf8000a                  __FGS.sec
 
 __FICD
@@ -319,36 +325,36 @@ userdata
 
 .debug_info       0x000000       0x1153
  *(.debug_info)
- .debug_info      0x000000         0x97 build/default/production/delay.o
- .debug_info      0x000097         0x98 build/default/production/espero.o
- .debug_info      0x00012f         0x9a build/default/production/libreria.o
- .debug_info      0x0001c9        0xef3 build/default/production/main_pulsos.o
- .debug_info      0x0010bc         0x97 build/default/production/modes.o
+ .debug_info      0x000000         0x97 build/default/debug/delay.o
+ .debug_info      0x000097         0x98 build/default/debug/espero.o
+ .debug_info      0x00012f         0x9a build/default/debug/libreria.o
+ .debug_info      0x0001c9        0xef3 build/default/debug/main_pulsos.o
+ .debug_info      0x0010bc         0x97 build/default/debug/modes.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x155
  *(.debug_abbrev)
- .debug_abbrev    0x000000         0x14 build/default/production/delay.o
- .debug_abbrev    0x000014         0x14 build/default/production/espero.o
- .debug_abbrev    0x000028         0x14 build/default/production/libreria.o
- .debug_abbrev    0x00003c        0x105 build/default/production/main_pulsos.o
- .debug_abbrev    0x000141         0x14 build/default/production/modes.o
+ .debug_abbrev    0x000000         0x14 build/default/debug/delay.o
+ .debug_abbrev    0x000014         0x14 build/default/debug/espero.o
+ .debug_abbrev    0x000028         0x14 build/default/debug/libreria.o
+ .debug_abbrev    0x00003c        0x105 build/default/debug/main_pulsos.o
+ .debug_abbrev    0x000141         0x14 build/default/debug/modes.o
 
 .debug_line       0x000000        0x206
  *(.debug_line)
- .debug_line      0x000000         0x60 build/default/production/delay.o
- .debug_line      0x000060         0x51 build/default/production/espero.o
- .debug_line      0x0000b1         0x90 build/default/production/libreria.o
- .debug_line      0x000141         0x8b build/default/production/main_pulsos.o
- .debug_line      0x0001cc         0x3a build/default/production/modes.o
+ .debug_line      0x000000         0x60 build/default/debug/delay.o
+ .debug_line      0x000060         0x51 build/default/debug/espero.o
+ .debug_line      0x0000b1         0x90 build/default/debug/libreria.o
+ .debug_line      0x000141         0x8b build/default/debug/main_pulsos.o
+ .debug_line      0x0001cc         0x3a build/default/debug/modes.o
 
 .debug_frame      0x000000         0xa0
  *(.debug_frame)
- .debug_frame     0x000000         0xa0 build/default/production/main_pulsos.o
+ .debug_frame     0x000000         0xa0 build/default/debug/main_pulsos.o
 
 .debug_str        0x000000         0x5a
  *(.debug_str)
- .debug_str       0x000000         0x5a build/default/production/main_pulsos.o
+ .debug_str       0x000000         0x5a build/default/debug/main_pulsos.o
 
 .debug_loc
  *(.debug_loc)
@@ -360,7 +366,7 @@ userdata
                   0x000000         0xb8
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0xb8 build/default/production/main_pulsos.o
+                  0x000000         0xb8 build/default/debug/main_pulsos.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -368,15 +374,15 @@ userdata
 .debug_aranges    0x000000         0x78
  *(.debug_aranges)
  .debug_aranges
-                  0x000000         0x18 build/default/production/delay.o
+                  0x000000         0x18 build/default/debug/delay.o
  .debug_aranges
-                  0x000018         0x18 build/default/production/espero.o
+                  0x000018         0x18 build/default/debug/espero.o
  .debug_aranges
-                  0x000030         0x18 build/default/production/libreria.o
+                  0x000030         0x18 build/default/debug/libreria.o
  .debug_aranges
-                  0x000048         0x18 build/default/production/main_pulsos.o
+                  0x000048         0x18 build/default/debug/main_pulsos.o
  .debug_aranges
-                  0x000060         0x18 build/default/production/modes.o
+                  0x000060         0x18 build/default/debug/modes.o
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -1075,39 +1081,39 @@ LOAD /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a
 LOAD /opt/microchip/xc16/v1.35/bin/bin/../../lib/libm-elf.a
 LOAD /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-c-elf.a
 END GROUP
-OUTPUT(dist/default/production/Pulso_cardiaco.X.production.elf elf32-pic30)
-LOAD /CW/_FGSð.Ñ	$/Ñ	__FGS.sec
+OUTPUT(dist/default/debug/Pulso_cardiaco.X.debug.elf elf32-pic30)
+LOAD /CW/_FGS|	D|	__FGS.sec
 LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
                   0x000078        0x129
  .debug_pubtypes
-                  0x000078        0x129 build/default/production/main_pulsos.o
+                  0x000078        0x129 build/default/debug/main_pulsos.o
 
 __c30_signature
                   0x0001a1         0x12
  __c30_signature
-                  0x0001a1          0x6 build/default/production/main_pulsos.o
+                  0x0001a1          0x6 build/default/debug/main_pulsos.o
  __c30_signature
                   0x0001a7          0x6 /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(crt0_standard.o)
  __c30_signature
                   0x0001ad          0x6 /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(data_init_standard.o)
 
-_0xf7738f185c859953
+_0xf7797f185c859dfc
                     0x0800         0x80
- _0xf7738f185c859953
-                    0x0800         0x80 build/default/production/main_pulsos.o
+ _0xf7797f185c859dfc
+                    0x0800         0x80 build/default/debug/main_pulsos.o
                     0x0800                  _x_input
 
-_0xf7738f745c859953
+_0xf7797f745c859dfc
                     0x0f80         0x80
- _0xf7738f745c859953
-                    0x0f80         0x80 build/default/production/main_pulsos.o
+ _0xf7797f745c859dfc
+                    0x0f80         0x80 build/default/debug/main_pulsos.o
                     0x0f80                  _y_input
 
 .nbss               0x0880         0x18
- .nbss              0x0880         0x18 build/default/production/main_pulsos.o
+ .nbss              0x0880         0x18 build/default/debug/main_pulsos.o
                     0x0880                  _var1
                     0x0882                  _dato
                     0x0884                  _datorcv
@@ -1116,49 +1122,49 @@ _0xf7738f745c859953
 .ivt._U1RXInterrupt
                   0x000026          0x2
  .ivt._U1RXInterrupt
-                  0x000026          0x2 build/default/production/espero.o
+                  0x000026          0x2 build/default/debug/espero.o
 
 .ivt._T3Interrupt
                   0x000022          0x2
  .ivt._T3Interrupt
-                  0x000022          0x2 build/default/production/espero.o
+                  0x000022          0x2 build/default/debug/espero.o
 
 .ivt._ADCInterrupt
                   0x00002a          0x2
  .ivt._ADCInterrupt
-                  0x00002a          0x2 build/default/production/espero.o
+                  0x00002a          0x2 build/default/debug/espero.o
 
 .config_MCLRE     0xf80004          0x2
- .config_MCLRE    0xf80004          0x2 build/default/production/main_pulsos.o
+ .config_MCLRE    0xf80004          0x2 build/default/debug/main_pulsos.o
 
 .config_WDT       0xf80002          0x2
- .config_WDT      0xf80002          0x2 build/default/production/main_pulsos.o
+ .config_WDT      0xf80002          0x2 build/default/debug/main_pulsos.o
 
 .config_FCKSMEN
                   0xf80000          0x2
  .config_FCKSMEN
-                  0xf80000          0x2 build/default/production/main_pulsos.o
+                  0xf80000          0x2 build/default/debug/main_pulsos.o
 
 .text             0x0001ce        0x202
- .text            0x0001ce         0xd6 build/default/production/libreria.o
+ .text            0x0001ce         0xd6 build/default/debug/libreria.o
                   0x0001ce                  _comandoLCD
                   0x0001e4                  _datoLCD
                   0x0001fa                  _busyFlag
                   0x00021c                  _iniLCD8Bits
                   0x000286                  _printLCD
- .text            0x0002a4         0x94 build/default/production/main_pulsos.o
+ .text            0x0002a4         0x94 build/default/debug/main_pulsos.o
                   0x0002a4                  _main
                   0x0002ba                  _iniInterrupciones
                   0x0002d0                  _configurarUART1
                   0x0002e2                  _configurarADC
                   0x0002fc                  _iniPerifericos
- .text            0x000338         0x5a build/default/production/delay.o
+ .text            0x000338         0x5a build/default/debug/delay.o
                   0x000338                  _retardo1S
                   0x00034e                  _retardo5S
                   0x000364                  _retardo15mS
                   0x000376                  _retardonnmS
                   0x00038e                  _sleep
- .text            0x000392         0x3e build/default/production/espero.o
+ .text            0x000392         0x3e build/default/debug/espero.o
                   0x000392                  __U1RXInterrupt
                   0x0003a6                  __T3Interrupt
                   0x0003ac                  __ADCInterrupt
@@ -1167,9 +1173,9 @@ _0xf7738f745c859953
  .dinit           0x0003d0         0x14 data_init
 
 .text             0x0003e4         0x12
- .text            0x0003e4         0x12 build/default/production/modes.o
+ .text            0x0003e4         0x12 build/default/debug/modes.o
                   0x0003e4                  _inicio_mode
 
 .prog             0x0003f6          0x2
- .prog            0x0003f6          0x2 build/default/production/main_pulsos.o
+ .prog            0x0003f6          0x2 build/default/debug/main_pulsos.o
                   0x0003f6                  _ps_coeff

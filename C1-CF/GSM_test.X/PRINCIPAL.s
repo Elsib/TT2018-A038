@@ -136,18 +136,16 @@ RESPUESTA_GSM:  .SPACE  100
     
 CONT_LF:        .SPACE  1
     
-.SECTION .DATA
-TEMP:    .float	    0.00390625
 ;******************************************************************************
 ;SECCION DE CODIGO EN LA MEMORIA DE PROGRAMA
 ;******************************************************************************
 .text										;INICIO DE LA SECCION DE CODIGO
 
 __reset:
-        MOV		#__SP_init, 		W15		;INICIALIZA EL STACK POINTER
+        MOV	#__SP_init, 		W15		;INICIALIZA EL STACK POINTER
 
         MOV 	#__SPLIM_init, 		W0     	;INICIALIZA EL REGISTRO STACK POINTER LIMIT 
-        MOV 	W0, 				SPLIM
+        MOV 	W0, 			SPLIM
 
         NOP                       			;UN NOP DESPUES DE LA INICIALIZACION DE SPLIM
 
@@ -157,14 +155,14 @@ __reset:
 ;******************************************************************************
 ; CONFIGURACION DE INTERRUPCION DE RECEPCION DEL UART 2
 ;******************************************************************************
-		BCLR	IFS1,		#U2RXIF		;IFS1, U2RXIF = 0
-		BSET	IEC1,		#U2RXIE		;IEC1, U2RXIE = 1
+	BCLR	IFS1,		#U2RXIF		;IFS1, U2RXIF = 0
+	BSET	IEC1,		#U2RXIE		;IEC1, U2RXIE = 1
 
-;		BCLR	IFS0,		#T1IF		;IFS1, U2RXIF = 0
-;		BSET	IEC0,		#T1IE		;IEC1, U2RXIE = 1
+;	BCLR	IFS0,		#T1IF		;IFS1, U2RXIF = 0
+;	BSET	IEC0,		#T1IE		;IEC1, U2RXIE = 1
 ;******************************************************************************
-		BSET	U1MODE,		#UARTEN		;SE HABILITA EL UART 1
-		BSET	U2MODE,		#UARTEN		;SE HABILITA EL UART 2
+	BSET	U1MODE,		#UARTEN		;SE HABILITA EL UART 1
+	BSET	U2MODE,		#UARTEN		;SE HABILITA EL UART 2
         NOP
         BSET    U1STA,      #UTXEN      ;SE HABILITA LA TRANSMISION EN UART 1
         BSET    U2STA,      #UTXEN      ;SE HABILITA LA TRANSMISION EN UART 2
@@ -319,16 +317,20 @@ _WREG_INIT:
         CLR 	W14
 	
         RETURN
+	
 ;******************************************************************************
 ;DESCRIPCION:	ISR (INTERRUPT SERVICE ROUTINE) DE RECEPCION DEL UART 2
 ;*****************************************************************************
+	
+;   Después del comando CMGS contesta:
+;   <CR><LF><greater_than><space> (IRA 13, 10, 62, 32)
 __U2RXInterrupt:
-		PUSH.D	W0
+	PUSH.D	W0
 				
-		MOV		U2RXREG,	W0
+	MOV	U2RXREG,	W0
         MOV.B   W0,         [W2++]      ;GUARDANDO RESPUESTA GSM EN BUFFER
 
-        MOV     #10,        W1
+        MOV     #10,        W1	    ;#10 /LF (nueva línea)
         CPSEQ   W0,         W1
         GOTO    PREGUNTA_CR
 
@@ -336,7 +338,7 @@ __U2RXInterrupt:
         DEC     CONT_LF
 
 PREGUNTA_CR:
-        MOV     #13,        W1
+        MOV     #13,        W1	    ;#13 /CR (retorno de carro)
         CPSNE   W0,         W1
         MOV     #'D',       W0
 
@@ -344,23 +346,19 @@ PREGUNTA_CR:
         CPSNE   W0,         W1
         DEC     CONT_LF
 
-        MOV     #0X1A,      W1
+        MOV     #0X1A,      W1	    ;#0x1A /SUB (sustitución)
         CPSNE   W0,         W1
         MOV     #'Z',       W0
 
         MOV     W0,         U1TXREG
 
 FIN_ISR_U2RX:
-        BCLR 	IFS1, 		#U2RXIF
-;SE LIMPIA LA BANDERA DE INTERRUPCION DEL UART 2
+        BCLR 	IFS1,	    #U2RXIF	;SE LIMPIA LA BANDERA DE INTERRUPCION DEL UART 2
 
-		POP.D	W0
-        RETFIE                     	;REGRESO DE LA ISR
+	POP.D	W0
+        
+	RETFIE                     	;REGRESO DE LA ISR
 
 
 .END                               	;TERMINACION DEL CODIGO DE PROGRAMA EN ESTE ARCHIVO
-
-
-
-
 

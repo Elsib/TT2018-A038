@@ -9,7 +9,7 @@
 ;******************************************************************************
 ;DESCRIPCION:	ESTA RUTINA INICIALIZA EL MODEM GSM
 ;PARAMETROS: 	NINGUNO
-;RETORNO: 		NINGUNO
+;RETORNO: 	NINGUNO
 ;******************************************************************************
 INI_GSM:
         BCLR    PORTD,      #RST_GSM
@@ -31,6 +31,7 @@ ESPERA_PWR:
         NOP
 
         RETURN
+	
 ;******************************************************************************
 ;DESCRIPCION:	ESTA RUTINA MANDA UN COMANDO AL MODEM GSM
 ;PARAMETROS: 	W1, DIRECCION DEL COMANDO
@@ -85,7 +86,7 @@ ENVIANDO_CMD:
 	
 	CALL	WAIT_IFS1
 		
-	CP.B	W5,	    #0X0E
+	CP.B	W5,	   #0X0E
 	BRA     Z,         ENVIANDO_DATO_UART2
 
 ENVIANDO_DATO:	

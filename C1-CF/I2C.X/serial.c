@@ -29,38 +29,9 @@ while(EVER)
 	int entrada=0;
 	unsigned int prueba=0;
 	//int muestras[4096];
-	int i=0;
 
-	for( ; i<10; )
-	{					
-		/*
-		read(fd_serie,&cad,1);
-
-		if(cad & 0x80)
-		{
-		//printf("valor segunda parte%d\n",cad);
-			prueba=cad^0x80;
-		// printf("Valor sin bandera%d\n",prueba );
-			prueba=prueba<<6;
-		// printf("Valor con corrimiento%d\n", prueba);
-			prueba=prueba^entrada;
-		//muestras[i]=prueba;
-		i++;
-
-		// printf("Valor total=%d\n",prueba);
-			//fprintf(archivo,"%d %d\n",i,prueba );
-
-			}
-		else 
-			{
-		//		printf("valor primera parte%d\n",cad); 
-				entrada=cad;
-			}
-		
-		
-		//tcflush(fd_serie,TCIFLUSH);		
-		*/
-
+	while(1)
+	{
 		float temp = 0;
 		printf("------------------------------\n");
 
@@ -79,9 +50,6 @@ while(EVER)
 
 	}
 	close( fd_serie );
-	//fclose(archivo);
-	//system("gnuplot");
-	//system("./gnuplot");
 }
 	return 0;
 }
