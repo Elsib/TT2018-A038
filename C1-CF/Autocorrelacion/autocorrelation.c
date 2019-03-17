@@ -21,7 +21,7 @@ void autocorrelacion();
 
 int main(){
     
-    leerArchivo();
+    leerArchivo();	//Lee el archivo de prueba
     aplicarOffset();
     calcularVentana();
     
