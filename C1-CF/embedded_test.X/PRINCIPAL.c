@@ -4,7 +4,7 @@
  * BROWN OUT RESET, POWER ON RESET Y CODIGO DE PROTECCION
  * BLOQUE 2. EQUIVALENCIAS Y DECLARACIONES GLOBALES
  * BLOQUE 3. ESPACIOS DE MEMORIA: PROGRAMA, DATOS X, DATOS Y, DATOS NEAR
- * BLOQUE 4. CÓDIGO DE APLICACIÓN
+ * BLOQUE 4. C?DIGO DE APLICACI?N
  * @device: DSPIC30F4013
  * @oscillator: FRC, 7.3728MHz
  */
@@ -12,6 +12,9 @@
 #include "xc.h"
 #include <stdio.h>
 #include <libpic30.h>
+#include <math.h>
+#include <dsp.h>
+#include <p30F4013.h>
 
 /********************************************************************************/
 /* 						BITS DE CONFIGURACIÓN									*/	
@@ -63,32 +66,37 @@
 
 #define float double
 
+#define N 2000
+#define FS 512
+
 /********************************************************************************/
 /* DECLARACIONES GLOBALES														*/
 /********************************************************************************/
 /*DECLARACIÓN DE LA ISR DEL TIMER 1 USANDO __attribute__						*/
 /********************************************************************************/
-void __attribute__((__interrupt__)) _T1Interrupt( void );
+//void __attribute__((__interrupt__)) _T1Interrupt( void );
 
 void __attribute__((__interrupt__)) _U2RXInterrupt( void );
+
+void __attribute__((__interrupt__)) _ADCInterrupt( void );
 
 /********************************************************************************/
 /* CONSTANTES ALMACENADAS EN EL ESPACIO DE LA MEMORIA DE PROGRAMA				*/
 /********************************************************************************/
-int ps_coeff __attribute__ ((aligned (2), space(prog)));
+//int ps_coeff __attribute__ ((aligned (2), space(prog)));
 /********************************************************************************/
 /* VARIABLES NO INICIALIZADAS EN EL ESPACIO X DE LA MEMORIA DE DATOS			*/
 /********************************************************************************/
-int x_input[MUESTRAS] __attribute__ ((space(xmemory)));
+//int x_input[MUESTRAS] __attribute__ ((space(xmemory)));
 /********************************************************************************/
 /* VARIABLES NO INICIALIZADAS EN EL ESPACIO Y DE LA MEMORIA DE DATOS			*/
 /********************************************************************************/
-int y_input[MUESTRAS] __attribute__ ((space(ymemory)));
+//int y_input[MUESTRAS] __attribute__ ((space(ymemory)));
 /********************************************************************************/
 /* VARIABLES NO INICIALIZADAS LA MEMORIA DE DATOS CERCANA (NEAR), LOCALIZADA	*/
 /* EN LOS PRIMEROS 8KB DE RAM													*/
 /********************************************************************************/
-int var1 __attribute__ ((near));
+//int var1 __attribute__ ((near));
 
 char CMD_AT[] = "AT\r";
 char CMD_ATE0[] = "ATE0\r";
@@ -101,6 +109,18 @@ char CMD_MSG[40];
 char respuestaGSM[40];
 unsigned char j;
 char count;
+
+unsigned char flag_adc = 1;
+unsigned char flag_conv = 1;
+unsigned char flag_temp = 1;
+
+float valoresADC[N] __attribute__((space(prog)));
+float alpha = 2*PI/N;
+int adc_count;
+float vectorAC[N] __attribute__((space(prog)));
+float lpm;
+
+float autocorrelacion();
 
 unsigned short int temp_msb;
 unsigned short int temp_lsb;
@@ -132,26 +152,30 @@ extern void RETARDO_300ms();
 extern void RETARDO_1s();
 
 int main(void) {
-    unsigned char estado;
-    
     iniPerifericos();
-    //configurarADC();
+    configurarADC();
     configurarI2C();
-    //configurarTimer3();
+    configurarTimer3();
     configurarUART1();
     configurarUART2();
     iniInterrupciones();
     
-    estado = comunicacionMAX();
+    //Espera a tener los 4096 valores del adc
+    adc_count = 0;
+    while(flag_adc == 1);
     
-    if(estado == EXITO){
+    printf("Autocorrelacion");
+    lpm = autocorrelacion();
+    
+    flag_temp = comunicacionMAX();
+    if(flag_temp == 0){ //EXITO
         float temperatura = 0.0;
         
         temperatura += temp_msb;
         float pb = 0.00390625 * temp_lsb;
 		temperatura += pb;
         
-        sprintf(CMD_MSG, "Temperatura: %f\x1A\r", temperatura);
+        sprintf(CMD_MSG, "lpm: %f \nTemperatura: %f \x1A\r", lpm, temperatura);
     }
     
     iniGSM();
@@ -198,11 +222,11 @@ void iniPerifericos(){
     Nop();
     LATB = 0;
     Nop();
-    //TRISBbits.TRISB2=1;     //AN2     !!!! REVISAR QUÉ CAMBIAR EN ADPCFG
+    TRISBbits.TRISB2=1;     //AN2     !!!! REVISAR QUÉ CAMBIAR EN ADPCFG
     Nop();
     //En GSM está esto, duda para quitar o cambiar analógico el canal que utilizamos!!!!
     //SETM	ADPCFG ; SETM = 0xFFFF, ADPCFG Analog input pin in Digital mode: 1
-    ADPCFG = 0xFFFF;
+    //SE MOVIÓ AL configurarADC
     Nop();
     
     // Para el UART1, transmite a PC
@@ -277,7 +301,8 @@ void configurarADC(){
     ADCON2 = 0x0000;    //
     ADCON3 = 0x0F02;    //F para 10000 = 16TAD, 2 para ADCS (A/D Conversion Clock Select bits): 000010 = TCY/2*(ADCS<5:0> + 1) = TCY/2
     ADCHS = 0x0002;     //2 para AN3 como entrada del canal 0
-    ADPCFG = 0xFFF8;    //;1 Analog Input in Digital Mode; 0 Analog Input in Analog Mode
+    ADPCFG=0xFFFF;      //;1 Analog Input in Digital Mode; 0 Analog Input in Analog Mode
+    ADPCFGbits.PCFG2 = 0;
     ADCSSL = 0x0000;    //Skip ANx for input scan
 }
 
@@ -289,11 +314,11 @@ void configurarTimer3(){
 
 //Habilitar comunicaciones cuando se inicializan las interrupciones o cuando se configura?
 void iniInterrupciones(){
-//    IFS0bits.T3IF=0;    //Timer3 Interrupt Flag Status bit
-//    IEC0bits.T3IE=1;    //Timer3 Interrupt Enable bit (Interrupt request enabled)
+    IFS0bits.T3IF=0;    //Timer3 Interrupt Flag Status bit
+    IEC0bits.T3IE=1;    //Timer3 Interrupt Enable bit (Interrupt request enabled)
     
-//    IFS0bits.ADIF=0;    //A/D Conversion Complete Interrupt Flag Status bit
-//    IEC0bits.ADIE=1;    //A/D Conversion Complete Interrupt Enable bit (Interrupt request enabled)
+    IFS0bits.ADIF=0;    //A/D Conversion Complete Interrupt Flag Status bit
+    IEC0bits.ADIE=1;    //A/D Conversion Complete Interrupt Enable bit (Interrupt request enabled)
     
 //    IFS0bits.T1IF = 0;      //Timer1 Interrupt Flag Status bit
 //    IEC0bits.T1IE = 1;      //Timer1 Interrupt Enable bit (Interrupt request enabled)
@@ -303,7 +328,7 @@ void iniInterrupciones(){
     
     //----- Habilitar ------
     
-    //T3CONbits.TON=1;    //Activar el Timer3
+    T3CONbits.TON=1;    //Activar el Timer3
     
     //Para UART1
 	U1MODEbits.UARTEN=1;    //UART1 Enable bit: 1 para habilitar
@@ -314,7 +339,7 @@ void iniInterrupciones(){
     U2STAbits.UTXEN=1;      //Transmit Enable bit: 1 para habilitar
     
     //Para ADC
-   //ADCON1bits.ADON=1;      //A/D Operating Mode bit: 1 para activar
+    ADCON1bits.ADON=1;      //A/D Operating Mode bit: 1 para activar
     
     //Para I2C
     I2CCONbits.I2CEN = 1;   //I2C Enable bit: 1 para habilitar y configurar SDA y SCL como puertos seriales
@@ -389,9 +414,9 @@ unsigned char comunicacionMAX(){
 /* SE USA PUSH.S PARA GUARDAR LOS REGISTROS W0, W1, W2, W3, C, Z, N Y DC EN LOS */
 /* REGISTROS SOMBRA																*/
 /********************************************************************************/
-void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt( void ){
-    IFS0bits.T1IF = 0;    //SE LIMPIA LA BANDERA DE INTERRUPCION DEL TIMER 1
-}
+//void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt( void ){
+//    IFS0bits.T1IF = 0;    //SE LIMPIA LA BANDERA DE INTERRUPCION DEL TIMER 1
+//}
 
 
 void iniGSM(){
@@ -437,7 +462,7 @@ void enviarComandoGSM(char comando[]){
 /* Para el mensaje: <CR><LF><greater_than><space>                               */
 /********************************************************************************/
 
-void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
+void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void)
 {
     char resp;
 
@@ -465,3 +490,104 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
     
     IFS1bits.U2RXIF = 0;
 }
+
+
+/********************************************************************************/
+/* DESCRICION:	ISR (INTERRUPT SERVICE ROUTINE) DEL UART 2						*/
+/* Esta rutina cuenta los caracteres <LF> recibidos para determinar la respuesta*/
+/*                                                                              */
+/* En general la respuesta del módulo GSM es: <CR><LF>OK<CR><LF>                */
+/* Para el mensaje: <CR><LF><greater_than><space>                               */
+/********************************************************************************/
+
+void __attribute__((__interrupt__, no_auto_psv)) _ADCInterrupt(void)
+{   
+    char buffer[12];
+    sprintf(buffer, "count: %d\n", adc_count);
+    printf(buffer);
+    
+    //Sólo lo hará si el arreglo de valores del adc se encuentra vacío
+    if(adc_count <= N-1){
+        
+        float ADCValue;
+        float ventana;
+
+        ADCValue = ADCBUF0;
+        
+        //Offset
+        ADCValue = ADCValue - (float)2048;
+        //Ventana
+        ventana = 0.54 - (0.46 * cosf(alpha*adc_count));
+        //almacena en el arreglo
+        valoresADC[adc_count] = ADCValue * ventana;
+        
+        sprintf(buffer, "ADC: %f\n", ADCValue);
+        printf(buffer);
+        
+        adc_count++;
+    }
+    else{
+        ADCON1bits.ADON = 0;
+        T3CONbits.TON = 0;
+        IEC0bits.T3IE = 0;
+        IEC0bits.ADIE = 0;
+        flag_adc = 0;
+        printf("Fin sensado\n");
+    }
+    
+    IFS0bits.ADIF = 0;
+}
+
+
+/*
+* Función para calcular la autocorrelación dado un vector de entrada.
+* Busca el valor más alto se detiene en ese punto para no recorrer todo el vector.
+* Caclula la frecuencia de a partir de la posición del valor máximo, dividiendo la frecuencia de muestreo entre la posición del valor máximo
+*/
+float autocorrelacion(){
+    float precalc = 0;
+    float max = 0;
+    int flag = 0;
+    int pos = 0;
+
+    int n;
+    int m;
+    for(n = 0; n < N; n++){
+        precalc = 0;
+
+        //Autocorrelación parcial
+        for(m = 0; m <= N-1-n; m++){
+            precalc += valoresADC[m] * valoresADC[m+n];
+        }
+
+        vectorAC[n] = precalc/(float)N;
+
+        printf("Cxx[%d] = %f \n", n, vectorAC[n]);
+
+        //Bandera para evitar que busque máximos desde el inicio, busca a partir de cruzar el 0
+        if(vectorAC[n] < 0)
+            flag = 1;
+
+        if(flag){
+            //Busca el valor máximo de la autocorrelación
+            if(vectorAC[n] > max){
+                max = vectorAC[n];
+                pos = n;
+            }
+            
+            //Si ya encontró un máximo y comienza a encontrar valores menores, termina el for
+            if(vectorAC[n-1] > vectorAC[n] && vectorAC[n] > 0)
+                break;
+        }
+        
+    }
+
+    printf("---------------------------------------------\n");
+    printf("\tValor máximo=%f en i=%d \n", max, pos);
+    printf("\tFrecuencia = %f \n", (float)FS/pos);
+    printf("\tlpm = %f \n", (float)FS/pos*60);
+    printf("---------------------------------------------\n");
+
+    return FS/pos*60;
+}
+

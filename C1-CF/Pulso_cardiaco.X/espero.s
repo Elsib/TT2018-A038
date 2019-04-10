@@ -41,6 +41,8 @@
 ;    RRNC W3,W0 ;DUDA CORRIMIETO A LA dereceha
     LSR W0,#0x0006,W2 ;Corriemiento a la derecha
     BSET W2,#7
+;    MOV #'-', W4
+    MOV W4, U1TXREG
     MOV W1,U1TXREG
     MOV W2,U1TXREG
     
