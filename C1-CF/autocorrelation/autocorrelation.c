@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 512
-#define FS 512
+#define N 4096
+#define FS 16
 
 FILE *fp;
 int val = 0;
@@ -55,7 +55,7 @@ int main(){
 * Función para leer los datos del archivo de entrada con los valores del sensor de pulso
 */
 void leerArchivo(){
-    fp = fopen("pruebaPulseSensor512.txt", "r");
+    fp = fopen("prueba16hz_7.txt", "r");
 
     if(fp == NULL){
         perror("Error al abrir el arhivo. \n");
@@ -128,11 +128,9 @@ void guardarArchivo(){
 
     //guardar valores de la ventana de hamming
     ap_arch = fopen("hamming.dat", "w");
-    fprintf(ap_arch, "%s", "{");
     for (register int n = 0; n < N; n++){
-		fprintf(ap_arch, "%f,", ventana[n]);
+		fprintf(ap_arch, "%f\n", ventana[n]);
 	}
-    fprintf(ap_arch, "%s", "}");
     
 	fclose(ap_arch);
 

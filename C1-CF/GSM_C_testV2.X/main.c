@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <libpic30.h>
 #include <string.h>
-#include <p30F4013.h>
 
 
 //_FOSC(CSW_FSCM_OFF & FRC); 
@@ -38,22 +37,6 @@
 /********************************************************************************/
 void __attribute__((__interrupt__)) _U2RXInterrupt( void );
 
-/********************************************************************************/
-/* CONSTANTES ALMACENADAS EN EL ESPACIO DE LA MEMORIA DE PROGRAMA				*/
-/********************************************************************************/
-//int ps_coeff __attribute__ ((aligned (2), space(prog)));
-/********************************************************************************/
-/* VARIABLES NO INICIALIZADAS EN EL ESPACIO X DE LA MEMORIA DE DATOS			*/
-/********************************************************************************/
-//int x_input[MUESTRAS] __attribute__ ((space(xmemory)));
-/********************************************************************************/
-/* VARIABLES NO INICIALIZADAS EN EL ESPACIO Y DE LA MEMORIA DE DATOS			*/
-/********************************************************************************/
-//int y_input[MUESTRAS] __attribute__ ((space(ymemory)));
-/********************************************************************************/
-/* VARIABLES NO INICIALIZADAS LA MEMORIA DE DATOS CERCANA (NEAR), LOCALIZADA	*/
-/* EN LOS PRIMEROS 8KB DE RAM													*/
-/********************************************************************************/
 
 //****Comandos AT****
 //Para configurar el envío de un mensaje de bienvenida cuando esté operacional
@@ -66,10 +49,8 @@ char CMD_AT_CMGF[] = "AT+CMGF=1\r";
 char CMD_AT_CMGS[] = "AT+CMGS=\"+525543612094\"\r";
 char CMD_MENSAJE[] = "Temperatura: \x1A\r";
 
-//char respuestaGSM[40];
+char respuestaGSM[40];
 unsigned char j;
-unsigned short int x[480];
-unsigned short int y[480];
 
 char count;
 
@@ -105,11 +86,11 @@ int main(void) {
     RETARDO_1s();
     RETARDO_1s();
     
-    //enviarComandoGSM(CMD_AT);
-    //enviarComandoGSM(CMD_ATE0);
-    //enviarComandoGSM(CMD_AT_CMGF);
-    //enviarComandoGSM(CMD_AT_CMGS);
-    //enviarComandoGSM(CMD_MENSAJE);
+    enviarComandoGSM(CMD_AT);
+    enviarComandoGSM(CMD_ATE0);
+    enviarComandoGSM(CMD_AT_CMGF);
+    enviarComandoGSM(CMD_AT_CMGS);
+    enviarComandoGSM(CMD_MENSAJE);
     
     while(EVER){
         Nop();
@@ -230,13 +211,13 @@ void enviarComandoGSM(char comando[]){
     
     printUART2(comando);
     
-    //count = 2;
-    //j = 0;
+    count = 2;
+    j = 0;
     //Espera respuesta
-    //while(count > 0){
-//        U1TXREG = 'x';
-  //      RETARDO_1s();
-    //}   //count disminuye con la interrupci?n U2RXInterrupt
+    while(count > 0){
+        U1TXREG = 'x';
+        RETARDO_1s();
+    }   //count disminuye con la interrupci?n U2RXInterrupt
     
 }
 
@@ -254,7 +235,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void )
     resp = U2RXREG;
     U1TXREG = resp;
     
-    //respuestaGSM[j] = resp;
+    respuestaGSM[j] = resp;
     j++;
     
     if(resp == 13){     //<CR>

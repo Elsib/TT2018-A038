@@ -15,11 +15,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <unistd.h>
 
 #define muestras 4096
-#define n 512
-#define FS 512
+#define n 64
+#define FS 16
 
 FILE *fp;
 
@@ -30,7 +29,7 @@ float Cxx[n];
 
 int main(){
 
-    fp = fopen("pruebaPulseSensor512.txt", "r");
+    fp = fopen("prueba16hz_7.txt", "r");
 
     if(fp == NULL){
         perror("Error al abrir el arhivo. \n");
@@ -64,6 +63,7 @@ int main(){
     //Busca el valor máximo de la autocorrelación
     float max = 0;
     int pos = 0;
+    
     for(int i = 0; i < n; i++){
         Cxx[i] = Cxx[i]/muestras;
 
