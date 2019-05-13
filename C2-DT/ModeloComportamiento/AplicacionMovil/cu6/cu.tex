@@ -1,6 +1,6 @@
 \begin{UseCase}{CU6}{Consultar registros de signos vitales}
 	{	
-		Este caso de uso permite al \hyperlink{actor:usuario}{Usuario} eliminar la información registrada de un paciente. 		 
+		Este caso de uso permite al \hyperlink{actor:usuario}{Usuario} consultar el historial de mediciones de signos vitales registrados para un paciente en un tiempo determinado.
 	}
 \UCccitem{Versión}{0.1}
 \UCccsection{Administración de Requerimientos}
@@ -25,7 +25,7 @@
 %-------------------------------------------------------------------
 	\UCsection{Atributos}
 	\UCitem{Actor(es)}{\hyperlink{actor:usuario}{Usuario}.}
-		\UCitem{Propósito}{Proporcionar un mecanismo que le permita al \hyperlink{actor:usuario}{Usuario} eliminar un paciente previamente registrado.}
+		\UCitem{Propósito}{Proporcionar un mecanismo que le permita al \hyperlink{actor:usuario}{Usuario} consultat el historial de mediciones de un paciente.}
 	\UCitem{Entradas}{
 		\begin{UClist}
 			\UCli Ninguna.
@@ -33,7 +33,7 @@
 	}
 	\UCitem{Salidas}{
 		\begin{UClist}
-			\UCli \cdtIdRef{MSG1}{Operación exitosa}: Se muestra en la pantalla \cdtIdRef{IU1}{Consultar pacientes} indicando al actor que la información del paciente se eliminó exitosamente.
+			\UCli Tabla que muestra Fecha, hora, valor de temperatura y valor de frecuencia cardíaca de cada medición registrada del paciente.
 		\end{UClist}
 		
 	}
@@ -45,8 +45,7 @@
 	
 	\UCitem{Postcondiciones}{
 		\begin{UClist}
-			\UCli La información del paciente seleccionado será eliminada.
-			\UCli El actor no podrá solicitar más mediciones de signos vitales para el paciente eliminado.
+			\UCli Ninguna
 		\end{UClist}
 	}
 
@@ -58,24 +57,20 @@
 	
 	\UCitem{Errores}{
 		\begin{UClist}
-			\UCli Ninguno.
+			\UCli Mensaje \cdtIdRef{MSG7}{No hay registros}. Se muestra en la pantalla indicando al actor que no existe información sobre el paciente.
 		\end{UClist}
 	}
 	\UCitem{Tipo}{Terciario, extiende del caso de uso \cdtIdRef{CU3}{Consultar información del paciente}.}
 \end{UseCase}
 
 \begin{UCtrayectoria}
-	\UCpaso[\UCactor] Da clic en el icono \btnEliminar{} de la pantalla \cdtIdRef{IU3}{Consultar información del paciente}.
-	\UCpaso[\UCsist] \label{cu5:obtieneNombre}Obtiene el nombre del paciente que se requiere eliminar.
-	\UCpaso[\UCsist] Muestra el mensaje \cdtIdRef{MSG6}{Eliminar elemento} en la pantalla \cdtIdRef{CU3}{Consultar información del paciente} con los siguientes parámetros: DETERMINADO ELEMENTO: {\em al paciente} y VALOR: nombre del paciente obtenido en el paso \ref{cu5:obtieneNombre} (¿Desea eliminar al paciente Carlos Granados?)
-	\UCpaso[\UCactor] Selecciona la opción \cdtButton{Sí} del mensaje. \refTray{A}
-	\UCpaso[\UCsist] Elimina la información registrada del paciente.
-	\UCpaso[\UCsist] Muestra el mensaje \cdtIdRef{MSG1}{Operación exitosa} en la pantalla \cdtIdRef{IU1}{Consultar pacientes} indicando al actor que la eliminación se realizó correctamente.
+	\UCpaso[\UCactor] Da clic en el icono \btnMonitoreo{} de la pantalla \cdtIdRef{IU3}{Consultar información del paciente}.
+	\UCpaso[\UCsist] \label{cu6:ObtieneMediciones}Obtiene la fecha, hora, valor de temperatura y valor de frecuencia cardíaca de cada medición registrada para el paciente seleccionado. \refTray{A}
+	\UCpaso[\UCsist] Muestra la pantalla \cdtIdRef{IU6}{Consultar registros de signos vitales} con la tabla Historial de mediciones registradas y lo valores obtenidos en el paso \ref{cu6:ObtieneMediciones}.
 \end{UCtrayectoria}
 
 
 %-----------------------------------------------------------
-\begin{UCtrayectoriaA}[Fin del caso de uso]{A}{El actor no confirma la eliminación del paciente.}
-	\UCpaso[\UCactor] Selecciona la opción \cdtButton{No} del mensaje.
-	\UCpaso[\UCsist] Muestra la pantalla \cdtIdRef{CU3}{Consultar información del paciente}.
+\begin{UCtrayectoriaA}[Fin del caso de uso]{A}{No existen mediciones registradas del paciente.}
+	\UCpaso[\UCsist] Muestra el mensaje \cdtIdRef{MSG7}{No hay registros}.
 \end{UCtrayectoriaA}

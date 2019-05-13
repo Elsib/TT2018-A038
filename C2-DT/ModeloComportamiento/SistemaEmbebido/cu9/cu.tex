@@ -1,7 +1,11 @@
-\begin{UseCase}{CU9}{Enviar medición}
+\begin{UseCase}{CU7}{Enviar mediciones}
 	{	
 
-		 
+		 Este casos de uso permite al sistema enviar un informe de los valores de los signos vitales de un paciente mediante un mensaje SMS a al número celular de la persona interesada en el monitoreo. El envió de las mediciones puede realizarse en dos momentos: 
+		 \begin{enumerate}
+		 	\item Cuando se sobrepasa uno de los umbrales establecidos para el valor de temperatura o frecuencia cardíaca.
+		 	\item Cuando se cumple el tiempo definido de envío de muestras.
+		 \end{enumerate}
 		 
 	}
 \UCccitem{Versión}{0.1}
@@ -29,18 +33,21 @@
 	\UCitem{Actor(es)}{\cdtRef{Actor:sistema}{Sistema}}
 	\UCitem{Entradas}{
 		\begin{UClist}
-			\UCli Ninguno
+			\UCli Valores analógicos de frecuencia y temperatura del paciente.
 		\end{UClist}	
 	}
 	\UCitem{Salidas}{
 		\begin{UClist}
-			\UCli ...
+			\UCli Valor de medición de temperatura y frecuencia cardíaca del paciente.
+			\UCli Fecha y hora de envío del mensaje SMS.
+			\UCli Mensaje SMS con la información obtenida.
 		\end{UClist}
 		
 	}
 	\UCitem{Precondiciones}{
 		\begin{UClist}
-			\UCli ...
+			\UCli Que se haya cumplido el tiempo definido de envío de mensaje con mediciones.
+			\UCli Que uno de los valores de temperatura o frecuencia cardíaca se encuentre fuera de los umbrales establecidos.
 		\end{UClist}
 	}
 	
