@@ -1,21 +1,21 @@
-Microchip Technology Inc, v1.35 (A)
+Microchip Technology Inc, v1.36 (B)
 
 Tool Name:
-  /opt/microchip/xc16/v1.35/bin/bin/../bin/elf-ld
+  /opt/microchip/xc16/v1.36/bin/bin/../bin/elf-ld
 
 Command:
   -p30F4013 \
   -o \
   dist/default/production/Pulso_cardiaco.X.production.elf \
-  -L/opt/microchip/xc16/v1.35/bin/bin/.. \
-  -L/opt/microchip/xc16/v1.35/bin/bin/../../lib \
-  -L/opt/microchip/xc16/v1.35/bin/bin/../../support/PIC24E/gld \
-  -L/opt/microchip/xc16/v1.35/bin/bin/../../support/PIC24F/gld \
-  -L/opt/microchip/xc16/v1.35/bin/bin/../../support/PIC24H/gld \
-  -L/opt/microchip/xc16/v1.35/bin/bin/../../support/dsPIC30F/gld \
-  -L/opt/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33C/gld \
-  -L/opt/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33E/gld \
-  -L/opt/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33F/gld \
+  -L/opt/microchip/xc16/v1.36/bin/bin/.. \
+  -L/opt/microchip/xc16/v1.36/bin/bin/../../lib \
+  -L/opt/microchip/xc16/v1.36/bin/bin/../../support/PIC24E/gld \
+  -L/opt/microchip/xc16/v1.36/bin/bin/../../support/PIC24F/gld \
+  -L/opt/microchip/xc16/v1.36/bin/bin/../../support/PIC24H/gld \
+  -L/opt/microchip/xc16/v1.36/bin/bin/../../support/dsPIC30F/gld \
+  -L/opt/microchip/xc16/v1.36/bin/bin/../../support/dsPIC33C/gld \
+  -L/opt/microchip/xc16/v1.36/bin/bin/../../support/dsPIC33E/gld \
+  -L/opt/microchip/xc16/v1.36/bin/bin/../../support/dsPIC33F/gld \
   build/default/production/delay.o \
   build/default/production/espero.o \
   build/default/production/libreria.o \
@@ -48,11 +48,11 @@ Command:
 Optional library libp30F4013.a not found
 Archive member included because of file (symbol)
 
-/opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(crt0_standard.o)
+/opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-pic30-elf.a(crt0_standard.o)
                               (__resetPRI)
-/opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(data_init_standard.o)
-                              /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(crt0_standard.o) (__data_init_standard)
-/opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(crt_start_mode_normal.Leo)
+/opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-pic30-elf.a(data_init_standard.o)
+                              /opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-pic30-elf.a(crt0_standard.o) (__data_init_standard)
+/opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-pic30-elf.a(crt_start_mode_normal.Leo)
                               (__crt_start_mode_normal)
 
 
@@ -76,28 +76,28 @@ CodeGuard EEPROM Memory:
   boot    (none)
 
 
-xc16-ld 1.35 (A)
+xc16-ld 1.36 (B)
 
 "program" Memory  [Origin = 0x100, Length = 0x7f00]
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100                0xce           0x135  (309)
-.text                        0x1ce               0x202           0x303  (771)
-.dinit                       0x3d0                0x14            0x1e  (30)
-.text                        0x3e4                0x12            0x1b  (27)
-.prog                        0x3f6                 0x2             0x3  (3)
+.text                        0x1ce               0x206           0x309  (777)
+.dinit                       0x3d4                0x14            0x1e  (30)
+.text                        0x3e8                0x12            0x1b  (27)
+.prog                        0x3fa                 0x2             0x3  (3)
 
-                 Total "program" memory used (bytes):          0x474  (1140) 2%
+                 Total "program" memory used (bytes):          0x47a  (1146) 2%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-_0xf7738f185c859953          0x800                   0            0x80  (128)
+_0xf76e3f185c9422a6          0x800                   0            0x80  (128)
 .nbss                        0x880                   0            0x18  (24)
-_0xf7738f745c859953          0xf80                   0            0x80  (128)
+_0xf76e3f745c9422a6          0xf80                   0            0x80  (128)
 
                  Total "data" memory used (bytes):          0x118  (280) 13%
 
@@ -146,26 +146,26 @@ External Symbols in Program Memory (by address):
                   0x0002ba                  _iniInterrupciones
                   0x0002d0                  _configurarUART1
                   0x0002e2                  _configurarADC
-                  0x0002fc                  _iniPerifericos
-                  0x000338                  _retardo1S
-                  0x00034e                  _retardo5S
-                  0x000364                  _retardo15mS
-                  0x000376                  _retardonnmS
-                  0x00038e                  _sleep
-                  0x000392                  __U1RXInterrupt
-                  0x0003a6                  __T3Interrupt
-                  0x0003ac                  __ADCInterrupt
-                  0x0003e4                  _inicio_mode
-                  0x0003f6                  _ps_coeff
+                  0x0002fe                  _iniPerifericos
+                  0x00033a                  _retardo1S
+                  0x000350                  _retardo5S
+                  0x000366                  _retardo15mS
+                  0x000378                  _retardonnmS
+                  0x000390                  _sleep
+                  0x000394                  __U1RXInterrupt
+                  0x0003a8                  __T3Interrupt
+                  0x0003ae                  __ADCInterrupt
+                  0x0003e8                  _inicio_mode
+                  0x0003fa                  _ps_coeff
                   0xf8000a                  __FGS.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x0003ac                  __ADCInterrupt
+                  0x0003ae                  __ADCInterrupt
                   0x0001c8                  __DefaultInterrupt
                   0xf8000a                  __FGS.sec
-                  0x0003a6                  __T3Interrupt
-                  0x000392                  __U1RXInterrupt
+                  0x0003a8                  __T3Interrupt
+                  0x000394                  __U1RXInterrupt
                   0x000152                  __data_init
                   0x000152                  __data_init_standard
                   0x00013c                  __psv_init
@@ -177,16 +177,16 @@ External Symbols in Program Memory (by name):
                   0x0001e4                  _datoLCD
                   0x0002ba                  _iniInterrupciones
                   0x00021c                  _iniLCD8Bits
-                  0x0002fc                  _iniPerifericos
-                  0x0003e4                  _inicio_mode
+                  0x0002fe                  _iniPerifericos
+                  0x0003e8                  _inicio_mode
                   0x0002a4                  _main
                   0x000286                  _printLCD
-                  0x0003f6                  _ps_coeff
-                  0x000364                  _retardo15mS
-                  0x000338                  _retardo1S
-                  0x00034e                  _retardo5S
-                  0x000376                  _retardonnmS
-                  0x00038e                  _sleep
+                  0x0003fa                  _ps_coeff
+                  0x000366                  _retardo15mS
+                  0x00033a                  _retardo1S
+                  0x000350                  _retardo5S
+                  0x000378                  _retardonnmS
+                  0x000390                  _sleep
 
 ConfiguraciÃ³n de la Memoria
 
@@ -220,7 +220,7 @@ LOAD build/default/production/main_pulsos.o
 LOAD build/default/production/modes.o
                     0x0001                  __MPLAB_BUILD = 0x1
 LOAD p30F4013
-LOAD /opt/microchip/xc16/v1.35/bin/bin/../../lib/libfx-elf.a
+LOAD /opt/microchip/xc16/v1.36/bin/bin/../../lib/libfx-elf.a
                     0x8005c0                  __FUID0 = 0x8005c0
                     0x8005c2                  __FUID1 = 0x8005c2
                     0x8005c4                  __FUID2 = 0x8005c4
@@ -249,11 +249,11 @@ LOAD /opt/microchip/xc16/v1.35/bin/bin/../../lib/libfx-elf.a
 
 .text             0x000100         0xce
  *(.init)
- .init            0x000100         0x4c /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(crt0_standard.o)
+ .init            0x000100         0x4c /opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-pic30-elf.a(crt0_standard.o)
                   0x000100                  __reset
                   0x000100                  __resetPRI
                   0x00013c                  __psv_init
- .init            0x00014c         0x7c /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(data_init_standard.o)
+ .init            0x00014c         0x7c /opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-pic30-elf.a(data_init_standard.o)
                   0x000152                  __data_init
                   0x000152                  __data_init_standard
  *(.user_init)
@@ -266,7 +266,7 @@ LOAD /opt/microchip/xc16/v1.35/bin/bin/../../lib/libfx-elf.a
  *(.libdsp)
  *(.lib*)
  .libpic30_crt_start_mode
-                  0x0001cc          0x2 /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(crt_start_mode_normal.Leo)
+                  0x0001cc          0x2 /opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-pic30-elf.a(crt_start_mode_normal.Leo)
                   0x0001cc                  __crt_start_mode_normal
                   0x0001cc                  __crt_start_mode
 
@@ -302,7 +302,7 @@ __RESERVED2
 
 __FGS             0xf8000a          0x2
  *(__FGS.sec*)
- __FGS.sec        0xf8000a          0x2 /CW/_FGSð.Ñ	$/Ñ	__FGS.sec
+ __FGS.sec        0xf8000a          0x2 /CW/_FGSÀúuôúu__FGS.sec
                   0xf8000a                  __FGS.sec
 
 __FICD
@@ -317,13 +317,13 @@ userdata
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x1153
+.debug_info       0x000000       0x1297
  *(.debug_info)
- .debug_info      0x000000         0x97 build/default/production/delay.o
- .debug_info      0x000097         0x98 build/default/production/espero.o
- .debug_info      0x00012f         0x9a build/default/production/libreria.o
- .debug_info      0x0001c9        0xef3 build/default/production/main_pulsos.o
- .debug_info      0x0010bc         0x97 build/default/production/modes.o
+ .debug_info      0x000000         0x94 build/default/production/delay.o
+ .debug_info      0x000094         0x95 build/default/production/espero.o
+ .debug_info      0x000129         0x97 build/default/production/libreria.o
+ .debug_info      0x0001c0       0x1043 build/default/production/main_pulsos.o
+ .debug_info      0x001203         0x94 build/default/production/modes.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x155
@@ -334,21 +334,21 @@ userdata
  .debug_abbrev    0x00003c        0x105 build/default/production/main_pulsos.o
  .debug_abbrev    0x000141         0x14 build/default/production/modes.o
 
-.debug_line       0x000000        0x206
+.debug_line       0x000000        0x208
  *(.debug_line)
  .debug_line      0x000000         0x60 build/default/production/delay.o
- .debug_line      0x000060         0x51 build/default/production/espero.o
- .debug_line      0x0000b1         0x90 build/default/production/libreria.o
- .debug_line      0x000141         0x8b build/default/production/main_pulsos.o
- .debug_line      0x0001cc         0x3a build/default/production/modes.o
+ .debug_line      0x000060         0x52 build/default/production/espero.o
+ .debug_line      0x0000b2         0x90 build/default/production/libreria.o
+ .debug_line      0x000142         0x8c build/default/production/main_pulsos.o
+ .debug_line      0x0001ce         0x3a build/default/production/modes.o
 
 .debug_frame      0x000000         0xa0
  *(.debug_frame)
  .debug_frame     0x000000         0xa0 build/default/production/main_pulsos.o
 
-.debug_str        0x000000         0x5a
+.debug_str        0x000000         0x65
  *(.debug_str)
- .debug_str       0x000000         0x5a build/default/production/main_pulsos.o
+ .debug_str       0x000000         0x65 build/default/production/main_pulsos.o
 
 .debug_loc
  *(.debug_loc)
@@ -1071,38 +1071,38 @@ userdata
                     0x0216                  UART2 = 0x216
                     0x0216                  _UART2 = 0x216
 START GROUP
-LOAD /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a
-LOAD /opt/microchip/xc16/v1.35/bin/bin/../../lib/libm-elf.a
-LOAD /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-c-elf.a
+LOAD /opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-pic30-elf.a
+LOAD /opt/microchip/xc16/v1.36/bin/bin/../../lib/libm-elf.a
+LOAD /opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-c-elf.a
 END GROUP
 OUTPUT(dist/default/production/Pulso_cardiaco.X.production.elf elf32-pic30)
-LOAD /CW/_FGSð.Ñ	$/Ñ	__FGS.sec
+LOAD /CW/_FGSÀúuôúu__FGS.sec
 LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000078        0x129
+                  0x000078        0x14a
  .debug_pubtypes
-                  0x000078        0x129 build/default/production/main_pulsos.o
+                  0x000078        0x14a build/default/production/main_pulsos.o
 
 __c30_signature
-                  0x0001a1         0x12
+                  0x0001c2         0x12
  __c30_signature
-                  0x0001a1          0x6 build/default/production/main_pulsos.o
+                  0x0001c2          0x6 build/default/production/main_pulsos.o
  __c30_signature
-                  0x0001a7          0x6 /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(crt0_standard.o)
+                  0x0001c8          0x6 /opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-pic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x0001ad          0x6 /opt/microchip/xc16/v1.35/bin/bin/../../lib/liblega-pic30-elf.a(data_init_standard.o)
+                  0x0001ce          0x6 /opt/microchip/xc16/v1.36/bin/bin/../../lib/liblega-pic30-elf.a(data_init_standard.o)
 
-_0xf7738f185c859953
+_0xf76e3f185c9422a6
                     0x0800         0x80
- _0xf7738f185c859953
+ _0xf76e3f185c9422a6
                     0x0800         0x80 build/default/production/main_pulsos.o
                     0x0800                  _x_input
 
-_0xf7738f745c859953
+_0xf76e3f745c9422a6
                     0x0f80         0x80
- _0xf7738f745c859953
+ _0xf76e3f745c9422a6
                     0x0f80         0x80 build/default/production/main_pulsos.o
                     0x0f80                  _y_input
 
@@ -1139,37 +1139,37 @@ _0xf7738f745c859953
  .config_FCKSMEN
                   0xf80000          0x2 build/default/production/main_pulsos.o
 
-.text             0x0001ce        0x202
+.text             0x0001ce        0x206
  .text            0x0001ce         0xd6 build/default/production/libreria.o
                   0x0001ce                  _comandoLCD
                   0x0001e4                  _datoLCD
                   0x0001fa                  _busyFlag
                   0x00021c                  _iniLCD8Bits
                   0x000286                  _printLCD
- .text            0x0002a4         0x94 build/default/production/main_pulsos.o
+ .text            0x0002a4         0x96 build/default/production/main_pulsos.o
                   0x0002a4                  _main
                   0x0002ba                  _iniInterrupciones
                   0x0002d0                  _configurarUART1
                   0x0002e2                  _configurarADC
-                  0x0002fc                  _iniPerifericos
- .text            0x000338         0x5a build/default/production/delay.o
-                  0x000338                  _retardo1S
-                  0x00034e                  _retardo5S
-                  0x000364                  _retardo15mS
-                  0x000376                  _retardonnmS
-                  0x00038e                  _sleep
- .text            0x000392         0x3e build/default/production/espero.o
-                  0x000392                  __U1RXInterrupt
-                  0x0003a6                  __T3Interrupt
-                  0x0003ac                  __ADCInterrupt
+                  0x0002fe                  _iniPerifericos
+ .text            0x00033a         0x5a build/default/production/delay.o
+                  0x00033a                  _retardo1S
+                  0x000350                  _retardo5S
+                  0x000366                  _retardo15mS
+                  0x000378                  _retardonnmS
+                  0x000390                  _sleep
+ .text            0x000394         0x40 build/default/production/espero.o
+                  0x000394                  __U1RXInterrupt
+                  0x0003a8                  __T3Interrupt
+                  0x0003ae                  __ADCInterrupt
 
-.dinit            0x0003d0         0x14
- .dinit           0x0003d0         0x14 data_init
+.dinit            0x0003d4         0x14
+ .dinit           0x0003d4         0x14 data_init
 
-.text             0x0003e4         0x12
- .text            0x0003e4         0x12 build/default/production/modes.o
-                  0x0003e4                  _inicio_mode
+.text             0x0003e8         0x12
+ .text            0x0003e8         0x12 build/default/production/modes.o
+                  0x0003e8                  _inicio_mode
 
-.prog             0x0003f6          0x2
- .prog            0x0003f6          0x2 build/default/production/main_pulsos.o
-                  0x0003f6                  _ps_coeff
+.prog             0x0003fa          0x2
+ .prog            0x0003fa          0x2 build/default/production/main_pulsos.o
+                  0x0003fa                  _ps_coeff

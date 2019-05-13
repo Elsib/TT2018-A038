@@ -171,7 +171,6 @@ void configurarADC()
 /****************************************************************************/
 void iniPerifericos( void )
 {
-    //ADPCFG = 0xFFFF;
     PORTA=0;
     Nop();
     TRISA=0;

@@ -1,7 +1,7 @@
 .include "p30F4013.inc"	
 
 .global __T3Interrupt
-.global __ADCInterrupt
+;.global __ADCInterrupt
 
 __T3Interrupt:
 	BTG	    LATD,   #LATD0
@@ -10,27 +10,28 @@ __T3Interrupt:
 	RETFIE
 
 
-__ADCInterrupt:
-	PUSH W0
-	PUSH W1
-	PUSH W2
-	PUSH W3
+;__ADCInterrupt:
+;	PUSH W0
+;	PUSH W1
+;	PUSH W2
+;	PUSH W3
+;	
+;	CLR W0
+;	MOV ADCBUF0,W0
+;	MOV #0x003F,W3
+;	AND W0,W3,W1
+;	LSR W0,#0x0006,W2 ;Corrimiento a la derecha
+;	BSET W2,#7
+;	MOV W1,U1TXREG
+;	MOV W2,U1TXREG
+;
+;	BCLR IFS0,#ADIF
+;
+;	POP W3
+;	POP W2
+;	POP W1
+;	POP W0
+;
+;	RETFIE
+;    
 	
-	CLR W0
-	MOV ADCBUF0,W0
-	MOV #0x003F,W3
-	AND W0,W3,W1
-	LSR W0,#0x0006,W2 ;Corrimiento a la derecha
-	BSET W2,#7
-	MOV W1,U1TXREG
-	MOV W2,U1TXREG
-
-	BCLR IFS0,#ADIF
-
-	POP W3
-	POP W2
-	POP W1
-	POP W0
-
-	RETFIE
-    
