@@ -157,7 +157,7 @@ void configurarUART1(){
     U1MODE = 0X0420;    //4 para poner ALTIO en 1: usar UxATX and UxARX I/O pins; 2 para Auto Baud Enable bit
     U1STA = 0X8000;     //8 para UTXISEL: Transmission Interrupt Mode Selection bit; 
                                         //1 = Interrupt when a character is transferred to the Transmit Shift register and as result, the transmit buffer becomes empty
-    U1BRG = 11;          //11 para 9600 baudios
+    U1BRG = 5;          //11 para 9600 baudios
 }
 
 /******************************************************************************
@@ -169,7 +169,7 @@ void configurarUART1(){
 void configurarUART2(){
     U2MODE = 0X0020;    //No se utiliza ALTIO
     U2STA = 0X8000;
-    U2BRG = 11;     //11 para 9600 baudios
+    U2BRG = 5;     //11 para 9600 baudios
 }
 
 

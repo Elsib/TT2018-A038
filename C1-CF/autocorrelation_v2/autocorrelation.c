@@ -16,8 +16,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define muestras 4096
-#define n 64
+#define muestras 256
+#define n 520
 #define FS 16
 
 FILE *fp;
@@ -29,7 +29,7 @@ float Cxx[n];
 
 int main(){
 
-    fp = fopen("prueba16hz_7.txt", "r");
+    fp = fopen("../Pruebas/prueba16hz_512_61lpm.txt", "r");
 
     if(fp == NULL){
         perror("Error al abrir el arhivo. \n");

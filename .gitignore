@@ -8,3 +8,15 @@
 *.bbl
 *.blg
 *.pdf
+/C1-CF/GSM_C_testV2.X/dist/
+/C1-CF/GSM_C_testV2.X/build/
+/C1-CF/heart_rate/heart_rate.X/dist/
+/C1-CF/heart_rate/heart_rate.X/build/
+/C1-CF/GSM_C_test.X/build/
+/C1-CF/GSM_C_test.X/dist/
+/C1-CF/heart_rate/printf.X/dist/
+/C1-CF/heart_rate/printf.X/build/
+/C1-CF/heart_rate/tipos_datos.X/build/
+/C1-CF/heart_rate/tipos_datos.X/dist/
+/C1-CF/build/
+/C1-CF/dist/

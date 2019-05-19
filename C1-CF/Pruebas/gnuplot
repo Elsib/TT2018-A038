@@ -1,0 +1,8 @@
+#!/usr/bin/gnuplot
+set lmargin 10
+set rmargin 7
+set title  "Sensor detector de pulso"
+set ylabel "Pulso"
+set xlabel "Muestra"
+plot [0:3841][500:4000]"128hz_4096_Carlos_SV.txt" with lines linetype 4 linewidth 1
+pause 60

@@ -7,81 +7,55 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#define N  1024
+#define N  1600
 #define EVER 1
+
 char cad[20];
 int fd_serie=0;
 int config_serial ( char *, speed_t );
-
 int config_serial( char *dispositivo_serial, speed_t baudios );
 
-int main()
-{
+int main() {
 	FILE *archivo;
-	//register int i;
-	
-	//unsigned char dato[6];
-	//unsigned short int tempL, tempH, temp;
-	
-	//fd_serie = config_serial( "/dev/ttyUSB0", B9600 );
-	//printf("serial abierto con descriptor: %d\n", fd_serie);
 
-	//Leemos N datos del UART
-	/*	dato[0] = 'E'; //E
-		dato[1] = 'S';	//S
-		dato[2] = 'C';	//C
-		dato[3] = 'O';	//O
-		dato[4] = 'M';	//M
-		dato[5]	= '.';	//.
-*/
-//while(EVER)
-//{
-	archivo=fopen("prueba.txt","w+");
+	archivo=fopen("128hz_1600_test_1.txt","w+");
 	fd_serie = config_serial( "/dev/ttyUSB0", B19200 );
 	system("clear");
-	printf("Procesando datos de el ADC\n");
-	unsigned char cad=' ';
-	int entrada=0;
-	unsigned int prueba=0;
-	//int muestras[4096];
-	int i=0;
-	for( ; i<4096; )
-	{
+	printf("Procesando datos del ADC\n");
+	unsigned char cad = ' ';
+	int entrada = 0;
+	unsigned int prueba = 0;
+	int i = 0;
 
+	for( ; i < N; ) {
 							
-						read(fd_serie,&cad,1);
-							
-						if(cad & 0x80)
-						{
-						//printf("valor segunda parte%d\n",cad);
-						 prueba=cad^0x80;
-						// printf("Valor sin bandera%d\n",prueba );
-						 prueba=prueba<<6;
-						// printf("Valor con corrimiento%d\n", prueba);
-						 prueba=prueba^entrada;
-                 		//muestras[i]=prueba;
-                 		i++;
+		read(fd_serie, &cad, 1);
+			
+		if(cad & 0x80) {
+		//printf("valor segunda parte%d\n",cad);
+			prueba = cad^0x80;
+		// printf("Valor sin bandera%d\n",prueba );
+			prueba = prueba<<6;
+		// printf("Valor con corrimiento%d\n", prueba);
+			prueba = prueba^entrada;
+		//muestras[i]=prueba;
+			i++;
 
-						 printf("Valor total=%d\n",prueba);
-						 fprintf(archivo,"%d\n",prueba );
-						}
-						else 
-							{
-						//		printf("valor primera parte%d\n",cad); 
-								entrada=cad;
-							}
-						
-						
-						//tcflush(fd_serie,TCIFLUSH);
-
-
+			printf("Valor ADC (%d)= %d\n", i, prueba);
+			fprintf(archivo, "%d\n", prueba );
+		}
+		else {
+		//		printf("valor primera parte%d\n",cad); 
+			entrada = cad;
+		}
 		
+		//tcflush(fd_serie,TCIFLUSH);	
 	}
-	close( fd_serie );
+	close(fd_serie);
 	fclose(archivo);
 	//system("gnuplot");
 	system("./gnuplot");
-//}
+
 	return 0;
 }
 
@@ -167,4 +141,3 @@ int config_serial( char *dispositivo_serial, speed_t baudios )
 //Retorna el descriptor de archivo
 	return fd;
 }
-

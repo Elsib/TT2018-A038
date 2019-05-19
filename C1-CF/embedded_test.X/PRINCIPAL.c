@@ -18,7 +18,7 @@
 #pragma config BOREN  = PBOR_ON          // PBOR Enable (Enabled)
 #pragma config MCLRE  = MCLR_EN          // Master Clear Enable (Enabled)
 /********************************************************************************/
-/*SE DESACTIVA EL CÓDIGO DE PROTECCIÓN											*/
+/*SE DESACTIVA EL C?DIGO DE PROTECCI?N											*/
 /********************************************************************************/
 //_FGS(CODE_PROT_OFF);
 // FGS
@@ -26,31 +26,31 @@
 #pragma config GCP = CODE_PROT_OFF      // General Segment Code Protection (Disabled)
 
 /********************************************************************************/
-/* SECCIÓN DE DECLARACIÓN DE CONSTANTES CON DEFINE								*/
+/* SECCI?N DE DECLARACI?N DE CONSTANTES CON DEFINE								*/
 /********************************************************************************/
 #define float double
 
-#define muestras 1024
+#define muestras 200
 #define n 36
 #define FS 16
 #define PI 3.1415926535897931159979634685441851615905761718750 /* double */
 
 /********************************************************************************/
-/*DECLARACIÓN DE LA ISR DEL TIMER 1 USANDO __attribute__						*/
+/*DECLARACI?N DE LA ISR DEL TIMER 1 USANDO __attribute__						*/
 /********************************************************************************/
 void __attribute__((__interrupt__)) _T3Interrupt( void );
 void __attribute__((__interrupt__)) _U2RXInterrupt( void );
 
 
 /********************************************************************************/
-/* Para el módulo 4G    														*/
+/* Para el m?dulo 4G    														*/
 /********************************************************************************/
 char CMD_AT[] = "AT\r";
 char CMD_ATE0[] = "ATE0\r";
-//char CMD_ATCPIN[] = "AT+CPIN=1111\r\0";
 char CMD_AT_CMGF[] = "AT+CMGF=1\r";
+char CMD_AT_CCLK[] = "AT+CCLK?\r";
 char CMD_AT_CMGS[] = "AT+CMGS=\"+525543612094\"\r";
-char CMD_MSG[40];
+char CMD_MENSAJE[60];
 
 char respuestaGSM[40];
 unsigned char j;
@@ -61,15 +61,16 @@ char count;
 /********************************************************************************/
 unsigned char flag_auto = 0;
 unsigned char flag_temp = 0;
+int timer = 1*60*FS;    //El 1 representa la cantidad de minutos
 
 /********************************************************************************/
-/* Variables para autocorrelación												*/
+/* Variables para autocorrelaci?n												*/
 /********************************************************************************/
 float alpha = 2*PI/muestras;
-float valor;
+int valor;
 float x[n];
 float Cxx[n];
-float lpm;
+int lpm;
 
 /********************************************************************************/
 /* Varibles para temperatura													*/
@@ -77,6 +78,14 @@ float lpm;
 unsigned short int temp_msb;
 unsigned short int temp_lsb;
 float temperatura;
+
+/********************************************************************************/
+/* Variables de umbrales     													*/
+/********************************************************************************/
+unsigned char lpm_max = 90;
+unsigned char lpm_min = 70;
+float temp_max = 36.8;
+float temp_min = 36.3;
 
 /********************************************************************************/
 /* Funciones            														*/
@@ -124,21 +133,21 @@ int main(void) {
     float ventana;
     
     for(i = 0; i < muestras; i++) {
-        while (!IFS0bits.ADIF); //Mientras no termine la conversión va a esperar
+        while (!IFS0bits.ADIF); //Mientras no termine la conversi?n va a esperar
         
         valor = (float)ADCBUF0;
         valor -= (float)2048;
         ventana = 0.54 - (0.46 * cosf(alpha*i));
-        valor *= ventana;
         
-        x[0] = valor;
-        printf("Muestra %d: %f \n\r", i, valor);
+        printf("Muestra %d: %d \n\r", i, valor);
+        
+        x[0] = valor * ventana;
         
         for(j = 0; j < n; j++) {
             Cxx[j] += x[0] * x[j];
         }
             
-        //Se mueven los datos del arreglo x[] una posición a la derecha
+        //Se mueven los datos del arreglo x[] una posici?n a la derecha
         for(m = n-2; m >= 0 ; m--) {
             x[m+1] = x[m];
         }
@@ -146,7 +155,7 @@ int main(void) {
         IFS0bits.ADIF = 0;
     }
     
-    //Busca el valor máximo de la autocorrelación
+    //Busca el valor m?ximo de la autocorrelaci?n
     float max = 0;
     int pos = 0;
     
@@ -161,7 +170,7 @@ int main(void) {
                 pos = i-1;
 
                 printf("-----------------------------------------------\n\r");
-                printf("\tValor máximo = %f en i=%d\n\r", max, pos);
+                printf("\tValor m?ximo = %f en i=%d\n\r", max, pos);
                 printf("\tFrecuencia = %f \n\r", (float) FS/pos);
                 printf("\tlpm = %f \n\r", (float) FS/pos*60);
                 printf("-----------------------------------------------\n\r");
@@ -182,7 +191,7 @@ int main(void) {
             float pb = 0.00390625 * temp_lsb;
             temperatura += pb;
 
-            sprintf(CMD_MSG, "lpm: %f \n\rTemperatura: %f \x1A\r", lpm, temperatura);
+            sprintf(CMD_MENSAJE, "lpm: %d \n\rTemperatura: %f \x1A\r", lpm, temperatura);
             
             iniGSM();
 
@@ -190,7 +199,7 @@ int main(void) {
             enviarComandoGSM(CMD_ATE0);
             enviarComandoGSM(CMD_AT_CMGF);
             enviarComandoGSM(CMD_AT_CMGS);
-            enviarComandoGSM(CMD_MSG);
+            enviarComandoGSM(CMD_MENSAJE);
         }
         else {
             printf("ERROR: I2C");
@@ -214,11 +223,11 @@ int main(void) {
 /* RETORNO:     NINGUNO                                                     */
 /*                                                                          */
 /*  TRISx:  Registro de control que determina si el pin asociado al puerto es una entrada o salida -> 0 (Output) ; 1 (Input)
- *          -Están configurados como entrada después de un reset-
+ *          -Est?n configurados como entrada despu?s de un reset-
  * 
  *  PORTx:  Para leer o escribir valores en los pines de un puerto
  * 
- *  LATx:   Elimina los problemas que podrían ocurrir con las instrucciones de lectura-modificación-escritura:
+ *  LATx:   Elimina los problemas que podr?an ocurrir con las instrucciones de lectura-modificaci?n-escritura:
  *          Una escritura en el registro PORTX escribe el valor de los datos en el cierre (latch) del puerto.
             Una escritura en el registro LATx escribe el valor de los datos en el cierre (latch) del puerto.
             Una lectura del registro PORTx lee el valor de los datos en el pin de I/O.
@@ -274,7 +283,7 @@ void iniPerifericos() {
     TRISFbits.TRISF5 = 0;    //U2ATX
     Nop();
     
-    //inicialización del mikroBUS2 para el módulo 4G
+    //inicializaci?n del mikroBUS2 para el m?dulo 4G
     TRISBbits.TRISB5 = 1;   //STA
     TRISDbits.TRISD1 = 0;   //PWK
     TRISBbits.TRISB8 = 0;   //RTS
@@ -291,7 +300,8 @@ void configurarUART1() {
     U1MODE = 0X0420;    //4 para poner ALTIO en 1: usar UxATX and UxARX I/O pins; 2 para Auto Baud Enable bit
     U1STA = 0X8000;     //8 para UTXISEL: Transmission Interrupt Mode Selection bit; 
                                         //1 = Interrupt when a character is transferred to the Transmit Shift register and as result, the transmit buffer becomes empty
-    U1BRG = 11;          //9600 baudios
+    //U1BRG = 11;          //9600 baudios
+    U1BRG = 5;     //19200 baudios
 }
 
 /******************************************************************************
@@ -303,11 +313,12 @@ void configurarUART1() {
 void configurarUART2() {
     U2MODE = 0X0020;    //No se utiliza ALTIO
     U2STA = 0X8000;
-    U2BRG = 11;     //9600 baudios
+    //U2BRG = 11;     //9600 baudios
+    U2BRG = 5;     //19200 baudios
 }
 
 void configurarI2C() {
-    I2CBRG = 2;     //Configura la velocidad de transmisión a 400KHZ soportado por el MAX30205
+    I2CBRG = 2;     //Configura la velocidad de transmisi?n a 400KHZ soportado por el MAX30205
 }
 
 void configurarADC() {
@@ -322,8 +333,8 @@ void configurarADC() {
 }
 
 void configurarTimer3() {
-    TMR3 = 0x0000;         //Inicializa el registro. Éste guarda la Most Significant Word del valor de 32bits del timer
-    //PR3=0x0E10;     //Valor que se compara con el contador para lanzar la interrupción. Establece la frecuencia de 512Hz
+    TMR3 = 0x0000;         //Inicializa el registro. ?ste guarda la Most Significant Word del valor de 32bits del timer
+    //PR3=0x0E10;     //Valor que se compara con el contador para lanzar la interrupci?n. Establece la frecuencia de 512Hz
     //T3CON=0x000;    //Contiene el preescalador en <5:4> con TCKPS<1:0> con 1:1, 1:8, 1:64, 1:256
     PR3 = 0x3840;     //Frecuencia de 16Hz
     T3CON = 0x010;
@@ -359,7 +370,7 @@ void iniInterrupciones() {
 }
 
 /****************************************************************************/
-/* DESCRICION:	ESTA RUTINA REALIZA LA COMUNICACIÓN CON EL MAX30205 PARA OBTENER LA TEMPERATURA ENVIADA EN 16 BITS    */
+/* DESCRICION:	ESTA RUTINA REALIZA LA COMUNICACI?N CON EL MAX30205 PARA OBTENER LA TEMPERATURA ENVIADA EN 16 BITS    */
 /* PARAMETROS:  NINGUNO                                                     */
 /* RETORNO:     EXITO O NANCK                                               */
 /****************************************************************************/
@@ -369,13 +380,13 @@ unsigned char comunicacionMAX() {
 
     START_I2C();
     
-    ENVIA_DATO_I2C(0X90);   //direccción del sensor+RW
+    ENVIA_DATO_I2C(0X90);   //direccci?n del sensor+RW
     
     if(I2CSTATbits.ACKSTAT == 1) { //Preguntando por un ACK
         return 0;   //NANCK
     }
     
-    ENVIA_DATO_I2C(0X00);   //selección del registro de temperatura
+    ENVIA_DATO_I2C(0X00);   //selecci?n del registro de temperatura
     
     if(I2CSTATbits.ACKSTAT == 1) { //Preguntando por un ACK
         return 0;   //NANCK
@@ -383,7 +394,7 @@ unsigned char comunicacionMAX() {
     
     RESTART_I2C();
 
-    ENVIA_DATO_I2C(0X91);   //direccción del sensor+RW
+    ENVIA_DATO_I2C(0X91);   //direccci?n del sensor+RW
     
     if(I2CSTATbits.ACKSTAT == 1) { //Preguntando por un ACK
         return 0;   //NANCK
@@ -423,9 +434,6 @@ void iniGSM() {
 
 
 void enviarComandoGSM(char comando[]) {
-    
-    count = 2;
-    j = 0;
     IFS1bits.U2TXIF = 0;
     
     __C30_UART=1;
@@ -437,7 +445,9 @@ void enviarComandoGSM(char comando[]) {
     printf(comando);
     
     //Espera respuesta
-    while(count > 0){   //Disminuye con la interrupción U2RXInterrupt
+    count = 2;
+    j = 0;
+    while(count > 0){   //Disminuye con la interrupci?n U2RXInterrupt
         U1TXREG = 'x';
         RETARDO_1s();
     }
@@ -449,7 +459,7 @@ void enviarComandoGSM(char comando[]) {
 /* DESCRICION:	ISR (INTERRUPT SERVICE ROUTINE) DEL UART 2						*/
 /* Esta rutina cuenta los caracteres <LF> recibidos para determinar la respuesta*/
 /*                                                                              */
-/* En general la respuesta del módulo GSM es: <CR><LF>OK<CR><LF>                */
+/* En general la respuesta del m?dulo GSM es: <CR><LF>OK<CR><LF>                */
 /* Para el mensaje: <CR><LF><greater_than><space>                               */
 /********************************************************************************/
 
@@ -457,7 +467,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void) {
     char resp;
 
     resp = U2RXREG;
+    U1TXREG = resp;
+    
     respuestaGSM[j] = resp;
+    j++;
     
     if(resp == 13){     //<CR>
         resp = '.';
@@ -472,17 +485,12 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void) {
     else if(resp == 32){   //' '
         resp = '-';
     }
-
-    U1TXREG = resp;
-    //U1TXREG = count+48; //Para ver el carácter
-    
-    j++;
     
     IFS1bits.U2RXIF = 0;
 }
 
 /********************************************************************************/
-/* DESCRIPCIÓN:	ISR (INTERRUPT SERVICE ROUTINE) DEL TIMER 3						*/
+/* DESCRIPCI?N:	ISR (INTERRUPT SERVICE ROUTINE) DEL TIMER 3						*/
 /* LA RUTINA TIENE QUE SER GLOBAL PARA SER UNA ISR								*/	
 /* SE USA PUSH.S PARA GUARDAR LOS REGISTROS W0, W1, W2, W3, C, Z, N Y DC EN LOS */
 /* REGISTROS SOMBRA																*/

@@ -81,8 +81,8 @@ int y_input[MUESTRAS] __attribute__ ((space(ymemory)));
 /********************************************************************************/
 int var1 __attribute__ ((near));
 
-void iniPerifericos( void );
-void iniInterrupciones( void );
+void iniPerifericos();
+void iniInterrupciones();
 extern void iniLCD8Bits( void );
 extern void busyFlag( void );
 extern void datoLCD( unsigned char simbolo );
@@ -99,26 +99,51 @@ void limpiar(unsigned char *a);
 void configurarUART1();
 void configurarADC();
 
-
-
-int main (void)
-{
+int main() {
     
     iniPerifericos();
     
-    PR3=0x0E10;//Frecuencia de 512Hz
-    TMR3=0;
-    T3CON=0x000;
-    
-//    PR3=0xE100;//Frecuencia de 4Hz
+//    PR3=0x3840;//Frecuencia de 16Hz
 //    TMR3=0;
 //    T3CON=0x0010;
+    
+//    PR3=0x1C20;//Frecuencia de 32Hz
+//    TMR3=0;
+//    T3CON=0x0010;
+    
+//    PR3=0x0E10;//Frecuencia de 64Hz
+//    TMR3=0;
+//    T3CON=0x0010;
+    
+    PR3=0x0708;//Frecuencia de 128Hz
+    TMR3=0;
+    T3CON=0x0010;
+    
+//    PR3=0x0640;//Frecuencia de 144Hz
+//    TMR3=0;
+//    T3CON=0x0010;
+    
+//    PR3=0x05A0;//Frecuencia de 160Hz
+//    TMR3=0;
+//    T3CON=0x0010;
+    
+//    PR3=0x051D;//Frecuencia de 176Hz
+//    TMR3=0;
+//    T3CON=0x0010;
+    
+//    PR3=0x0384;//Frecuencia de 256Hz
+//    TMR3=0;
+//    T3CON=0x0010;
+    
+//    PR3=0x0E10;//Frecuencia de 512Hz
+//    TMR3=0;
+//    T3CON=0x000;
     
     configurarUART1();
     configurarADC();
     iniInterrupciones();
     
-    while(EVER){
+    while(EVER) {
         sleep();
     }
     
@@ -130,8 +155,7 @@ int main (void)
 /* PARAMETROS: NINGUNO                                                      */
 /* RETORNO: NINGUNO															*/
 /****************************************************************************/
-void iniInterrupciones( void )
-{
+void iniInterrupciones() {
     IFS0bits.T3IF=0;
     IFS0bits.ADIF=0;
     IEC0bits.T3IE=1;
@@ -144,16 +168,15 @@ void iniInterrupciones( void )
        
     return;
 }
-void configurarUART1()
-{
+
+void configurarUART1() {
     /*Inicializar el uart1*/
     U1MODE=0X0420;
     U1STA=0X8000;
     U1BRG=5;
 }
 
-void configurarADC()
-{
+void configurarADC() {
     ADCON1=0x0044;
     ADCON2=0x0000;
     ADCON3=0x0F02;
@@ -169,8 +192,7 @@ void configurarADC()
 /* PARAMETROS: NINGUNO                                                      */
 /* RETORNO: NINGUNO															*/
 /****************************************************************************/
-void iniPerifericos( void )
-{
+void iniPerifericos() {
     PORTA=0;
     Nop();
     TRISA=0;
@@ -199,7 +221,6 @@ void iniPerifericos( void )
     TRISCbits.TRISC14=1;
     Nop();   
 }
-    
     
     
 /********************************************************************************/
