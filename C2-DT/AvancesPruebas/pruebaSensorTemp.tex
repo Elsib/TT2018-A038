@@ -1,10 +1,22 @@
 \section{Sensor de temperatura}
 
-El sensor de temperatura MAX30205 tiene una interfaz de comunicación I2C, para poder comprobar su funcionamiento de forma unitaria, fue necesario configurar la interfaz I2C con la que cuenta el dsPIC30205 y adicionalmente crear las rutinas para mantener la comunicación entre ambos componentes. En la figura x se muestra en diagrama de flujo con el procedimiento realizado para esta prueba.\\
+El sensor de temperatura MAX30205 tiene una interfaz de comunicación I2C, para poder comprobar su funcionamiento de forma unitaria, fue necesario configurar la interfaz I2C con la que cuenta el dsPIC30205 y adicionalmente crear las rutinas para mantener la comunicación entre ambos componentes.\\
 
-{\Large \TODO{Agregar imagen del diagrama de flujo.}}
+En la figura \ref{fig:DiagramaMAX30205} se muestra en diagrama de tiempo que describe el procedimiento que debe ser seguido para realizar la comunicación entre el MAX30205 y el dsPIC.\\
 
-El microcontrolador fue configurado como maestro y el sensor como esclavo, por lo que el maestro debe iniciar la comunicación, recibir los datos del sensor y terminar la comunicación. El código de las rutinas creadas para las operaciones anteriores se muestra a continuación.\\
+
+\begin{figure}[htbp!]
+	\centering
+	\fbox{\includegraphics[width=1\textwidth]{AvancesPruebas/imagenes/diagramaI2C.png}}
+	\caption{Diagrama de tiempo MAX30205.}
+	\label{fig:DiagramaMAX30205}
+\end{figure}
+
+
+El microcontrolador fue configurado como maestro y el sensor como esclavo, por lo que el maestro debe iniciar la comunicación, recibir los datos del sensor y terminar la comunicación.\\
+
+El código y descripción de las rutinas creadas para las operaciones anteriores se muestra a continuación.\\
+
 
 Rutina que genera la condición de \textbf{start} al bus I2C.
 {\small
@@ -20,7 +32,7 @@ RETURN
 }
 
 
-Rutina que manda un dato de 8 bits al sensor de temperatura que es el dispositivo esclavo.	
+Esta rutina manda un dato de 8 bits al sensor de temperatura que es el dispositivo esclavo.	
 {\small
 \begin{lstlisting}[frame=single]
 
