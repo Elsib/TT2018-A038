@@ -1,2 +1,3 @@
 build/default/production/PRINCIPAL.o:  \
-PRINCIPAL.c 
+PRINCIPAL.c  \
+hamming.h 
