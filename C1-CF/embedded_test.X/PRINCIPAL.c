@@ -1,9 +1,15 @@
-#include "xc.h"
+//Version funcional Q15
+//TODO: Reemplazar Modulo I2C, Verificar timer
+
+#include <xc.h>
 #include <stdio.h>
 #include <libpic30.h>
 #include <math.h>
+#include <string.h>
+#include "hamming.h"
 
-//_FOSC(CSW_FSCM_OFF & FRC); 
+
+//_FOSC(CSW_FSCM_OFF & FRC);
 #pragma config FOSFPR = FRC             // Oscillator (Internal Fast RC (No change to Primary Osc Mode bits))
 #pragma config FCKSMEN = CSW_FSCM_OFF   // Clock Switching and Monitor (Sw Disabled, Mon Disabled)
 /********************************************************************************/
@@ -26,70 +32,86 @@
 #pragma config GCP = CODE_PROT_OFF      // General Segment Code Protection (Disabled)
 
 /********************************************************************************/
-/* SECCI?N DE DECLARACI?N DE CONSTANTES CON DEFINE								*/
+/* SECCION DE DECLARACION DE CONSTANTES CON DEFINE								*/
 /********************************************************************************/
 #define float double
 
-#define muestras 200
-#define n 36
-#define FS 16
-#define PI 3.1415926535897931159979634685441851615905761718750 /* double */
+#define muestras 1600
+#define n 150
+#define FS 128
+
+#define minutos 1
 
 /********************************************************************************/
-/*DECLARACI?N DE LA ISR DEL TIMER 1 USANDO __attribute__						*/
+/* DECLARACION DE ISRs                                   						*/
 /********************************************************************************/
-void __attribute__((__interrupt__)) _T3Interrupt( void );
-void __attribute__((__interrupt__)) _U2RXInterrupt( void );
-
+void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt( void );
+void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt( void );
+void __attribute__((__interrupt__, no_auto_psv)) _ADCInterrupt(void);
 
 /********************************************************************************/
-/* Para el m?dulo 4G    														*/
+/* COMANDOS Y VARIABLES PARA EL MODULO 4G                                       */
 /********************************************************************************/
 char CMD_AT[] = "AT\r";
 char CMD_ATE0[] = "ATE0\r";
 char CMD_AT_CMGF[] = "AT+CMGF=1\r";
 char CMD_AT_CCLK[] = "AT+CCLK?\r";
-char CMD_AT_CMGS[] = "AT+CMGS=\"+525543612094\"\r";
-char CMD_MENSAJE[60];
+//char CMD_AT_CMGS[] = "AT+CMGS=\"+525543612094\"\r";   //elsi
+//char CMD_AT_CMGS[] = "AT+CMGS=\"+525532768660\"\r"; //elena
+char CMD_AT_CMGS[] = "AT+CMGS=\"+525564211272\"\r"; //carlos
+char CMD_MSG[42];
+
+char *comandos[] = {
+	CMD_AT,
+	CMD_ATE0,
+	CMD_AT_CMGF,
+    CMD_AT_CCLK,
+    CMD_AT_CMGS,
+    CMD_MSG
+};
 
 char respuestaGSM[40];
 unsigned char j;
 char count;
 
 /********************************************************************************/
-/* Banderas de control          												*/
+/* VARIABLES PARA AUTOCORRELACION												*/
 /********************************************************************************/
-unsigned char flag_auto = 0;
-unsigned char flag_temp = 0;
-int timer = 1*60*FS;    //El 1 representa la cantidad de minutos
-
-/********************************************************************************/
-/* Variables para autocorrelaci?n												*/
-/********************************************************************************/
-float alpha = 2*PI/muestras;
 int valor;
-float x[n];
-float Cxx[n];
+long x[n];
+long Cxx[n];
 int lpm;
+int index_muestras;
 
 /********************************************************************************/
-/* Varibles para temperatura													*/
+/* VARIABLES PARA TEMPERATURA													*/
 /********************************************************************************/
 unsigned short int temp_msb;
 unsigned short int temp_lsb;
 float temperatura;
 
 /********************************************************************************/
-/* Variables de umbrales     													*/
+/* VARIABLES DE UMBRALES      													*/
 /********************************************************************************/
-unsigned char lpm_max = 90;
-unsigned char lpm_min = 70;
+unsigned char lpm_max = 100;
+unsigned char lpm_min = 85;
 float temp_max = 36.8;
 float temp_min = 36.3;
 
 /********************************************************************************/
-/* Funciones            														*/
+/* BANDERAS DE CONTROL          												*/
 /********************************************************************************/
+unsigned char flag_auto = 0;
+unsigned char flag_temp = 0;
+int timer = minutos*60*FS;
+unsigned int periodo = 1843200/8/FS;
+int i;
+
+/********************************************************************************/
+/* DECLARACION DE FUNCIONES                                                     */
+/********************************************************************************/
+
+/*          CONFIGURACION DEL DSPIC           */
 void iniPerifericos();
 void iniInterrupciones();
 void configurarADC();
@@ -98,11 +120,8 @@ void configurarTimer3();
 void configurarUART1();
 void configurarUART2();
 
+/*      COMUNICACION CON EL MODULO MAX232     */
 unsigned char comunicacionMAX();
-
-void iniGSM();
-void enviarComandoGSM(char comando[]);
-
 extern void START_I2C();
 extern void ENVIA_DATO_I2C(unsigned char dato);
 extern void RESTART_I2C();
@@ -110,11 +129,20 @@ extern unsigned short int RECIBE_DATO_I2C();
 extern void ACK_MST_I2C();
 extern void NACK_MST_I2C();
 extern void STOP_I2C();
-extern void WREG_INIT();
 
+/*        COMUNICACION CON EL MODULO 4G       */
+void ini4G();
+unsigned char enviarComando(char comando[]);
+
+/*               GENERALES                    */
 extern void RETARDO_50us();
 extern void RETARDO_300ms();
 extern void RETARDO_1s();
+
+void printUART1(char* cadena);
+void printUART2(char* cadena);
+void resetTimer();
+void clearArray();
 
 int main(void) {
     iniPerifericos();
@@ -124,115 +152,128 @@ int main(void) {
     configurarADC();
     configurarI2C();
     iniInterrupciones();
+    clearArray();
     
-    printf("Iniciando... \n\r");
+    printf("\n\r iniciando... \n\r");
+    //printf("timer: %d \n", timer);
     
-    int i;
-    int j;
-    int m;
-    float ventana;
+    //Espera hasta completar el numero de muestras requeridas
+    while(index_muestras < muestras);
+    index_muestras = 0;
+    ADCON1bits.ADON = 0;    //Apaga el ADC para evitar la interrupción mientras se realiza el envio el SMS
+    IEC0bits.ADIE = 0;
     
-    for(i = 0; i < muestras; i++) {
-        while (!IFS0bits.ADIF); //Mientras no termine la conversi?n va a esperar
-        
-        valor = (float)ADCBUF0;
-        valor -= (float)2048;
-        ventana = 0.54 - (0.46 * cosf(alpha*i));
-        
-        printf("Muestra %d: %d \n\r", i, valor);
-        
-        x[0] = valor * ventana;
-        
-        for(j = 0; j < n; j++) {
-            Cxx[j] += x[0] * x[j];
-        }
-            
-        //Se mueven los datos del arreglo x[] una posici?n a la derecha
-        for(m = n-2; m >= 0 ; m--) {
-            x[m+1] = x[m];
-        }
-        
-        IFS0bits.ADIF = 0;
-    }
-    
-    //Busca el valor m?ximo de la autocorrelaci?n
-    float max = 0;
+    //Busca el valor maximo de la autocorrelacion
     int pos = 0;
     
     for(i = 0; i < n; i++) {
         Cxx[i] = Cxx[i]/muestras;
 
-        printf("Cxx[%d] = %f \n\r", i, Cxx[i]);
+        //printf("Cxx[%d] = %ld \n\r", i, Cxx[i]);
 
         if(i-2 >= 0) {
             if(Cxx[i-1] > Cxx[i] && Cxx[i-1] > Cxx[i-2] && Cxx[i-1] > 0) {
-                max = Cxx[i-1];
                 pos = i-1;
+                float freq = (float) FS/pos;
+                lpm = freq*60;
 
                 printf("-----------------------------------------------\n\r");
-                printf("\tValor m?ximo = %f en i=%d\n\r", max, pos);
-                printf("\tFrecuencia = %f \n\r", (float) FS/pos);
-                printf("\tlpm = %f \n\r", (float) FS/pos*60);
+                printf("\tValor maximo = %ld en i = %d \n\r", Cxx[pos], pos);
+                printf("\tFrecuencia = %f \n\r", freq);
+                printf("\tlpm = %d \n\r", lpm);
                 printf("-----------------------------------------------\n\r");
                 
-                lpm = (float) FS/pos*60;
                 flag_auto = 1;
                 break;
             }
         }
     }
     
+    //Si encuentra la frecuencia fundamental continua...
     if(flag_auto) {
-        flag_temp = comunicacionMAX();
+        //flag_temp = comunicacionMAX();
+        flag_temp = 1;
         
+        //Si recibio el valor de temperatura continua...
         if(flag_temp) {
-            temperatura = 0.0;
-            temperatura += temp_msb;
-            float pb = 0.00390625 * temp_lsb;
-            temperatura += pb;
-
-            sprintf(CMD_MENSAJE, "lpm: %d \n\rTemperatura: %f \x1A\r", lpm, temperatura);
+            temperatura = (float) 36.6;
+            //temperatura += temp_msb;
+            //float pb = 0.00390625 * temp_lsb;
+            //temperatura += pb;
             
-            iniGSM();
+            printf("temp: %f \n", temperatura);
+            
+            //si pasa algun umbral o el tiempo se agota, continua para enviar el SMS
+            //lpm_max = 90;
+            //lpm_min = 70;
+            //temp_max = 36.8;
+            //temp_min = 36.3;
+            if((temperatura < temp_min) || (temperatura > temp_max) || (lpm < lpm_min) || (lpm > lpm_max) || (timer <= 0)) {
+                unsigned char index_comando = 0;
+                unsigned char try = 1;
+                char date[16];
+                
+                while(index_comando <= 5) {
+                    if(try) {
+                        ini4G();
+                        RETARDO_1s();
+                        RETARDO_1s();
+                        RETARDO_1s();
+                        RETARDO_1s();
+                        RETARDO_1s();
+                    }
+                    
+                    if(enviarComando(comandos[index_comando])) {
+                        try = 0;
+                        
+                        if(index_comando == 3) {
+                            date[0] = '2';
+                            date[1] = '0';
 
-            enviarComandoGSM(CMD_AT);
-            enviarComandoGSM(CMD_ATE0);
-            enviarComandoGSM(CMD_AT_CMGF);
-            enviarComandoGSM(CMD_AT_CMGS);
-            enviarComandoGSM(CMD_MENSAJE);
+                            int o = 0;
+                            while (o <= 13) {
+                                date[o+2] = respuestaGSM[7+o];
+                                o++;
+                            }
+
+                            date[10] = ' ';
+                        } else if(index_comando == 4) {
+                            sprintf(comandos[5], "lpm:%d,temp:%.2f,fecha:%s \x1A\r", lpm, temperatura, date);
+                        }
+                        
+                        index_comando++;
+                    } else {
+                        try = 1;
+                        index_comando = 0;
+                    }
+                }
+                
+                resetTimer();
+            } else {
+                printf("No se cumple la condicion de envio \n");
+            }
+            
+        } else {
+            printf("ERROR: I2C \n");
         }
-        else {
-            printf("ERROR: I2C");
-        }
+    } else {
+        printf("ERROR: Autocorrelacion \n");
     }
-    else {
-        printf("ERROR: Autocorrelacion");
-    }
+    
+    //reset flags
+    flag_auto = 0;
+    flag_temp = 0;
   
-    while(1) {
-        Nop();
-    }
+//    while(1) {
+//        Nop();
+//    }
     
     return 0;
 }
 
-
 /****************************************************************************/
-/* DESCRICION:	ESTA RUTINA INICIALIZA LOS PERIFERICOS						*/
-/* PARAMETROS:  NINGUNO                                                     */
-/* RETORNO:     NINGUNO                                                     */
-/*                                                                          */
-/*  TRISx:  Registro de control que determina si el pin asociado al puerto es una entrada o salida -> 0 (Output) ; 1 (Input)
- *          -Est?n configurados como entrada despu?s de un reset-
- * 
- *  PORTx:  Para leer o escribir valores en los pines de un puerto
- * 
- *  LATx:   Elimina los problemas que podr?an ocurrir con las instrucciones de lectura-modificaci?n-escritura:
- *          Una escritura en el registro PORTX escribe el valor de los datos en el cierre (latch) del puerto.
-            Una escritura en el registro LATx escribe el valor de los datos en el cierre (latch) del puerto.
-            Una lectura del registro PORTx lee el valor de los datos en el pin de I/O.
-            Una lectura del registro LATx lee el valor de los datos retenidos en el cierre (latch) del puerto.
-****************************************************************************/
+/* FUNCION PARA INICIALIZAR LOS PERIFERICOS DEL DSPIC						*/
+/****************************************************************************/
 void iniPerifericos() {
     PORTB = 0;
     Nop();
@@ -291,23 +332,22 @@ void iniPerifericos() {
     TRISDbits.TRISD9 = 1;   //CTS
 }
 
-/******************************************************************************
-* CONFIGURACION DEL UART 1. EL UART 1 CONFIGURA EL FT232 PARA ENVIO DE DATOS A LA PC
-* VELOCIDAD: 19200 BAUDIOS
-* TRAMA: 8 BITS X DATO, SIN PARIDAD, 1 BIT DE PARO
-******************************************************************************/
+/******************************************************************************/
+/* CONFIGURACION DEL UART 1. EL UART 1 CONFIGURA EL FT232 PARA ENVIO DE DATOS */
+/* A LA PC                                                                    */
+/* TRAMA: 8 BITS X DATO, SIN PARIDAD, 1 BIT DE PARO                           */
+/******************************************************************************/
 void configurarUART1() {
     U1MODE = 0X0420;    //4 para poner ALTIO en 1: usar UxATX and UxARX I/O pins; 2 para Auto Baud Enable bit
     U1STA = 0X8000;     //8 para UTXISEL: Transmission Interrupt Mode Selection bit; 
                                         //1 = Interrupt when a character is transferred to the Transmit Shift register and as result, the transmit buffer becomes empty
     //U1BRG = 11;          //9600 baudios
-    U1BRG = 5;     //19200 baudios
+    U1BRG = 5;          //19200 baudios
 }
 
 /******************************************************************************
 * CONFIGURACION DEL UART 2. EL UART 2 CONFIGURA EL MODEM GSM PARA ENVIO DE
 * COMANDOS AT Y RECEPCION DE RESPUESTAS DEL MODEM
-* VELOCIDAD: 9600 BAUDIOS
 * TRAMA: 8 BITS X DATO, SIN PARIDAD, 1 BIT DE PARO
 ******************************************************************************/
 void configurarUART2() {
@@ -317,10 +357,16 @@ void configurarUART2() {
     U2BRG = 5;     //19200 baudios
 }
 
+/********************************************************************************/
+/* CONFIGURACION DE LA INTERFAZ I2C PARA EL MAX232                              */
+/********************************************************************************/
 void configurarI2C() {
-    I2CBRG = 2;     //Configura la velocidad de transmisi?n a 400KHZ soportado por el MAX30205
+    I2CBRG = 2;     //Configura la velocidad de transmision a 400KHZ soportado por el MAX30205
 }
 
+/********************************************************************************/
+/* CONFIGURACION DEL ADC                                                        */
+/********************************************************************************/
 void configurarADC() {
     ADPCFG = 0xFFFB;      //;1 Analog Input in Digital Mode; 0 Analog Input in Analog Mode
     //ADPCFGbits.PCFG2 = 0;
@@ -332,21 +378,27 @@ void configurarADC() {
     ADCON3 = 0x0000;    //Era 0x0F02: F para 10000 = 16TAD, 2 para ADCS (A/D Conversion Clock Select bits): 000010 = TCY/2*(ADCS<5:0> + 1) = TCY/2
 }
 
+/********************************************************************************/
+/* CONFIGURACION DEL TIMER3 DE ACUERDO A LA FRECUENCIA DE MUESTREO INDICADA     */
+/********************************************************************************/
 void configurarTimer3() {
     TMR3 = 0x0000;         //Inicializa el registro. ?ste guarda la Most Significant Word del valor de 32bits del timer
     //PR3=0x0E10;     //Valor que se compara con el contador para lanzar la interrupci?n. Establece la frecuencia de 512Hz
     //T3CON=0x000;    //Contiene el preescalador en <5:4> con TCKPS<1:0> con 1:1, 1:8, 1:64, 1:256
-    PR3 = 0x3840;     //Frecuencia de 16Hz
+    //PR3 = 0x3840;     //Frecuencia de 16Hz
+    PR3 = periodo;
     T3CON = 0x010;
 }
 
-//Habilitar comunicaciones cuando se inicializan las interrupciones o cuando se configura?
+/********************************************************************************/
+/* CONFIGURACION DE LAS INTERRUPCIONES Y HABILITACION DE LAS INTERFACES DE COMUNICACION */
+/********************************************************************************/
 void iniInterrupciones() {
     IFS0bits.T3IF=0;    //Timer3 Interrupt Flag Status bit
     IEC0bits.T3IE=1;    //Timer3 Interrupt Enable bit (Interrupt request enabled)
     
     IFS0bits.ADIF=0;    //A/D Conversion Complete Interrupt Flag Status bit
-//    IEC0bits.ADIE=1;    //A/D Conversion Complete Interrupt Enable bit (Interrupt request enabled)
+    IEC0bits.ADIE=1;    //A/D Conversion Complete Interrupt Enable bit (Interrupt request enabled)
     
     IFS1bits.U2RXIF=0;    //UART2 Receiver Interrupt Flag Status bit
     IEC1bits.U2RXIE=1;    //UART2 Receiver Interrupt Enable bit (Interrupt request enabled)
@@ -370,11 +422,10 @@ void iniInterrupciones() {
 }
 
 /****************************************************************************/
-/* DESCRICION:	ESTA RUTINA REALIZA LA COMUNICACI?N CON EL MAX30205 PARA OBTENER LA TEMPERATURA ENVIADA EN 16 BITS    */
-/* PARAMETROS:  NINGUNO                                                     */
-/* RETORNO:     EXITO O NANCK                                               */
+/* ESTA RUTINA REALIZA LA COMUNICACION CON EL MAX30205 PARA OBTENER LA TEMPERATURA EN 16 BITS */
 /****************************************************************************/
 unsigned char comunicacionMAX() {
+    printf("cominicacionMAX \n");
     temp_msb = 0;
     temp_lsb = 0;
 
@@ -410,14 +461,16 @@ unsigned char comunicacionMAX() {
     
     STOP_I2C();
     
-    printf("Temp: %d.%d", temp_msb, temp_lsb);
+    printf("temp: %d.%d \n", temp_msb, temp_lsb);
     
     return 1;
 }
 
-
-
-void iniGSM() {
+/********************************************************************************/
+/* FUNCION PARA REALIZAR LA INICIALIZACION DEL MODULO 4G                        */
+/********************************************************************************/
+void ini4G() {
+    printf("ini4G \n");
     LATDbits.LATD1 = 1;  //PWK
     RETARDO_1s();
     
@@ -425,52 +478,49 @@ void iniGSM() {
     RETARDO_50us();
     LATDbits.LATD1 = 1;  //PWK
     Nop();
-    RETARDO_1s();
-    RETARDO_1s();
-    RETARDO_1s();
-    RETARDO_1s();
-    RETARDO_1s();
 }
-
-
-void enviarComandoGSM(char comando[]) {
-    IFS1bits.U2TXIF = 0;
-    
-    __C30_UART=1;
-    printf("\r\n");
-    printf(comando);
-    printf("\r\n");
-    
-    __C30_UART=2;
-    printf(comando);
-    
-    //Espera respuesta
-    count = 2;
-    j = 0;
-    while(count > 0){   //Disminuye con la interrupci?n U2RXInterrupt
-        U1TXREG = 'x';
-        RETARDO_1s();
-    }
-    
-}
-
 
 /********************************************************************************/
-/* DESCRICION:	ISR (INTERRUPT SERVICE ROUTINE) DEL UART 2						*/
+/* FUNCION PARA ENVIAR COMANDOS AT AL MODULO 4G Y ESPERAR LA RESPUESTA  		*/
+/********************************************************************************/
+unsigned char enviarComando(char comando[]) {
+    IFS1bits.U2TXIF = 0;
+    
+    printUART1(comando);
+    printUART1("\n");
+    
+    printUART2(comando);
+    
+    char try = 0;
+    count = 2;
+    j = 0;
+    
+    //Espera respuesta del modulo 4G
+    while(count > 0){   //count disminuye con la ISR U2RXInterrupt
+        U1TXREG = 'x';
+        RETARDO_1s();
+        try++;
+        
+        if(try > 4) {   //Si no hay respuesta en 5 seg devuelve un 0 
+            return 0;
+        }
+    }
+    
+    return 1;
+}
+
+/********************************************************************************/
+/* ISR DEL UART 2                                          						*/
 /* Esta rutina cuenta los caracteres <LF> recibidos para determinar la respuesta*/
-/*                                                                              */
+/* del modulo 4G                                                                */
 /* En general la respuesta del m?dulo GSM es: <CR><LF>OK<CR><LF>                */
 /* Para el mensaje: <CR><LF><greater_than><space>                               */
 /********************************************************************************/
-
 void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void) {
     char resp;
 
     resp = U2RXREG;
     U1TXREG = resp;
-    
-    respuestaGSM[j] = resp;
-    j++;
     
     if(resp == 13){     //<CR>
         resp = '.';
@@ -485,16 +535,87 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void) {
     else if(resp == 32){   //' '
         resp = '-';
     }
+    else {
+        respuestaGSM[j] = resp;
+        j++;
+    }
     
     IFS1bits.U2RXIF = 0;
 }
 
 /********************************************************************************/
-/* DESCRIPCI?N:	ISR (INTERRUPT SERVICE ROUTINE) DEL TIMER 3						*/
-/* LA RUTINA TIENE QUE SER GLOBAL PARA SER UNA ISR								*/	
-/* SE USA PUSH.S PARA GUARDAR LOS REGISTROS W0, W1, W2, W3, C, Z, N Y DC EN LOS */
-/* REGISTROS SOMBRA																*/
+/* ISR DEL ADC EN DONDE SE REALIZA EL PROCESAMIENTO DE LOS VALORES DIGITALES    */
+/********************************************************************************/
+void __attribute__((__interrupt__, no_auto_psv)) _ADCInterrupt(void) {
+    valor = ADCBUF0;
+    valor -= 2048;
+    
+    x[0] = valor * ventana[index_muestras];
+    x[0] = x[0] >> 15;      //para regresar el punto flotante a su lugar original modificado por la ventana
+    
+    //printf("Muestra %d: %d \n\r", index_muestras, valor);
+    int i;
+    //autocorrelacion
+    for(i = 0; i < n; i++) {
+        Cxx[i] += x[0] * x[i];
+    }
+    
+    //Se mueven los datos del arreglo x[] una posicion a la derecha
+    for(i = n-2; i >= 0 ; i--) {
+        x[i+1] = x[i];
+    }
+    
+    index_muestras++;
+    IFS0bits.ADIF = 0;
+}
+
+/********************************************************************************/
+/* ISR DEL TIMER3 EN DONDE SE DECREMENTA UN CONTADOR PARA EL ENVIO DEL SMS		*/
 /********************************************************************************/
 void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt( void ) {
-        IFS0bits.T3IF = 0;    //SE LIMPIA LA BANDERA DE INTERRUPCION DEL TIMER 3
+    timer--;
+    IFS0bits.T3IF = 0;    //SE LIMPIA LA BANDERA DE INTERRUPCION DEL TIMER 3
+}
+
+/********************************************************************************/
+/* FUNCION PARA ENVIAR UNA CADENA AL UART1                              		*/
+/********************************************************************************/
+void printUART1(char* cadena) {
+    int i;
+    for(i = 0; cadena[i] != '\0'; i++) {
+        U1TXREG = cadena[i];
+        
+        //Mientras no se genere la interrupción, va a esperar
+        while(!IFS0bits.U1TXIF);
+        IFS0bits.U1TXIF = 0;
+    }
+}
+
+/********************************************************************************/
+/* FUNCION PARA ENVIAR UNA CADENA AL UART2                              		*/
+/********************************************************************************/
+void printUART2(char* cadena) {
+    int i;
+    for(i = 0; cadena[i] != '\0'; i++) {
+        U2TXREG = cadena[i];
+        
+        //Mientras no se genere la interrupción, va a esperar
+        while(!IFS1bits.U2TXIF);
+        IFS1bits.U2TXIF = 0;
+    }
+}
+
+/********************************************************************************/
+/* FUNCION PARA ESTABLECER EL VALOR DEL CONTADOR PARA EL ENVIO DEL SMS    		*/
+/********************************************************************************/
+void resetTimer() {
+    timer = minutos*60*FS;
+}
+
+void clearArray() {
+    int i;
+    for(i = 0; i < n; i++) {
+        Cxx[i] = 0;
+        x[i] = 0;
+    }
 }
