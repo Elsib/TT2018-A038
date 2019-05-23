@@ -171,7 +171,7 @@ class _RegistrarScreenState extends State<RegistrarScreen> {
 
       print(res);
 
-      if(res != null) {
+      if(res > 0) {
         Fluttertoast.showToast(
             msg: 'El paciente se registró exitosamente.',
             backgroundColor: Colors.grey,
@@ -184,12 +184,19 @@ class _RegistrarScreenState extends State<RegistrarScreen> {
           MaterialPageRoute(builder: (context) => PacientesScreen()),
         );
 
-      } else {
+      } else if(res == -1) {
         Fluttertoast.showToast(
-            msg: 'Ha ocurrido un error.',
+            msg: 'No puede registrar un número duplicado.',
             backgroundColor: Colors.grey,
             textColor: Colors.white,
             toastLength: Toast.LENGTH_LONG
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Ha ocurrido un error.',
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          toastLength: Toast.LENGTH_LONG
         );
       }
     }

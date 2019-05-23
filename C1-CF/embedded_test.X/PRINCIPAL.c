@@ -1,5 +1,9 @@
-//Version funcional Q15
-//TODO: Reemplazar Modulo I2C, Verificar timer
+/*      Version funcional 
+ * Ventana Hamming con formato Q15
+ * Calculo de frecuencia cardiaca
+ * Obtencion de temperatura
+ * Envio de SMS dependiendo de umbral o timer
+ */
 
 #include <xc.h>
 #include <stdio.h>
@@ -58,7 +62,9 @@ char CMD_AT_CMGF[] = "AT+CMGF=1\r";
 char CMD_AT_CCLK[] = "AT+CCLK?\r";
 //char CMD_AT_CMGS[] = "AT+CMGS=\"+525543612094\"\r";   //elsi
 //char CMD_AT_CMGS[] = "AT+CMGS=\"+525532768660\"\r"; //elena
-char CMD_AT_CMGS[] = "AT+CMGS=\"+525564211272\"\r"; //carlos
+//char CMD_AT_CMGS[] = "AT+CMGS=\"+525564211272\"\r"; //carlos
+char CMD_AT_CMGS[] = "AT+CMGS=\"+525519705183\"\r";   //katia
+//char CMD_AT_CMGS[] = "AT+CMGS=\"+525531475618\"\r";   //naye
 char CMD_MSG[42];
 
 char *comandos[] = {
@@ -94,7 +100,7 @@ float temperatura;
 /* VARIABLES DE UMBRALES      													*/
 /********************************************************************************/
 unsigned char lpm_max = 100;
-unsigned char lpm_min = 85;
+unsigned char lpm_min = 50;
 float temp_max = 36.8;
 float temp_min = 36.3;
 
@@ -152,121 +158,117 @@ int main(void) {
     configurarADC();
     configurarI2C();
     iniInterrupciones();
-    clearArray();
     
-    printf("\n\r iniciando... \n\r");
-    //printf("timer: %d \n", timer);
-    
-    //Espera hasta completar el numero de muestras requeridas
-    while(index_muestras < muestras);
-    index_muestras = 0;
-    ADCON1bits.ADON = 0;    //Apaga el ADC para evitar la interrupción mientras se realiza el envio el SMS
-    IEC0bits.ADIE = 0;
-    
-    //Busca el valor maximo de la autocorrelacion
-    int pos = 0;
-    
-    for(i = 0; i < n; i++) {
-        Cxx[i] = Cxx[i]/muestras;
+    while(1) {
+        clearArray();
 
-        //printf("Cxx[%d] = %ld \n\r", i, Cxx[i]);
+        printf("\n\r iniciando... \n\r");
+        printf("timer: %d \n\r", timer);
 
-        if(i-2 >= 0) {
-            if(Cxx[i-1] > Cxx[i] && Cxx[i-1] > Cxx[i-2] && Cxx[i-1] > 0) {
-                pos = i-1;
-                float freq = (float) FS/pos;
-                lpm = freq*60;
+        //Espera hasta completar el numero de muestras requeridas
+        while(index_muestras < muestras);
+        index_muestras = 0;
+        ADCON1bits.ADON = 0;    //Apaga el ADC para evitar la interrupción mientras se realiza el envio el SMS
+        IEC0bits.ADIE = 0;
+        //Busca el valor maximo de la autocorrelacion
+        int pos = 0;
 
-                printf("-----------------------------------------------\n\r");
-                printf("\tValor maximo = %ld en i = %d \n\r", Cxx[pos], pos);
-                printf("\tFrecuencia = %f \n\r", freq);
-                printf("\tlpm = %d \n\r", lpm);
-                printf("-----------------------------------------------\n\r");
-                
-                flag_auto = 1;
-                break;
+        for(i = 0; i < n; i++) {
+            Cxx[i] = Cxx[i]/muestras;
+
+            //printf("Cxx[%d] = %ld \n\r", i, Cxx[i]);
+
+            if(i-2 >= 0) {
+                if(Cxx[i-1] > Cxx[i] && Cxx[i-1] > Cxx[i-2] && Cxx[i-1] > 0) {
+                    pos = i-1;
+                    float freq = (float) FS/pos;
+                    lpm = freq*60;
+
+                    printf("-----------------------------------------------\n\r");
+                    printf("\tValor maximo = %ld en i = %d \n\r", Cxx[pos], pos);
+                    printf("\tFrecuencia = %f \n\r", freq);
+                    printf("\tlpm = %d \n\r", lpm);
+                    printf("-----------------------------------------------\n\r");
+
+                    flag_auto = 1;
+                    break;
+                }
             }
         }
-    }
-    
-    //Si encuentra la frecuencia fundamental continua...
-    if(flag_auto) {
-        //flag_temp = comunicacionMAX();
-        flag_temp = 1;
-        
-        //Si recibio el valor de temperatura continua...
-        if(flag_temp) {
-            temperatura = (float) 36.6;
-            //temperatura += temp_msb;
-            //float pb = 0.00390625 * temp_lsb;
-            //temperatura += pb;
-            
-            printf("temp: %f \n", temperatura);
-            
-            //si pasa algun umbral o el tiempo se agota, continua para enviar el SMS
-            //lpm_max = 90;
-            //lpm_min = 70;
-            //temp_max = 36.8;
-            //temp_min = 36.3;
-            if((temperatura < temp_min) || (temperatura > temp_max) || (lpm < lpm_min) || (lpm > lpm_max) || (timer <= 0)) {
-                unsigned char index_comando = 0;
-                unsigned char try = 1;
-                char date[16];
-                
-                while(index_comando <= 5) {
-                    if(try) {
-                        ini4G();
-                        RETARDO_1s();
-                        RETARDO_1s();
-                        RETARDO_1s();
-                        RETARDO_1s();
-                        RETARDO_1s();
-                    }
-                    
-                    if(enviarComando(comandos[index_comando])) {
-                        try = 0;
-                        
-                        if(index_comando == 3) {
-                            date[0] = '2';
-                            date[1] = '0';
 
-                            int o = 0;
-                            while (o <= 13) {
-                                date[o+2] = respuestaGSM[7+o];
-                                o++;
+        //Si encuentra la frecuencia fundamental continua...
+        if(flag_auto) {
+            flag_temp = comunicacionMAX();
+            //flag_temp = 1;
+
+            //Si recibio el valor de temperatura continua...
+            if(flag_temp) {
+                temperatura += temp_msb;
+                float pb = (float) 0.00390625 * temp_lsb;
+                temperatura += pb;
+
+                printf("temp: %f \n\r", temperatura);
+
+                //si pasa algun umbral o el tiempo se agota, continua para enviar el SMS
+                if((temperatura < temp_min) || (temperatura > temp_max) || (lpm < lpm_min) || (lpm > lpm_max) || (timer <= 0)) {
+                    unsigned char index_comando = 0;
+                    unsigned char try = 1;
+                    char date[16];
+
+                    while(index_comando <= 5) {
+                        if(try) {
+                            ini4G();
+                            RETARDO_1s();
+                            RETARDO_1s();
+                            RETARDO_1s();
+                            RETARDO_1s();
+                            RETARDO_1s();
+                        }
+
+                        if(enviarComando(comandos[index_comando])) {
+                            try = 0;
+
+                            if(index_comando == 3) {
+                                date[0] = '2';
+                                date[1] = '0';
+
+                                int o = 0;
+                                while (o <= 13) {
+                                    date[o+2] = respuestaGSM[7+o];
+                                    o++;
+                                }
+
+                                date[10] = ' ';
+                            } else if(index_comando == 4) {
+                                sprintf(comandos[5], "lpm:%d,temp:%.2f,fecha:%s \x1A\r", lpm, temperatura, date);
                             }
 
-                            date[10] = ' ';
-                        } else if(index_comando == 4) {
-                            sprintf(comandos[5], "lpm:%d,temp:%.2f,fecha:%s \x1A\r", lpm, temperatura, date);
+                            index_comando++;
+                        } else {
+                            try = 1;
+                            index_comando = 0;
                         }
-                        
-                        index_comando++;
-                    } else {
-                        try = 1;
-                        index_comando = 0;
                     }
+
+                    resetTimer();
+                } else {
+                    printf("No se cumple la condicion de envio \n");
                 }
-                
-                resetTimer();
+
             } else {
-                printf("No se cumple la condicion de envio \n");
+                printf("ERROR: I2C \n");
             }
-            
         } else {
-            printf("ERROR: I2C \n");
+            printf("ERROR: Autocorrelacion \n");
         }
-    } else {
-        printf("ERROR: Autocorrelacion \n");
+
+        //reset flags
+        flag_auto = 0;
+        flag_temp = 0;
+        ADCON1bits.ADON = 1;    //Enciende nuevamente el ADC
+        IEC0bits.ADIE = 1;
+        temperatura = 0;
     }
-    
-    //reset flags
-    flag_auto = 0;
-    flag_temp = 0;
-  
-//    while(1) {
-//        Nop();
-//    }
     
     return 0;
 }
@@ -461,7 +463,7 @@ unsigned char comunicacionMAX() {
     
     STOP_I2C();
     
-    printf("temp: %d.%d \n", temp_msb, temp_lsb);
+    //printf("temp: %d.%d \n", temp_msb, temp_lsb);
     
     return 1;
 }
@@ -574,7 +576,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _ADCInterrupt(void) {
 /********************************************************************************/
 void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt( void ) {
     timer--;
-    IFS0bits.T3IF = 0;    //SE LIMPIA LA BANDERA DE INTERRUPCION DEL TIMER 3
+    IFS0bits.T3IF = 0;
 }
 
 /********************************************************************************/

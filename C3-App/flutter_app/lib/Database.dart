@@ -93,10 +93,20 @@ class DBProvider {
 
   insertPaciente(Paciente p) async{
     final db = await database;
-    var res = await db.insert(
-      'pacientes',
-      p.toMap(),
-    );
+    var res;
+
+    try {
+      res = await db.insert(
+              'pacientes',
+              p.toMap(),
+            );
+    } catch (e) {
+      print(e);
+      if(e.toString().contains("UNIQUE")) {
+        return -1;
+      }
+      return null;
+    }
 
     return res;
   }

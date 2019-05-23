@@ -286,9 +286,11 @@ class InformacionScreenState extends State<InformacionScreen> {
   Future<List<Medicion>> _obtenerMensajes() async {
     SmsQuery query = new SmsQuery();
     ///Obtiene los mensajes recibidos con el número del paciente
+    //List<SmsMessage> messages = await query.getAllSms;
     List<SmsMessage> messages = await query.querySms(address: widget.paciente.telefono);
+    List<SmsMessage> messagesConClave = await query.querySms(address: "+52${widget.paciente.telefono}");
+    messages.addAll(messagesConClave);
 
-    //List<SmsMessage> messages = await query.querySms(address: '6644589012');
     print("-- Busca mensajes --");
 
     if(messages.isNotEmpty) {
