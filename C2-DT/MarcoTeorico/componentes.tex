@@ -48,15 +48,7 @@
 		\subsubsection{Sensor de temperatura digital}
 		Se denomina sensor de temperatura digital a un dispositivo que integra un sensor de temperatura analógico con un convertidor analógico-digital (ADC), lo que proporciona una interfaz digital directa. \cite{maximThermal} \\
 				
-	    \textbf{Otras características del sensor de temperatura digital}\\
-	    Además de la función básica de detección de temperatura, los sensores digitales pueden incluir otras características útiles, algunas de las más comunes son:
-	    \begin{itemize}
-	    	\item \textbf{Salidas dependiendo de la temperatura:} La mayoría de los sensores de temperatura digitales incluyen una o más salidas que indican que la temperatura medida ha superado un límite preestablecido (generalmente programable por software). La salida puede comportarse como una salida de comparador, con un estado cuando la temperatura está por encima del umbral y el otro estado cuando la temperatura está por debajo del umbral.
-	    	
-	    	\item \textbf{Cola de fallos:} Cuando comúnmente ocurren variaciones de temperatura a corto plazo, es posible que prefiera que la salida dependiendo de la temperatura no se afirme como resultado de una única medición de umbral. En su lugar, puede ser mejor afirmar la salida solo después de que hayan tenido lugar algunas mediciones de umbral por encima consecutivas. Una cola de fallas le permite seleccionar el número de mediciones de umbral por encima del umbral requerido antes de que se confirme la salida.
-	    	
-	    	\item \textbf{Interfaces:} Los sensores de temperatura digitales están disponibles con una amplia variedad de interfaces digitales que incluyen I2C, SMBus ™, SPI ™, 1-Wire® y PWM.
-	    \end{itemize}
+	    Además de la función básica de detección de temperatura, los sensores digitales pueden incluir otras características útiles, algunas de las más comunes son: alertas al superar un límite preestablecido y comunicación mediante interfaces digitales que incluyen I2C, SMBus™, SPI™, 1-Wire® y PWM.
 	
 	\section{Sensores de pulso}
 	
@@ -105,17 +97,17 @@
 			\label{fig:PPGwave}
 		\end{figure}
 			
-			Debido a que la PPG es una técnica que no mide directamente la actividad cardiaca, no siempre es precisa al nivel de milisegundos como las mediciones del ECG, pero es una mancera sencilla para medir la frecuencia cardíaca de una persona ya que utilizan sensores secos y se pueden colocar más rápido en comparación con las configuraciones de ECG, lo que hace que su uso sea más fácil y menos molesto para el usuario. \cite{imotionsECG}
+			Debido a que la PPG es una técnica que no mide directamente la actividad cardíaca, no siempre es precisa al nivel de milisegundos como las mediciones del ECG, pero es una mancera sencilla para medir la frecuencia cardíaca de una persona ya que utilizan sensores secos y se pueden colocar más rápido en comparación con las configuraciones de ECG, lo que hace que su uso sea más fácil y menos molesto para el usuario. \cite{imotionsECG}
 		
 	\section{Microcontroladores}
 	Un microcontrolador es  un  circuito  integrado  que  contiene  un  microprocesador  de  forma  interna,  con  todos  los  componentes  para  poder  funcionar  de  forma  autónoma. Aunque los recursos internos del microcontrolador no pueden ser modificados, es posible agregar nuevos recursos de forma externa mediante el uso de interfaces de comunicación como UART, I2C y SPI. \cite{garcia2017} \\
 	
-	Los  elementos  que  generalmente  integran  un  microcontrolador  son:
+	Los elementos que generalmente integran un microcontrolador son:
 	\begin{itemize}
 %		\item Microprocesador.
 		\item Memoria de datos RAM.
 		\item Memoria de programa ROM/PROM/EPROM.
-		\item Módulos de E/S para comunicarse con el exterior.
+		\item Módulos de entrada/salida para obtener y enviar datos fuera del microcontrolador.
 		\item Módulos para el control de procesos.
 		\item Oscilador interno para generar la señal de reloj.
 	\end{itemize}
