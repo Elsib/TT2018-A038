@@ -44,11 +44,11 @@ El resultado de los comandos ejecutados mediante la terminal de PuTTY se muestra
 
 
 \subsection{Conexión con microcontrolador}
-Después de asegurar el funcionamiento del módulo GSM, se realizó el programa correspondiente para la comunicación con el microcontrolador.\\
+Después de asegurar el funcionamiento del módulo 4G, se realizó el programa correspondiente para la comunicación con el microcontrolador.\\
 
 La conexión fue realizada mediante el UART2 del microcontrolador y mediante comandos AT se creó la rutina para verificar el envío de un mensaje SMS a un número de teléfono específico.
 
-El código principal del módulo gsm se muestra a continuación:
+El código principal del módulo 4G se muestra a continuación:
 {\small 
 \begin{lstlisting}[frame=single]
 ; COMANDO AT PARA INICIALIZAR EL MODEM
@@ -90,19 +90,19 @@ CAD_ERROR:      .STRING "ERROR"
 CAD_SIGNO_MAYOR:.STRING ">"
 \end{lstlisting}
 }
-La conexión del módulo GSM se realizó mediante un mikrobus conectado al microcontrolador. El esquema de esta conexión, así como la conexión física se muestran en las figuras \ref{fig:ConexionAD8232} y \ref{fig:ConexionFisicaGSM} respectivamente.
+La conexión del módulo 4G se realizó mediante un mikrobus conectado al microcontrolador. El esquema de esta conexión, así como la conexión física se muestran en las figuras \ref{fig:ConexionAD8232} y \ref{fig:ConexionFisicaGSM} respectivamente.
 
 	\begin{figure}[htbp!]
 		\centering
 		\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/GSMConexion.png}}
-		\caption{Conexión del módulo GSM con microcontrolador}
+		\caption{Conexión del módulo 4G con microcontrolador}
 		\label{fig:ConexionGSM}
 	\end{figure}
 	
 	\begin{figure}[htbp!]
 		\centering
 		\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/ConexionFisicaGSM.jpg}}
-		\caption{Conexión física del módulo GSM con microcontrolador mediante Mikrobus2}
+		\caption{Conexión física del módulo 4G con microcontrolador mediante Mikrobus2}
 		\label{fig:ConexionFisicaGSM}
 	\end{figure}
 	
@@ -111,7 +111,7 @@ En la figura \ref{fig:RecepcionMsj} se muestra la captura de pantalla que contie
 	\begin{figure}[htbp!]
 		\centering
 		\fbox{\includegraphics[width=0.35\textwidth]{AvancesPruebas/imagenes/msjModulo.png}}
-		\caption{Recepción de mensaje enviado por módulo GSM}
+		\caption{Recepción de mensaje enviado por el módulo 4G}
 		\label{fig:RecepcionMsj}
 	\end{figure}
 	
