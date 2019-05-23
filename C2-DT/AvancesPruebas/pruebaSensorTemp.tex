@@ -25,10 +25,27 @@ El procedimiento que se llevó a cabo para cumplir con los pasos establecidos en
 	\item Para terminar la comunicación, el maestro genera un NACK (no acknowledge) y por último una condición de STOP para el bus I2C.
 \end{enumerate}
 
+La conexión entre el sensor de temperatura y el dsPIC se realizó mediante las terminales SDA y SCL configuradas como salida respectivamente. Adicionalmente el sensor fue acondicionado para poder realizar la conexión física al dsPIC mediante un mikrobus. En las figuras \ref{fig:ConexionLogicaMAX30205} y \ref{fig:ConexionFisicaMAX30205} se muestra el ejemplo de las conexiones realizadas para esta prueba.
 
 
-Para visualizar los datos recibidos del sensor, se habilitaron las terminales del UART1 y se conectó el módulo FT232 a la computadora. 
-TEl resultado de la ejecución del programa con las mediciones leídas se muestra en la figura \ref{fig:ResultadoTerminalMAX30205}.\\
+\begin{figure}[htbp!]
+	\centering
+	\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/MAX30205Conexion.png}}
+	\caption{Conexión del sensor MAX30205.}
+	\label{fig:ConexionLogicaMAX30205}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/MAX30205ConexionFisica.jpg}}
+	\caption{Conexión física del sensor MAX30205.}
+	\label{fig:ConexionFisicaMAX30205}
+\end{figure}
+
+
+Finalmente para visualizar los datos recibidos del sensor, se habilitaron las terminales del UART1 y se conectó el módulo FT232 a la computadora. \\
+
+%TEl resultado de la ejecución del programa con las mediciones leídas se muestra en la figura \ref{fig:ResultadoTerminalMAX30205}.\\
 %
 %
 %\begin{figure}[htbp!]

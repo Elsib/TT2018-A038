@@ -9,14 +9,12 @@ Para verificar que el módulo tenga un correcto funcionamiento, se probó de man
 %		\label{fig:ConexionUART}
 %	\end{figure}
 	
-Una vez conectado correctamente ambos módulos, se realizó la prueba de la siguiente forma:
+Una vez conectado correctamente ambos componentes, se realizó la prueba de la siguiente forma:
 \begin{enumerate}
 	\item Se ejecutó el emulador de terminal ’PuTTY’, configurándolo para el puerto serial
-	indicado, con un baudaje de 9600, transmisión de 8 bits, sin paridad con 1 bit de
+	indicado, con un baudaje de 19200, transmisión de 8 bits, sin paridad con 1 bit de
 	stop y sin flujo de control. La configuración realizada se muestra en la figura \ref{fig:ConfiguracionPutty}.
-	\item Se ejecutaron los comandos AT básicos para probar el módulo LARA-R202, en ninguno de ellos
-	debe aparecer un error, de lo contrario se debe revisar la conexión entre los dispositivos
-	y la instalación del software necesario. Algunos de los comandos utilizados, son:
+	\item Se ejecutaron los comandos AT básicos para probar el módulo LARA-R202 y se confirmó que en ninguno de ellos se mostrará un error. Algunos de los comandos utilizados, son:
 
 		\begin{enumerate}
 			\item AT
@@ -28,7 +26,7 @@ Una vez conectado correctamente ambos módulos, se realizó la prueba de la sigu
  
 	\begin{figure}[htbp!]
 		\centering
-		\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/putty.png}}
+		\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/putty.png}}
 		\caption{Configuración de terminal en PuTTY}
 		\label{fig:ConfiguracionPutty}
 	\end{figure}
@@ -37,7 +35,7 @@ El resultado de los comandos ejecutados mediante la terminal de PuTTY se muestra
 
 	\begin{figure}[htbp!]
 		\centering
-		\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/putty_ipr.png}}
+		\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/putty_ipr.png}}
 		\caption{Comandos AT en terminal de PuTTY}
 		\label{fig:TerminalPutty}
 	\end{figure}
@@ -46,50 +44,16 @@ El resultado de los comandos ejecutados mediante la terminal de PuTTY se muestra
 \subsection{Conexión con microcontrolador}
 Después de asegurar el funcionamiento del módulo 4G, se realizó el programa correspondiente para la comunicación con el microcontrolador.\\
 
-La conexión fue realizada mediante el UART2 del microcontrolador y mediante comandos AT se creó la rutina para verificar el envío de un mensaje SMS a un número de teléfono específico.
+La conexión fue realizada mediante el UART2 del microcontrolador y mediante comandos AT se creó la rutina para verificar el envío de un mensaje SMS a un número de teléfono específico.\\
 
-El código principal del módulo 4G se muestra a continuación:
-{\small 
-\begin{lstlisting}[frame=single]
-; COMANDO AT PARA INICIALIZAR EL MODEM
+El proceso para establecer la comunicación del módulo GSM con el dsPIC y la computadora fue el siguiente.\\
 
-CMD_AT: .BYTE 'A','T', 0X0D	;char CMD_AT[] = "AT\r"
+Como primer paso se inicializaron los periféricos del dsPIC necesarios para la comunicación, en este caso fue el UART1 para transmitir a la pc los resultado obtenidos, el UART2 para la comunicación con el módulo 4G y las entradas y salidas del mikrobus2 que necesita el módulo para funcionar correctamente.
 
-; DESHABILITAR EL ECO DEL COMANDO EN LA RESPUESTA DEL MODEM
 
-CMD_ATE0: .BYTE 'A','T','E','0',0X0D
 
-; COMANDO AT+CPIN=1111 MANDA EL CODIGO PIN DE LA TARJETA SIM
 
-CMD_AT_CPIN: .BYTE 'A','T','+','C','P','I','N'
 
-.BYTE '=', '1','1','1','1',0X0D
-
-; COMANDO AT+CMGF=1 ACTIVA EL MODO TEXTO PARA ENVIAR MENSAJES
-
-CMD_AT_CMGF: .BYTE 'A','T','+','C','M','G','F','=','1', 0X0D
-
-; COMANDO AT+CMGS="+525543612094" PARA DEFINIR NO DE TELEFONO
-
-CMD_AT_CMGS: .BYTE 'A','T','+','C','M','G','S','=','"'
-
-.BYTE '+','5','2','5','5','4','3','6','1','2','0','9','4','"',0X0D
-
-; MENSAJE "PROBANDO GSM CLICK^z"
-
-CMD_MSJ: .BYTE 'H','O','L','A',' ','E','L','S','I','.',' ',' ',
-
-.BYTE 'M','S','J',' ','E','N','V','I','A','D','O'
-
-.BYTE ' ','D','E','S','D','E',' '
-
-.BYTE 'D','S','P','I','C','!',0X1A,0X0D
-
-CAD_OK:         .STRING "OK"
-CAD_ERROR:      .STRING "ERROR"
-CAD_SIGNO_MAYOR:.STRING ">"
-\end{lstlisting}
-}
 La conexión del módulo 4G se realizó mediante un mikrobus conectado al microcontrolador. El esquema de esta conexión, así como la conexión física se muestran en las figuras \ref{fig:ConexionAD8232} y \ref{fig:ConexionFisicaGSM} respectivamente.
 
 	\begin{figure}[htbp!]
