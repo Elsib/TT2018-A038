@@ -1,37 +1,34 @@
 \section{Módulo LARA-R202}
 \subsection{Prueba unitaria}
-Para verificar que el módulo tenga un correcto funcionamiento, se probó de manera unitaria el UART del módulo Telit GL865-QUAD con un módulo FT232. La conexión entra ambos componentes se realizó de forma cruzada, es decir, que el transmisor de un dispositivo fue conectado al receptor del otro, tal como se muestra en la figura \ref{fig:ConexionUART}.
-
-	\begin{figure}[htbp!]
-		\centering
-		\fbox{\includegraphics[width=0.4\textwidth]{AvancesPruebas/imagenes/conexion-uart.png}}
-		\caption{Conexión UART de módulo GSM y FT232}
-		\label{fig:ConexionUART}
-	\end{figure}
+Para verificar que el módulo tenga un correcto funcionamiento, se probó de manera unitaria conectándolo directamente a la computadora a través de la interfaz USB del módulo.\\ %La conexión entra ambos componentes se realizó de forma cruzada, es decir, que el transmisor de un dispositivo fue conectado al receptor del otro, tal como se muestra en la figura \ref{fig:ConexionUART}.
+%
+%	\begin{figure}[htbp!]
+%		\centering
+%		\fbox{\includegraphics[width=0.4\textwidth]{AvancesPruebas/imagenes/conexion-uart.png}}
+%		\caption{Conexión UART de módulo GSM y FT232}
+%		\label{fig:ConexionUART}
+%	\end{figure}
 	
 Una vez conectado correctamente ambos módulos, se realizó la prueba de la siguiente forma:
 \begin{enumerate}
 	\item Se ejecutó el emulador de terminal ’PuTTY’, configurándolo para el puerto serial
 	indicado, con un baudaje de 9600, transmisión de 8 bits, sin paridad con 1 bit de
 	stop y sin flujo de control. La configuración realizada se muestra en la figura \ref{fig:ConfiguracionPutty}.
-	\item Se ejecutaron los comandos AT básicos para probar el módulo GL865-QUAD, en ninguno de ellos
+	\item Se ejecutaron los comandos AT básicos para probar el módulo LARA-R202, en ninguno de ellos
 	debe aparecer un error, de lo contrario se debe revisar la conexión entre los dispositivos
 	y la instalación del software necesario. Algunos de los comandos utilizados, son:
+
 		\begin{enumerate}
 			\item AT
-			\item AT+GSV
-			\item AT+IPR=?
-			\item AT+CSQ
-			\item AT+CREG? 
-			\item AT+CGREG? 
-			\item AT+CGNSPWR=1
-			\item AT+CGNSINF=0
+			\item AT+ATE0
+			\item AT+CMGF=1
+			\item AT+CMGS=""
 		\end{enumerate}	
 \end{enumerate}
  
 	\begin{figure}[htbp!]
 		\centering
-		\fbox{\includegraphics[width=0.5\textwidth]{AvancesPruebas/imagenes/putty.png}}
+		\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/putty.png}}
 		\caption{Configuración de terminal en PuTTY}
 		\label{fig:ConfiguracionPutty}
 	\end{figure}
@@ -44,7 +41,7 @@ El resultado de los comandos ejecutados mediante la terminal de PuTTY se muestra
 		\caption{Comandos AT en terminal de PuTTY}
 		\label{fig:TerminalPutty}
 	\end{figure}
-\pagebreak
+
 
 \subsection{Conexión con microcontrolador}
 Después de asegurar el funcionamiento del módulo GSM, se realizó el programa correspondiente para la comunicación con el microcontrolador.\\
