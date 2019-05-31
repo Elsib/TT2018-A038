@@ -17,9 +17,9 @@ El diagrama está compuesto por dos módulos, los cuales se describen a continua
 \clearpage
 
 \section{Arquitectura lógica del sistema}
-Una vez definidos los componentes que serán utilizados, se definió la arquitectura lógica del sistema mostrada en la figura \ref{fig:DisenoArquiLogica}, especificando la forma en que serán comunicados con el microcontrolador.\\
+Una vez definidos los componentes que serán utilizados para constituir el sistema embebido, se definió la arquitectura lógica del sistema mostrada en la figura \ref{fig:DisenoArquiLogica}, especificando la forma en que se realizará la comunicación entre componentes.\\
 
-La figura de la arquitectura de divide en tres partes, las cuales especifican la forma de comunicación entre el sistema embebido, la red 3G/4G y la aplicación móvil.\\
+La arquitectura planteada se divide en tres partes, las cuales definen la forma de comunicación entre el sistema embebido, la red 3G/4G y la aplicación móvil.\\
 
 \begin{figure}[htbp!]
 	\centering
@@ -28,6 +28,8 @@ La figura de la arquitectura de divide en tres partes, las cuales especifican la
 	\label{fig:DisenoArquiLogica}
 \end{figure}
 
-El sistema embebido se encarga de obtener la señal de pulso cardíaco mediante el sensor de pulso a través de una entrada analógica, este señal es digitalizada con el ADC de 12 btis del microcontrolador y posteriormente se realiza el procesamiento para calcular la frecuencia cardíaca. Al término de estos cálculos se obtiene la temperatura del sensor de temperatura y se realiza el procesamiento para obtener el valor expresado en valores decimales. Cuando se tienen estos valores, el módulo de envío SMS se encarga de construir y enviar el mensaje a la Red 3G/4G. \\
+El sistema embebido se encarga de obtener la señal de pulso cardíaco del paciente mediante el sensor de pulso a través de una entrada analógica, este señal es enviada al módulo de conversión digital en donde es digitalizada para posteriormente enviarla al módulo de procesamiento digital, en donde será procesada para obtener la frecuencia cardíaca. Para la obtención y cálculo de la temperatura, se tiene el módulo de obtención de temperatura y de procesamiento de medición. \\
 
-El usuario recibe el mensaje en su dispositivo móvil con acceso a la Red 3G/4G y la aplicación móvil obtendrá los datos de dicho mensaje. El usuario podrá registrar la información del paciente para posteriormente visualizar los valores de las mediciones.
+Estos valores se envían al módulo de envío SMS, con el que se realizará la comunicación con la red 3G/4G y con el dispositivo móvil. \\
+
+El usuario recibe el mensaje en su dispositivo móvil mediante el módulo de recepción SMS y la aplicación móvil obtendrá los datos de dicho mensaje mediante el módulo de obtención de datos. El usuario podrá registrar la información del paciente mediante el módulo de registro de pacientes. Los dos módulos anteriores proporcionarán la información que será almacenada en una base de datos de la cual el módulo de consulta de datos obtendrá la información para mostrarla al usuario.
