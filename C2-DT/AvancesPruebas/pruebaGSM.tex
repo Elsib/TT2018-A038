@@ -18,9 +18,10 @@ Una vez conectado correctamente ambos componentes, se realizó la prueba de la s
 
 		\begin{enumerate}
 			\item AT
-			\item AT+ATE0
+			\item ATE0
 			\item AT+CMGF=1
 			\item AT+CMGS=""
+			\item AT+CCLK?
 		\end{enumerate}	
 \end{enumerate}
  
@@ -48,13 +49,9 @@ La conexión fue realizada mediante el UART2 del microcontrolador y mediante com
 
 El proceso para establecer la comunicación del módulo 4G con el dsPIC y la computadora fue el siguiente.\\
 
-Como primer paso se inicializaron los periféricos del dsPIC necesarios para la comunicación, en este caso fue el UART1 para transmitir a la pc los resultado obtenidos, el UART2 para la comunicación con el módulo 4G y las entradas y salidas del mikrobus2. Posteriormente se configuró el baudaje de ambos UART a 19200 Bd
+Como primer paso se inicializaron los periféricos del dsPIC necesarios para la comunicación, en este caso fue el UART1 para transmitir a la pc los resultado obtenidos, el UART2 para la comunicación con el módulo 4G y las entradas y salidas del Mikrobus2. Posteriormente se configuró la taza de transferencia de ambos UART a 19200 baudios.\\
 
-
-
-
-
-La conexión del módulo 4G se realizó mediante un mikrobus conectado al microcontrolador. El esquema de esta conexión, así como la conexión física se muestran en las figuras \ref{fig:ConexionAD8232} y \ref{fig:ConexionFisicaGSM} respectivamente.
+La conexión del módulo 4G se realizó mediante un Mikrobus conectado al microcontrolador. El esquema de esta conexión, así como la conexión física se muestran en las figuras \ref{fig:ConexionGSM} y \ref{fig:ConexionFisicaGSM} respectivamente.\\
 
 	\begin{figure}[htbp!]
 		\centering
@@ -70,13 +67,24 @@ La conexión del módulo 4G se realizó mediante un mikrobus conectado al microc
 		\label{fig:ConexionFisicaGSM}
 	\end{figure}
 	
-En la figura \ref{fig:RecepcionMsj} se muestra la captura de pantalla que contiene el mensaje recibido en el teléfono celular.
-
-	\begin{figure}[htbp!]
-		\centering
-		\fbox{\includegraphics[width=0.35\textwidth]{AvancesPruebas/imagenes/msjModulo.png}}
-		\caption{Recepción de mensaje enviado por el módulo 4G}
-		\label{fig:RecepcionMsj}
-	\end{figure}
 	
-	\clearpage
+\noindent{Para que se realice el envío del mensaje se consideraron las siguientes condiciones: }
+\begin{itemize}
+	\item Que el resultado de frecuencia cardíaca se encuentre fuera del rango establecido (50 lpm - 100 lpm).
+	\item Que el resultado de temperatura se encuentre fuera del rango establecido (36$^{\circ}$C - 37$^{\circ}$C).
+	\item Que se agote un temporizador de minutos.
+\end{itemize}
+
+Si se cumple alguna de las condiciones anteriores, se obtiene la fecha y hora proporcionada por el módulo de comunicación. Una vez que se tienen los tres datos (frecuencia cardíaca, temperatura y fecha y hora), se construye el mensaje de texto, cuyo cuerpo se definió de la siguiente manera: lpm:{XX},temp:{XX.XX},fecha:{DD/MM/AAAA HH:MM}, y se procede a realizar su envío.
+
+En la figura \ref{fig:RecepcionMsj} se muestra la captura de pantalla que contiene el mensaje recibido en el teléfono celular.\\
+
+\begin{figure}[htbp!]
+	\centering
+	%\fbox{\includegraphics[width=0.35\textwidth]{AvancesPruebas/imagenes/msjModulo.png}}
+	\fbox{\includegraphics[width=0.45\textwidth]{AvancesPruebas/imagenes/formatoSMS.png}}
+	\caption{Recepción de mensaje enviado por el módulo 4G}
+	\label{fig:RecepcionMsj}
+\end{figure}
+	
+\clearpage
