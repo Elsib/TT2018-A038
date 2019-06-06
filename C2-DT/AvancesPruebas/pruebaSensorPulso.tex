@@ -262,6 +262,10 @@ De esos resultados se observó que la cantidad de muestras influía en el result
 
 Con los datos anteriores, se configuró el Timer 3 del microcontrolador para controlar el ADC a una frecuencia de muestreo de $128\ Hz$. También se programó la interrupción del ADC para que al momento de finalizar una conversión del valor analógico, se realizara el cálculo de la autocorrelación con ese valor. \\
 
+El algoritmo de autocorrelación se implementó utilizando dos arreglos de 150 valores de tal manera que en uno se almacenaran los valores del ADC y en otro los valores resultantes de la autocorrelación para cada $n$, como se indica en la fórmula.\\ 
+
+De esta manera se logra realizar el cálculo al vuelo, es decir, no se requiere esperar a obtener las 1600 muestras para comenzar el cálculo de la autocorrelación y obtener cada valor $Cxx$ uno a uno, sino que se calculan todos los $Cxx$ conforme se obtienen los valores del ADC hasta completar las 1600 muestras. \\
+
 El primer paso involucrado en el cálculo de la frecuencia cardíaca fue aplicar un offset de -2048 a los valores obtenidos del ADC, ya que éste nos entrega valores entre 0 y 4095. Al aplicar el offset se realiza un desplazamiento de la señal para centrarlo en el eje ''x'' como se muestra en la figura \ref{fig:offset}. \\
 
 \begin{figure}[htbp!]

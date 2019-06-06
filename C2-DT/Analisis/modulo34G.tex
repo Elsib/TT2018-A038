@@ -1,15 +1,15 @@
 %========ANÁLISIS DEL MODULO DE COMUNICACIÓN=======
 
-\subsection{Módulo de comunicación 3G/4G}
-El módulo de comunicación permitirá el envío de mensajes SMS con la información proporcionada por el microcontrolador. \\
+\subsection{Módulo de comunicación}
+El módulo de comunicación permitirá el envío de mensajes de texto con la frecuencia cardíaca, la temperatura y fecha y hora. \\
 
 Para determinar el módulo a utilizar, se consideraron únicamente módulos con el chip integrado ya que proporciona la ventaja de contener todos los elementos que éste requiere. Además al requerir únicamente del envío de SMS se descartaron varios modelos encontrados. \\
 
-Finalmente se realizó una tabla comparativa entre los módulos de la empresa MikroElektronika que corresponden a los requerimientos buscados. \\
+Finalmente se realizó una tabla comparativa entre los módulos de la empresa MikroElektronika que corresponden a los requerimientos buscados además de que proporcionan la ventaja de encontrarse diseñados con una conexión denominada MikroBUS que facilita su uso al no tener que comprar algún componente adicional. \\
 
 Las principales características a considerar para la selección del módulo fueron la banda soportada y las interfaces de comunicación que ofrece. Adicionalmente se consideraron el voltaje y precio. \\
 
-En la Tabla \ref{analisis:moduloGSM} se muestran los datos de los diferentes módulos de comunicación GSM para cada característica.\\
+En la Tabla \ref{analisis:moduloGSM} se muestran los datos de los diferentes módulos de comunicación para cada característica.\\
 
 \begin{table}[htbp]
 	\begin{center}
@@ -39,7 +39,7 @@ En la Tabla \ref{analisis:moduloGSM} se muestran los datos de los diferentes mó
 	
 Debido a que para realizar pruebas se utilizará una tarjeta SIM de algún operador celular del país se consideraron las operadoras más utilizadas a nivel nacional con las frecuencias de operación de sus bandas. \cite{garrido2018} \\ 
 
-Al no requerir de una gran velocidad para el envío de datos se consideró usar la red 3G.\\
+Ya que únicamente se requiere del envío de mensajes de texto y de la fecha y hora proporcionada por la red, las redes 2G, 3G y 4G son aptas para esto. Además al no requerir de una gran velocidad para el envío de datos, la red 2G podría ser la mejor opción, sin embargo, esta red está programada para ser apagada y migrar las comunicaciones a la red 3G. \\
 
 En la Tabla \ref{analisis:moduloGSMFrecuencias} se muestran los datos de las diferentes operadoras.\\
 
@@ -48,7 +48,7 @@ En la Tabla \ref{analisis:moduloGSMFrecuencias} se muestran los datos de las dif
 		\scalebox{0.93}[0.95]{
 			\begin{tabular}{|c|c|}
 				\hline
-				\thead{Operador}&\thead{Frecuencia para 3G (MHz)}\\
+				\thead{Operador}&\thead{Frecuencia para 3G/4G (MHz)}\\
 				\hline
 				\hline
 				AT\&T (Iusacell y Nextel) & 850/1700/1900/2100\\
@@ -69,8 +69,8 @@ Por las características que presenta y el soporte que tiene en la red 3G y 4G n
 		\begin{figure}[htbp!]
 			\centering
 			\fbox{\includegraphics[width=0.6\textwidth]{Analisis/imagenes/4g-lte.png}}
-			\caption{4G LTE-AT\&T CLICK}
+			\caption{Módulo de comunicación 4G LTE-AT\&T CLICK}
 			\label{fig:AnalisisGSM}
 		\end{figure}
 		
-		\clearpage
+\clearpage

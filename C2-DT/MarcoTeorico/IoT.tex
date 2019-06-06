@@ -1,2 +1,28 @@
-\section{Internet de las cosas (IoT)}
-	El Internet de las cosas (IoT) es un concepto y un paradigma que considera la presencia generalizada en el entorno de una variedad de cosas/objetos que contienen tecnología integrada para comunicarse a través de conexiones alámbricas e inalámbricas con el fin de interactuar entre sí y cooperar con otras cosas/objetos para crear nuevas aplicaciones/servicios y alcanzar objetivos comunes. \cite{vermesanIoT}
+\section{Internet de las cosas (IoT)}	
+	El Internet de las cosas (IoT) es un concepto que describe una red de dispositivos interconectados que tiene capacidades avanzadas para interactuar con dispositivos y también con seres humanos y el mundo físico circundante para realizar una variedad de tareas \cite{vermesanIoT}.\\
+	
+	En este contexto, el uso de sensores en dispositivos IoT proveen una conexión entre estos y el mundo físico. De hecho, los dispositivos modernos de IoT cuentan con una amplia gama de sensores, por ejemplo, el acelerómetro, giroscopio, micrófono, sensor de luz, entre muchos otros, que permiten aplicaciones más eficientes y fáciles de usar \cite{laneIoT}. \\
+	
+	Usando estos sensores, los dispositivos de IoT pueden detectar cambios en el mundo físico y realizar acciones dependiendo de las necesidades de las personas, lo que ha hecho que los dispositivos de IoT sean sean muy útiles en varias áreas de aplicación: desde la atención médica personal hasta los electrodomésticos, desde grandes aplicaciones industriales a ciudades inteligentes. \\
+	
+	En general, la arquitectura de los dispositivos IoT comprende cuatro componentes principales: detección, red, procesamiento de datos y capa de aplicación \cite{arquitecturaIoT}. A continuación se proporciona una descripción detallada de estas capas.
+	
+	\begin{enumerate}
+		\item \textbf{Capa de detección.} El objetivo principal esta capa es identificar cualquier fenómeno en el periférico de los dispositivos y obtener datos del mundo real. Esta capa puede constar de varios sensores. Los sensores en dispositivos IoT se pueden clasificar en tres categorías amplias como se describe a continuación: 
+		
+		\begin{itemize}
+			\item Sensores de movimiento: los sensores de movimiento miden el cambio en movimiento así como la orientación de los dispositivos.
+			
+			\item Sensores ambientales: sensores como el sensor de luz, el de proximidad, el de temperatura, etc. están integrados en los dispositivos de IoT para detectar el cambio en los parámetros ambientales en el periférico del dispositivo. 			
+			El propósito principal del uso de sensores ambientales en dispositivos IoT es ayudar a los dispositivos a tomar decisiones autónomas de acuerdo con los cambios del dispositivo periférico. 
+			
+			\item Sensores de posición: los sensores de posición de los dispositivos de IoT tratan la posición física y la ubicación del dispositivo. Los sensores de posición más comunes que se utilizan en los dispositivos de IoT son los sensores magnéticos y los sensores del sistema de posicionamiento global (GPS).
+		\end{itemize}
+	
+		\item \textbf{Capa de red.} La capa de red actúa como un canal de comunicación para transferir datos, recopilados en la capa de detección, a otros dispositivos conectados. En los dispositivos IoT, la capa de red se implementa mediante el uso de diversas tecnologías de comunicación, como Wi-Fi, Bluetooth, Zigbee o la red celular.
+		
+		\item \textbf{Capa de procesamiento de datos.} Esta capa consta de la unidad principal de procesamiento de datos de los dispositivos IoT, en la que se toman los datos recopilados en la capa de detección y los analiza para tomar decisiones basadas en el resultado.
+		
+		\item \textbf{Capa de aplicación.} La capa de aplicación implementa y presenta los resultados de la capa de procesamiento de datos. La capa de aplicación es una capa centrada en el usuario que ejecuta varias tareas para los usuarios.
+	\end{enumerate}
+	
