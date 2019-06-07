@@ -2,9 +2,9 @@
 
 \section{Conclusiones}
 
-Se revisaron las opciones de sensor disponibles y se seleccionó el sensor analógico de tipo fotopletismógrafo debido a que al realizar las pruebas fue con el que se obtuvieron mejores resultados. Al ser un sensor de tipo analógico, se realizó la configuración del periférico del convertidor analógico digital del microcontrolador para tener una frecuencia de muestreo de 128 Hz, obteniendo una señal digital con una resolución de 12 bits.\\
+Se revisaron las opciones de sensor disponibles y se seleccionó el sensor analógico de tipo fotopletismógrafo debido a que al realizar las pruebas fue con el que se obtuvieron mejores resultados. Al ser un sensor de tipo analógico, se realizó la configuración del periférico del convertidor analógico digital del microcontrolador para tener una frecuencia de muestreo de $128\ Hz$, obteniendo una señal digital con una resolución de 12 bits.\\
 
-Se revisaron las opciones de sensor disponibles y se seleccionó un sensor digital con uso específico en aplicaciones médicas con interfaz de tipo I2C el cual entrega una señal con una resolución de 16 bits equivalente a 0.00390625$^{\circ}$C, y una precisión de 0.1$^{\circ}$C cuando se realiza la medición entre los 36$^{\circ}$C y 39$^{\circ}$C. Para establecer la comunicación con el microcontrolador, se configuró el periférico I2C a una frecuencia de operación de 400 KHz en el dispositivo maestro. \\
+Se revisaron las opciones de sensor disponibles y se seleccionó un sensor digital con uso específico en aplicaciones médicas con interfaz de tipo I2C el cual entrega una señal con una resolución de 16 bits equivalente a $0.00390625^{\circ}C$, y una precisión de $0.1^{\circ}C$ cuando se realiza la medición entre los $36^{\circ}C$ y $39^{\circ}C$. Para establecer la comunicación con el microcontrolador, se configuró el periférico I2C a una frecuencia de operación de $400\ KHz$ en el dispositivo maestro. \\
 
 Para establecer la comunicación entre el sistema embebido y el teléfono celular se utiliza una comunicación inalámbrica mediante mensajes de texto. En una primera aproximación se utilizó la red GSM, sin embargo durante el desarrollo del proyecto, las antenas que permiten la comunicación fueron apagadas por lo que se tuvo la necesidad de migrar a las redes UMTS y LTE.\\
 
@@ -14,7 +14,7 @@ Una vez obtenida la señal de frecuencia cardíaca se aplicaron técnicas de pro
 
 Para la señal de temperatura debido a que el resultado se guardó en dos registros diferentes se realizó el cálculo del valor real mediante la multiplicación de la parte baja del valor por la resolución del sensor y se sumó a la parte alta de la medición.\\
 
-Finalmente, se configuró el módulo 4G para realizar el envío de mensajes bajo dos condiciones: envío por tiempo cada minuto, siendo este valor es configurable directamente en el código, o al detectar un valor fuera de la ventana definida como normal de 50 a 100 latidos por minuto. De igual manera se tiene una ventana definida como normal de 36$^{\circ}$C a 37$^{\circ}$C. Siendo ambos valores de las ventanas configurables. \\
+Finalmente, se configuró el módulo 4G para realizar el envío de mensajes bajo dos condiciones: envío por tiempo cada minuto, siendo este valor es configurable directamente en el código, o al detectar un valor fuera de la ventana definida como normal de 50 a 100 latidos por minuto. De igual manera se tiene una ventana definida como normal de $36^{\circ}C$ a $37^{\circ}C$. Siendo ambos valores de las ventanas configurables. \\
 
 Al haber obtenido los resultados y cumplir alguna de las condiciones anteriores, se obtiene la fecha y hora proporcionadas por la red 3G o 4G utilizada por el módulo 4G. Con estos valores se generó la trama a enviar mediante el mensaje de texto que contiene la frecuencia cardíaca, temperatura y fecha en la que se obtuvo la medición. \\
 

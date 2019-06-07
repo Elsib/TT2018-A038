@@ -111,7 +111,7 @@ A continuación se describen las etapas del diagrama de flujo.
 	
 	\item \textbf{Configuración UART:} Esta rutina configura el UART a una taza de transferencia de 19200 baudios e indica los pines a utilizar. También se incluyen las interrupciones correspondientes al UART.
 	
-	\item \textbf{Configuración de ADC:} En esta sección se especifica que el pin de entrada B2 será el canal de entrada analógico (AN2) para el ADC. Se utilizó una frecuencia de muestreo de 512 Hz por lo que se realizó la configuración del Timer 3 para el control del ADC. También se especificó la interrupción del ADC para enviar el valor digital al UART. 
+	\item \textbf{Configuración de ADC:} En esta sección se especifica que el pin de entrada B2 será el canal de entrada analógico (AN2) para el ADC. Se utilizó una frecuencia de muestreo de $512\ Hz$ por lo que se realizó la configuración del Timer 3 para el control del ADC. También se especificó la interrupción del ADC para enviar el valor digital al UART. 
 	
 \end{enumerate}
 
@@ -296,7 +296,7 @@ En la figura \ref{fig:autocorr} se muestra el resultado de la autocorrelación y
 
 \begin{figure}[htbp!]
 	\centering
-	\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/autocorr.png}}
+	\fbox{\includegraphics[width=0.65\textwidth]{AvancesPruebas/imagenes/autocorr.png}}
 	\caption{Resultado de la autocorrelación de la señal digital de pulso cardíaco.}
 	\label{fig:autocorr}
 \end{figure}
