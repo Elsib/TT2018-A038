@@ -4,5 +4,6 @@ set rmargin 7
 set title  "Sensor detector de pulso"
 set ylabel "Pulso"
 set xlabel "Muestra"
-plot [0:3841][500:4000]"128hz_4096_Carlos_SV.txt" with lines linetype 4 linewidth 1
+set xrange [0:256]
+plot [0:256][-50:50]"prueba.txt" using ($1-2048)*(0.54-(0.46*cos(2*pi*x/256))) with lines linetype 4 linewidth 1
 pause 60

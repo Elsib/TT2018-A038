@@ -1,0 +1,8 @@
+#!/usr/bin/gnuplot
+set lmargin 10
+set rmargin 7
+set title  "Sensor detector de pulso"
+set ylabel "Pulso"
+set xlabel "Muestra"
+plot [0:240][-1000:2000]"prueba16hz_6.txt" using ($1-2048) with lines linetype 4 linewidth 1
+pause 60

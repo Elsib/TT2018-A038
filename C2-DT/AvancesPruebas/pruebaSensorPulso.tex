@@ -84,7 +84,7 @@ El sensor se conectó al microcontrolador para que la señal fuera procesada y t
 
 \begin{figure}[htbp!]
 	\centering
-	\fbox{\includegraphics[width=0.8\textwidth]{AvancesPruebas/imagenes/PulseSensorConexion.png}}
+	\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/PulseSensorConexion.png}}
 	\caption{Diagrama de conexión del Pulse Sensor con el microcontrolador.}
 	\label{fig:ConexionPulseSensor}
 \end{figure}
@@ -117,7 +117,7 @@ A continuación se describen las etapas del diagrama de flujo.
 
 	\begin{figure}[htbp!]
 		\centering
-		\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/ConfiguracionMicro.png}}
+		\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/ConfiguracionMicro.png}}
 		\caption{Diagrama de flujo del programa de configuración del dsPIC30F4013.}
 		\label{fig:ConfiguracionMicro}
 	\end{figure}
@@ -137,7 +137,7 @@ A continuación se describen las etapas del diagrama de flujo realizado para est
 
 	\begin{figure}[htbp!]
 		\centering
-		\fbox{\includegraphics[width=0.65\textwidth]{AvancesPruebas/imagenes/Serial.png}}
+		\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/Serial.png}}
 		\caption{Diagrama de flujo de la obtención de señal digitalizada.}
 		\label{fig:FlujoSerial}
 	\end{figure}
@@ -196,19 +196,22 @@ En las figuras  \ref{fig:TerminalPulseSensor} y \ref{fig:GraficaPulseSensor} se 
 \subsection{Procesamiento digital de señal}
 En esta etapa se realizó el procesamiento digital de la señal obtenida en el paso anterior, mediante la aplicación del algoritmo de autocorrelación y la búsqueda del valor máximo para obtener la frecuencia fundamental de la señal y calcular la frecuencia cardíaca.\\
 
-Después de haber verificado el funcionamiento del sensor y haber obtenido exitosamente la señal digital desde el ADC del microcontrolador, se procedió a definir la frecuencia de muestreo. Para definir esta frecuencia se tiene del teorema de Nyquist que debe ser al menos el doble que la frecuencia más alta que se requiere muestrear. Entonces, considerando la frecuencia de $210\ lpm$ es $3.6666\ Hz$, siendo el doble $7.3332\ Hz$, por lo que se redondeo hasta $8\ Hz$. Por lo tanto frecuencias mayores a partir de $8\ Hz$ serían adecuadas para obtener la información necesaria para el tratamiento de la señal digital.\\
+Después de haber verificado el funcionamiento del sensor y haber obtenido exitosamente la señal digital desde el ADC del microcontrolador, se procedió a definir la frecuencia de muestreo. Para definir esta frecuencia se tiene del teorema de Nyquist ($Fs \geq 2f$). Considerando una frecuencia cardíaca de $210\ lpm$, se tiene que $Fs \geq 7.3332\ Hz$, pero se redondeó a $8\ Hz$ para trabajar con un valor entero. Por lo tanto frecuencias mayores a partir de $8\ Hz$ serían adecuadas para obtener la información necesaria para el tratamiento de la señal digital.\\
 
-La ecuación utilizada calcula la frecuencia cardíaca, está dada por:
-$$lpm = \frac{Fs}{pos} * 60$$
+Para el cálculo de la frecuencia cardíaca se utilizó la ecuación dada por:
+\begin{equation}
+\label{eq:lpm}
+lpm = \frac{Fs}{pos} * 60
+\end{equation}
+
 donde:
-
 \begin{itemize}
 	\item $lpm$: frecuencia cardíaca expresada en latidos por minuto.
 	\item $Fs$: frecuencia de muestreo.
-	\item $pos$: índice de la posición del segundo valor máximo de la autocorrelación.
+	\item $pos$: índice de la posición del segundo valor máximo de la autocorrelación.\\
 \end{itemize}
 
-Y ya que la fórmula utilizada para el cálculo de la frecuencia cardíaca depende de la frecuencia de muestreo $Fs$ y la posición del valor máximo de la autocorrelación $pos$, se realizaron pruebas variando la $Fs$ desde $8\ Hz$ hasta $512\ Hz$. \\
+Dado que la fórmula (\ref{eq:lpm}) depende de la frecuencia de muestreo ($Fs$) y la posición del valor máximo de la autocorrelación ($pos$), se realizaron pruebas variando esta frecuencia desde $8\ Hz$ hasta $512\ Hz$. \\
 
 En la tabla \ref{sensorPulso:resultadosCalculoFs} se muestra un resumen de los resultados obtenidos al aplicar la fórmula anterior a las frecuencias mencionadas con el fin de obtener los resultados posibles de la frecuencia cardíaca expresada en latidos por minuto.
 
@@ -250,23 +253,32 @@ En la tabla \ref{sensorPulso:resultadosCalculoFs} se muestra un resumen de los r
 	\end{center}
 \end{table}
 
-De los resultados de la tabla anterior, se observó que a menor $Fs$, más grande es el rango de valores faltantes, por ejemplo, a $8\ Hz$ no se encuentran valores entre 120 y 96, lo que se repite con todas las frecuencias en ciertos valores, sin embargo, se determinó que para la frecuencia de $128 Hz$ se tenía un rango de valores continuos hasta los 94 lpm y teniendo un rango de error relativamente bajo de 0.84\% hasta 120 lpm, permitiendo tener una buena aproximación de los valores esperados sin sobrepasar la memoria del microcontrolador de 2 KB. \\
+De los resultados mostrados en la tabla  \ref{sensorPulso:resultadosCalculoFs}, se observó que a menor $Fs$, más amplio es el rango de valores faltantes, por ejemplo, a $8\ Hz$ no se encuentran valores entre los $120$ y $96\ lpm$, lo que sucede con todas las frecuencias consideradas en ciertos valores, sin embargo, se determinó que para la frecuencia de $128\ Hz$ se tenía un rango de valores continuos hasta los $94\ lpm$ y con un rango de error de $0.84\%$ hasta $120\ lpm$, permitiendo tener una aproximación de los valores esperados sin sobrepasar la memoria de datos del microcontrolador de 2 KB. \\
 
-Una vez definida la frecuencia de muestreo que se utilizaría, se definió la cantidad de muestras ($N$) necesarias para el algoritmo de autocorrelación:
+Para realizar el cálculo de la frecuencia cardíaca se implementó un algoritmo para obtener la autocorrelación de la señal. La ecuación está dada por:
 
-$$Cxx[n] = \frac{1}{N} \sum_{m=0}^{N-1-n}x[m]x[m+n]$$
+\begin{equation}
+\label{eq:autocorr}
+Cxx[n] = \frac{1}{N} \sum_{m=0}^{N-1-n}x[m]x[m+n]
+\end{equation}
 
-Para esto, se realizaron 80 pruebas en las que se tomaron 4096 valores, obtenidos como se indica en la etapa \textbf{Digitalización de la señal}. Posteriormente se diseñó un programa en C, en el que se ingresaba el archivo con los valores del ADC y se tomaban desde 16, aumentando de 16 en 16 hasta un total de 4096 muestras. Con esto se determinó el error porcentual de los resultados comparados con las mediciones reales de la frecuencia cardíaca obtenida con el método de palpación. \\
+donde: 
+\begin{itemize}
+	\item $Cxx$: valor de la autocorrelación para un punto un particular.
+	\item $n$: índice del arreglo de autocorrelación.
+	\item $m$: índice del arreglo de la señal digital.
+	\item $N$: cantidad de muestras para la autocorrelación.\\
+\end{itemize}
 
-De esos resultados se observó que la cantidad de muestras influía en el resultado del cálculo de la frecuencia cardíaca y que la cantidad de muestras con un menor error (1.17\%) fue de 1600. \\
+Para definir la cantidad de muestras ($N$) necesarias para obtener el resultado de la autocorrelación, se realizaron 80 pruebas en las que se digitalizaron $4096$ valores utilizando el ADC del microcontrolador y se procesaron con un programa en C, en el que se aplicaba el algoritmo de autocorrelación considerando $16$ muestras y hasta $4096$, aumentando $16$ muestras para cada cálculo. Con esto se determinó el error porcentual de los resultados comparados con las mediciones reales de la frecuencia cardíaca obtenida con el método de palpación. \\
+
+De esos resultados se observó que la cantidad de muestras influía en el resultado del cálculo de la frecuencia cardíaca y que la cantidad de muestras con un menor error ($1.17\%$) fue de $1600$. \\
 
 Con los datos anteriores, se configuró el Timer 3 del microcontrolador para controlar el ADC a una frecuencia de muestreo de $128\ Hz$. También se programó la interrupción del ADC para que al momento de finalizar una conversión del valor analógico, se realizara el cálculo de la autocorrelación con ese valor. \\
 
-El algoritmo de autocorrelación se implementó utilizando dos arreglos de 150 valores de tal manera que en uno se almacenaran los valores del ADC y en otro los valores resultantes de la autocorrelación para cada $n$, como se indica en la fórmula.\\ 
+El algoritmo de autocorrelación se implementó en el microcontrolador utilizando dos arreglos de 150 valores de tal manera que en uno se almacenaran los valores del ADC y en otro los valores resultantes de la autocorrelación para cada $n$, como se indica en la fórmula (\ref{eq:autocorr}). De esta manera se realiza el cálculo al vuelo, es decir, no se requiere esperar a obtener las $1600$ muestras para comenzar el cálculo de la autocorrelación y obtener cada valor $Cxx$, sino que se calculan parcialmente todos los valores para $Cxx$ conforme se termina la digitalización de la señal en el ADC hasta completar las $1600$ muestras. \\
 
-De esta manera se logra realizar el cálculo al vuelo, es decir, no se requiere esperar a obtener las 1600 muestras para comenzar el cálculo de la autocorrelación y obtener cada valor $Cxx$ uno a uno, sino que se calculan todos los $Cxx$ conforme se obtienen los valores del ADC hasta completar las 1600 muestras. \\
-
-El primer paso involucrado en el cálculo de la frecuencia cardíaca fue aplicar un offset de -2048 a los valores obtenidos del ADC, ya que éste nos entrega valores entre 0 y 4095. Al aplicar el offset se realiza un desplazamiento de la señal para centrarlo en el eje ''x'' como se muestra en la figura \ref{fig:offset}. \\
+Antes de comenzar con el cálculo de la autocorrelación se aplica un offset de $-2048$ a los valores obtenidos del ADC, ya que éste nos entrega valores entre $0$ y $4095$. Al aplicar el offset se realiza un desplazamiento de la señal para centrarlo en el eje $x$ como se muestra en la figura \ref{fig:offset}. \\
 
 \begin{figure}[htbp!]
 	\centering
@@ -275,11 +287,14 @@ El primer paso involucrado en el cálculo de la frecuencia cardíaca fue aplicar
 	\label{fig:offset}
 \end{figure}
 
-Otro paso involucrado en el cálculo de la autocorrelación fue el ventaneo de la señal digital aplicando la ventana de Hamming que se aplicó a las 1600 muestras. La ventana de Hamming está dada por la siguiente fórmula: 
+Posteriormente se realiza el ventaneo de la señal digital aplicando la ventana de Hamming con un tamaño de $1600$ muestras. La ventana de Hamming está dada por la siguiente fórmula: 
 
-$$w(n) = 0.54 - 0.46 * cos(\frac{2\pi n}{N})$$
+\begin{equation}
+\label{eq_hamming}
+w(n) = 0.54 - 0.46 * cos(\frac{2\pi n}{N})
+\end{equation}
 
-Debido a que el cálculo del valor de la ventana para cada valor digital obtenido, incrementaría considerablemente el tiempo de procesamiento para cada muestro, se decidió almacenar los valores de la ventana en la memoria de programa del microcontrolador con el formato Q15. \\
+Debido a que el cálculo de los $1600$ valores de la ventana, incrementa considerablemente el tiempo de procesamiento para cada muestra, se decidió almacenar los valores de la ventana en la memoria de programa del microcontrolador con el formato Q15, reduciendo así el tiempo de ejecución y evitando que se omitan valores dentro del tiempo de muestreo. \\
 
 En la figura \ref{fig:ventaneo} se observa el resultado del ventaneo de la señal. \\
 
@@ -290,21 +305,19 @@ En la figura \ref{fig:ventaneo} se observa el resultado del ventaneo de la seña
 	\label{fig:ventaneo}
 \end{figure}
 
-Al término del cálculo de los valores de la autocorrelación, se procedió a realizar la búsqueda del segundo valor máximo para obtener la posición de este valor y así poder calcular la frecuencia cardíaca con la fórmula $$lpm = \frac{Fs}{pos} * 60$$. 
+Al término del cálculo de los valores de la autocorrelación, se realizó la búsqueda del segundo valor máximo (omitiendo el valor máximo ubicado en la posición $0$ del arreglo $Cxx$ ya que este corresponde con la energía de la señal, y la diferencia del máximo inicial al segundo máximo representa frecuencia fundamental de la señal) para obtener la posición de este valor y así poder calcular la frecuencia cardíaca con la fórmula (\ref{eq:lpm}). \\
 
 En la figura \ref{fig:autocorr} se muestra el resultado de la autocorrelación y el valor máximo de interés del que se busca su posición. \\
 
 \begin{figure}[htbp!]
 	\centering
-	\fbox{\includegraphics[width=0.65\textwidth]{AvancesPruebas/imagenes/autocorr.png}}
+	\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/autocorr.png}}
 	\caption{Resultado de la autocorrelación de la señal digital de pulso cardíaco.}
 	\label{fig:autocorr}
 \end{figure}
 
 \subsection{Pruebas unitarias}
-En esta etapa se realizaron pruebas para verificar el funcionamiento de lo planteado en la etapa anterior. Para esto se ejecutaron 10 pruebas a 8 personas de diferentes edades, con las que se comparó el resultado obtenido con el esperado, obtenido con el método de palpación. \\
-
-En las siguientes tablas se muestra el error porcentual obtenido en las pruebas.
+En esta etapa se realizaron pruebas obteniendo la frecuencia cardíaca 10 veces a 8 personas de diferentes edades, y comparando el resultado obtenido con el esperado obtenido con el método de palpación se calculó el error porcentual de los resultados de las pruebas. En las tablas \ref{table:resultado1} y \ref{table:resultado2} se muestran los resultados obtenidos del cálculo de la frecuencia cardíaca comparado con el valor esperado. \\
 
 \begin{table}[htbp]
 	\centering
@@ -417,6 +430,7 @@ En las siguientes tablas se muestra el error porcentual obtenido en las pruebas.
 	\end{tabular}}
 
 	\caption{Resultados del cálculo de la frecuencia cardíaca de las Personas 1 a 4.}
+	\label{table:resultado1}
 \end{table}
 
 \begin{table}[htbp]
@@ -530,6 +544,7 @@ En las siguientes tablas se muestra el error porcentual obtenido en las pruebas.
 	\end{tabular}}
 	
 	\caption{Resultados del cálculo de la frecuencia cardíaca de las Personas 5 a 8.}
+	\label{table:resultado2}
 \end{table}
 
 En la tabla \ref{sensorPulso:promedioError} se muestra el promedio de los errores obtenidos en las pruebas realizadas a las 8 personas. \\
@@ -562,4 +577,4 @@ En la tabla \ref{sensorPulso:promedioError} se muestra el promedio de los errore
 	\end{center}
 \end{table}
 
-De la tabla anterior se obtuvo el error porcentual total de todas las mediciones, siendo este de \textbf{1.17\%}, que se traduce a una diferencia de 1 o 2 latidos por minuto del resultado esperado. \\
+En la tabla \ref{sensorPulso:promedioError} se muestra el promedio de los errores obtenidos en las pruebas realizadas y se observa que se logró un error porcentual total de 1.17\%, que representa una diferencia de 1 o 2 latidos por minuto del resultado esperado.

@@ -1,10 +1,3 @@
-/*      Version funcional 
- * Ventana Hamming con formato Q15
- * Calculo de frecuencia cardiaca
- * Obtencion de temperatura
- * Envio de SMS dependiendo de umbral o timer
- */
-
 #include <xc.h>
 #include <stdio.h>
 #include <libpic30.h>
@@ -60,11 +53,13 @@ char CMD_AT[] = "AT\r";
 char CMD_ATE0[] = "ATE0\r";
 char CMD_AT_CMGF[] = "AT+CMGF=1\r";
 char CMD_AT_CCLK[] = "AT+CCLK?\r";
-//char CMD_AT_CMGS[] = "AT+CMGS=\"+525543612094\"\r";   //elsi
+char CMD_AT_CMGS[] = "AT+CMGS=\"+525543612094\"\r";   //elsi
 //char CMD_AT_CMGS[] = "AT+CMGS=\"+525532768660\"\r"; //elena
 //char CMD_AT_CMGS[] = "AT+CMGS=\"+525564211272\"\r"; //carlos
-char CMD_AT_CMGS[] = "AT+CMGS=\"+525519705183\"\r";   //katia
+//char CMD_AT_CMGS[] = "AT+CMGS=\"+525519705183\"\r";   //katia
 //char CMD_AT_CMGS[] = "AT+CMGS=\"+525531475618\"\r";   //naye
+//char CMD_AT_CMGS[] = "AT+CMGS=\"+525518036525\"\r";   //profesora odette
+
 char CMD_MSG[42];
 
 char *comandos[] = {
@@ -100,9 +95,9 @@ float temperatura;
 /* VARIABLES DE UMBRALES      													*/
 /********************************************************************************/
 unsigned char lpm_max = 100;
-unsigned char lpm_min = 50;
-float temp_max = 36.8;
-float temp_min = 36.3;
+unsigned char lpm_min = 60;
+float temp_max = 37.0;
+float temp_min = 36.0;
 
 /********************************************************************************/
 /* BANDERAS DE CONTROL          												*/

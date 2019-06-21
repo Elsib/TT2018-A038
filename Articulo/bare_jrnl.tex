@@ -58,7 +58,9 @@
 
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
-
+\usepackage{url}
+\usepackage{subfig}
+\usepackage[pdftex]{graphicx}
 
 
 % Some very useful LaTeX packages include:
@@ -352,6 +354,10 @@
 
 
 \begin{document}
+	
+\renewcommand{\tablename}{Tabla} 
+	
+	
 %
 % paper title
 % Titles are generally capitalized except for words such as a, an, and, as,
@@ -371,7 +377,7 @@
 % was not built to handle multiple paragraphs
 %
 
-\author{M. Bernabé, C. Granados, N. Vega y R. Ortega\\
+\author{María Elsi Bernabé Aparicio, Carlos Alberto Granados Puerto,\\ Nayeli Vega García, Rubén Ortega González\\
 Escuela Superior de Cómputo I.P.N. México D.F.\\
 Tel. 57-29-6000 ext. 52000 y 52021. E-mail: elsibill@gmail.com, c.granados.puerto@gmail.com}% <-this % stops a space
 %\thanks{M. Shell was with the Department
@@ -434,7 +440,7 @@ Tel. 57-29-6000 ext. 52000 y 52021. E-mail: elsibill@gmail.com, c.granados.puert
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-El trabajo terminal presentado consiste en el desarrollo de un sistema embebido que permite el monitoreo remoto de la frecuencia cardíaca y temperatura corporal de una persona. El cálculo de la frecuencia cardíaca se realiza basado en técnicas de procesamiento digital de señales, logrando el cálculo de ésta con una eficiencia superior al 98\%.
+En este trabajo terminal se plantea el desarrollo del prototipo de un sistema embebido que permite el monitoreo remoto de la frecuencia cardíaca y temperatura corporal de una persona. El cálculo de la frecuencia cardíaca se realiza basado en técnicas de procesamiento digital de señales, logrando el cálculo de ésta con una eficiencia superior al 98\%.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -473,25 +479,540 @@ Frecuencia cardíaca, procesamiento digital de señales, sistema embebido.
 % 
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
-for IEEE journal papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8b and later.
+%\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
+%for IEEE journal papers produced under \LaTeX\ using
+%IEEEtran.cls version 1.8b and later.
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
-I wish you the best of success.
+Los signos vitales son mediciones de las funciones más básicas del cuerpo, es decir, indicadores que reflejan el estado físico del paciente y sus órganos vitales, cuyas variaciones expresan cambios ocurridos en el organismo, algunos de índole fisiológico y otros de tipo patológico \cite{aguayoChile} \cite{cobo2011}. Los cuatros signos vitales principales que se examinan de forma rutinaria son: frecuencia cardíaca, frecuencia respiratoria, presión arterial y temperatura corporal. \\
 
-\hfill mds
- 
-\hfill August 26, 2015
+En este trabajo se desarrolló un sistema embebido para el cálculo de la frecuencia cardíaca y la obtención de la temperatura corporal. \\
 
-\subsection{Subsection Heading Here}
-Subsection text here.
+Los valores del pulso arterial se miden a partir de la frecuencia cardíaca, es decir, el número de pulsaciones o latidos del corazón que ocurren en un minuto. Cuando el corazón bombea sangre a través de las arterias, éstas se expanden y contraen con el flujo sanguíneo. La frecuencia cardíaca común para personas sanas mayores a 10 años varía de 60 a 100 latidos por minuto, sin embargo, la frecuencia cardíaca varía dependiendo de diferentes factores, como: la edad, el sexo, la actividad física, la temperatura, entre otros. \cite{valoresFreq} \\
+
+La temperatura corporal representa el estado térmico del organismo y expresa el balance entre la producción y pérdida de calor en el cuerpo \cite{cobo2011}. Ya que la temperatura depende de la parte del cuerpo en donde se realice la medición, ya sea interna o externa, por lo que se considera un rango de $36^{\circ}C$ a $37^{\circ}C$ para la temperatura \textit{normal} del cuerpo humano. Además la temperatura corporal de una persona sana varía a lo largo del día dependiendo del sexo, la actividad reciente, el consumo de alimentos y líquidos, la hora del día y, en el caso de las mujeres, la etapa del ciclo menstrual \cite{signosvitales2016}. \\
+
+De acuerdo con la Organización para la Cooperación y el Desarrollo Económicos (OCDE), México tiene 2.2 médicos practicantes y 2.6 enfermeras practicantes por cada 1,000 habitantes, mucho menos que los promedios de la OCDE de 3.3 y 9.1 respectivamente. El número de camas hospitalarias también es considerablemente bajo, con 1.6 camas por cada 1,000 habitantes, comparado con 4.8 camas por cada 1,000 de la OCDE; siendo de los promedios más bajos dentro de los países que conforman la OCDE \cite{ocde2016}. Aunado a esto, existe una gran demanda de atención médica y con los pocos espacios disponibles el servicio ofrecido se vuelve lento e ineficiente. \\
+
+En consecuencia, existe una necesidad creciente de utilizar la tecnología para monitorear, informar y analizar de manera remota los signos vitales del paciente sin la necesidad de acudir con el personal médico. Esta forma de monitoreo beneficia tanto al paciente como a los hospitales pues se podrán tener registros de las mediciones de los signos en cualquier momento sin interrumpir la vida cotidiana del paciente y se tendrá la seguridad de que en una emergencia se podrá contactar a los familiares del paciente o a un médico para tratar la condición a tiempo.
+
+\section{Metodología}
+
+Para la realización de este trabajo terminal se decidió utilizar la metodología descrita por el Modelo en V ya que ofrece una visión detallada de los diversos pasos e interacciones relacionados con el proceso de desarrollo y puede considerarse como un flujo de trabajo comúnmente utilizado \cite{perez2006V}. \\
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=2.5in]{imagenes/metodologiaV.png}
+	\caption{Fases del Modelo en V.}
+	\label{fig:IntroduccionMetodologia}
+\end{figure}
+
+Siguiendo este modelo se pretende definir y documentar los diferentes requerimientos del sistema a implementar, seguido de un diseño global que permitirá obtener una visión general del sistema identificando las funciones que deberá cumplir y asignarlas a los diferentes componentes, ya sea de hardware o software, para posteriormente detallar este diseño e implementar cada uno de los módulos. \\
+
+A cada fase del diseño corresponde una fase de pruebas con las que, después de la implementación del diseño, se verifica y valida que los resultados obtenidos cumplen con los requerimientos establecidos para el sistema.
+
+%\subsection{Sistemas embebidos}
+%Un sistema embebido es una combinación de hardware y software integrado para realizar una función particular \cite{vahid1999}.
+%
+%\subsection{Internet de las cosas (IoT)}
+%El Internet de las cosas (IoT) es un concepto que describe una red de dispositivos interconectados que tiene capacidades avanzadas para interactuar con dispositivos y también con seres humanos y el mundo físico circundante para realizar una variedad de tareas \cite{vermesanIoT}.\\
+%
+%En este contexto, el uso de sensores en dispositivos IoT proveen una conexión entre estos y el mundo físico, por ejemplo, el acelerómetro, giroscopio, micrófono, sensor de luz, entre muchos otros, que permiten aplicaciones más eficientes y fáciles de usar \cite{laneIoT}. \\
+%
+%En general, la arquitectura de los dispositivos IoT comprende cuatro componentes principales: detección, red, procesamiento de datos y capa de aplicación \cite{arquitecturaIoT}.
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
+\subsection{Arquitectura física del sistema}
+En la figura \ref{fig:DisenoArquiFisica} se muestra la arquitectura física del sistema, la cual abarca el diseño de la aplicación móvil así como el sistema embebido encargado de realizar las mediciones y el procesamiento de los datos.\\
+
+La arquitectura se divide en dos módulos:
+\begin{enumerate}
+	\item Aplicación Móvil: se refiere a la aplicación móvil que proporciona un punto de acceso al usuario para la consulta de las mediciones realizadas por los sensores y procesadas por el microcontrolador en el sistema embebido. El usuario recibe el mensaje de texto en su dispositivo móvil y la aplicación móvil obtiene los datos de dicho mensaje mediante el número telefónico registrado en la información del paciente. 
+	
+	\item Sistema Embebido: abarca todos los componentes que integran el sistema embebido como tal. Para este prototipo se utilizó una tarjeta que facilita las conexiones con el microcontrolador \textit{dsPIC30F4013}, en donde se conecta el sensor analógico tipo fotopletismógrafo \textit{Pulse Sensor} para obtener la señal de pulso cardíaco del paciente a través de una entrada analógica, este señal es digitalizada en el ADC del microcontrolador para procesarla y obtener la frecuencia cardíaca. Para la obtención de la temperatura, se empleó el sensor digital \textit{MAX30205} con una resolución de $0.00390625^{\circ}C$. Estos valores se envían al módulo de comunicación, con el que se realizará la comunicación con la red 3G/4G utilizando el \textit{módulo 4G con el chip LARA R-202} y con el dispositivo móvil.
+\end{enumerate}
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=2.5in]{imagenes/arquifisica.png}
+	\caption{Arquitectura física del sistema}
+	\label{fig:DisenoArquiFisica}
+\end{figure}
+
+\subsection{Obtención de la frecuencia cardíaca}
+Para obtener la señal de pulso cardíaco, se configuró el periférico AN2 del microcontrolador para ser la entrada del convertidor analógico-digital de 12 bits incluido en el microcontrolador. Se definió la frecuencia de muestreo mediante el teorema de Nyquist ($Fs \geq 2f$). Considerando una frecuencia cardíaca de $210\ lpm$, se tiene que $Fs \geq 7.3332\ Hz$, pero se redondeó a $8\ Hz$ para trabajar con un valor entero. Por lo tanto frecuencias mayores a partir de $8\ Hz$ serían adecuadas para obtener la información necesaria para el tratamiento de la señal digital.\\
+
+En la figura \ref{fig:conexionPS} se muestra la conexión del sensor de pulso con la tarjeta y su uso sobre el dedo índice.
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=2.5in]{AvancesPruebas/imagenes/conexionPS.jpg}
+	\caption{Conexión de Pulse Sensor con el microcontrolador.}
+	\label{fig:conexionPS}
+\end{figure}
+
+Para el cálculo de la frecuencia cardíaca se utilizó la ecuación dada por:
+\begin{equation}
+	\label{eq:lpm}
+	lpm = \frac{Fs}{pos} * 60
+\end{equation}
+
+donde:
+\begin{itemize}
+	\item $lpm$: frecuencia cardíaca expresada en latidos por minuto.
+	\item $Fs$: frecuencia de muestreo.
+	\item $pos$: índice de la posición del segundo valor máximo de la autocorrelación.\\
+\end{itemize}
+
+Dado que la fórmula (\ref{eq:lpm}) depende de la frecuencia de muestreo ($Fs$) y la posición del valor máximo de la autocorrelación ($pos$), se realizaron pruebas variando esta frecuencia desde $8\ Hz$ hasta $512\ Hz$. \\
+
+En la tabla \ref{sensorPulso:resultadosCalculoFs} se muestra un resumen de los resultados obtenidos al aplicar la fórmula (\ref{eq:lpm}) a las frecuencias mencionadas con el fin de obtener los resultados posibles de la frecuencia cardíaca expresada en latidos por minuto. 
+
+\begin{table}[htbp!]
+	\begin{center}
+		\begin{tabular}{|l|l|l|l|l|l|l|}
+			\hline
+			\textbf{pos / Fs} & \textbf{8 Hz} & \textbf{16 Hz} & \textbf{...} & \textbf{128 Hz} & \textbf{...} & \textbf{512 Hz} \\
+			\hline \hline
+			\textbf{3} & 160 & 320 & ... & 2560 & ... & 10240 \\
+			\hline
+			\textbf{4} & 120 & 240 & ... & 1920 & ... & 7680 \\
+			\hline
+			\textbf{5} & 96 & 192 & ... & 1536 & ... & 6144 \\
+			\hline
+			\textbf{...} & ... & ... & ... & ... & ... & ...  \\
+			\hline
+			\textbf{83} & 5.783 & 11.566 & ... & 92.530 & ... & 370.120 \\
+			\hline
+			\textbf{84} & 5.714 & 11.429 & ... & 91.429 & ... & 365.714 \\
+			\hline
+			\textbf{85} & 5.647 & 11.294 & ... & 90.353 & ... & 361.412 \\
+			\hline
+			\textbf{86} & 5.581 & 11.163 & ... & 89.302 & ... & 357.209 \\
+			\hline
+			\textbf{87} & 5.517 & 11.034 & ... & 88.276 & ... & 353.103 \\
+			\hline
+			\textbf{...} & ... & ... & ... & ... & ... & ...  \\
+			\hline
+			\textbf{148} & 3.243 & 6.486 & ... & 51.892 & ... & 207.568 \\
+			\hline
+			\textbf{149} & 3.221 & 6.443 & ... & 51.544 & ... & 206.174 \\
+			\hline
+			\textbf{150} & 3.2 & 6.4 & ... & 51.2 & ... & 204.8 \\
+			\hline
+		\end{tabular}
+		\caption{Cálculo de frecuencia cardíaca.}
+		\label{sensorPulso:resultadosCalculoFs}
+	\end{center}
+\end{table}
+
+De los resultados mostrados en la tabla  \ref{sensorPulso:resultadosCalculoFs}, se observó que a menor $Fs$, más amplio es el rango de valores faltantes, por ejemplo, a $8\ Hz$ no se encuentran valores entre los $120$ y $96\ lpm$, lo que sucede con todas las frecuencias consideradas en ciertos valores, sin embargo, se determinó que para la frecuencia de $128\ Hz$ se tenía un rango de valores continuos hasta los $94\ lpm$ y con un rango de error de $0.84\%$ hasta $120\ lpm$, permitiendo tener una aproximación de los valores esperados sin sobrepasar la memoria de datos del microcontrolador de 2 KB. \\
+
+Para realizar el cálculo de la frecuencia cardíaca se implementó un algoritmo para obtener la autocorrelación de la señal. La ecuación está dada por:
+
+\begin{equation}
+	\label{eq:autocorr}
+	Cxx[n] = \frac{1}{N} \sum_{m=0}^{N-1-n}x[m]x[m+n]
+\end{equation}
+
+donde: 
+\begin{itemize}
+	\item $Cxx$: valor de la autocorrelación para un punto un particular.
+	\item $n$: índice del arreglo de autocorrelación.
+	\item $m$: índice del arreglo de la señal digital.
+	\item $N$: cantidad de muestras para la autocorrelación.\\
+\end{itemize}
+
+Para definir la cantidad de muestras ($N$) necesarias para obtener el resultado de la autocorrelación, se realizaron 80 pruebas en las que se digitalizaron $4096$ valores utilizando el ADC del microcontrolador y se procesaron con un programa en C, en el que se aplicaba el algoritmo de autocorrelación considerando $16$ muestras y hasta $4096$, aumentando $16$ muestras para cada cálculo. Con esto se determinó el error porcentual de los resultados comparados con las mediciones reales de la frecuencia cardíaca obtenida con el método de palpación. \\
+
+De esos resultados se observó que la cantidad de muestras influía en el resultado del cálculo de la frecuencia cardíaca y que la cantidad de muestras con un menor error ($1.17\%$) fue de $1600$. \\
+
+El algoritmo de autocorrelación se implementó en el microcontrolador utilizando dos arreglos de 150 valores de tal manera que en uno se almacenaran los valores del ADC y en otro los valores resultantes de la autocorrelación para cada $n$, como se indica en la fórmula (\ref{eq:autocorr}). De esta manera se realiza el cálculo al vuelo, es decir, no se requiere esperar a obtener las $1600$ muestras para comenzar el cálculo de la autocorrelación y obtener cada valor $Cxx$, sino que se calculan parcialmente todos los valores para $Cxx$ conforme se termina la digitalización de la señal en el ADC hasta completar las $1600$ muestras. \\
+
+Antes de comenzar con el cálculo de la autocorrelación se aplica un offset de $-2048$ a los valores obtenidos del ADC, ya que éste nos entrega valores entre $0$ y $4095$. Al aplicar el offset se realiza un desplazamiento de la señal para centrarlo en el eje $x$ como se muestra en la figura \ref{fig:offset}. \\
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=3.2in]{AvancesPruebas/imagenes/offset.png}
+	\caption{Señal digital antes y después de aplicar el offset.}
+	\label{fig:offset}
+\end{figure}
+
+Posteriormente se realiza el ventaneo de la señal digital aplicando la ventana de Hamming con un tamaño de $1600$ muestras. La ventana de Hamming está dada por la siguiente fórmula: 
+
+\begin{equation}
+	\label{eq_hamming}
+	w(n) = 0.54 - 0.46 * cos(\frac{2\pi n}{N})
+\end{equation}
+
+Debido a que el cálculo de los $1600$ valores de la ventana, incrementa considerablemente el tiempo de procesamiento para cada muestra, se decidió almacenar los valores de la ventana en la memoria de programa del microcontrolador con el formato Q15, reduciendo así el tiempo de ejecución y evitando que se omitan valores dentro del tiempo de muestreo. \\
+
+En la figura \ref{fig:ventaneo} se observa el resultado del ventaneo de la señal. \\
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=3.2in]{AvancesPruebas/imagenes/ventaneo.png}
+	\caption{Señal digital antes y después de realizar el ventaneo.}
+	\label{fig:ventaneo}
+\end{figure}
+
+Al término del cálculo de los valores de la autocorrelación, se realizó la búsqueda del segundo valor máximo (omitiendo el valor máximo ubicado en la posición $0$ del arreglo $Cxx$ ya que este corresponde con la energía de la señal, y la diferencia del máximo inicial al segundo máximo representa frecuencia fundamental de la señal) para obtener la posición de este valor y así poder calcular la frecuencia cardíaca con la fórmula (\ref{eq:lpm}).
+
+En la figura \ref{fig:autocorr} se muestra el resultado de la autocorrelación y el valor máximo de interés del que se busca su posición. \\
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=2.3in]{AvancesPruebas/imagenes/autocorr.png}
+	\caption{Resultado de la autocorrelación de la señal digital de pulso cardíaco.}
+	\label{fig:autocorr}
+\end{figure}
+
+\subsection{Obtención de la temperatura}
+Para obtener la medición de temperatura corporal del sensor de temperatura MAX30205, se configuró la interfaz I2C del microcontrolador a una frecuencia de trabajo de $400\ KHz$. En la figura \ref{fig:DiagramaMAX30205} se muestra el diagrama de tiempo que describe el procedimiento que debe ser seguido para establecer la comunicación entre ambos componentes.\\
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=3.5in]{AvancesPruebas/imagenes/diagramaI2C.png}
+	\caption{Diagrama de tiempo I2C del sensor MAX30205.}
+	\label{fig:DiagramaMAX30205}
+\end{figure}
+
+La conexión entre el sensor de temperatura y el microcontrolador se realizó mediante las terminales SDA y SCL configuradas como salida respectivamente. En la figura \ref{fig:ConexionFisicaMAX30205} se muestra la conexión física mediante el MikroBUS.
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=2.5in]{AvancesPruebas/imagenes/MAX30205ConexionFisica.jpg}
+	\caption{Conexión física del sensor MAX30205.}
+	\label{fig:ConexionFisicaMAX30205}
+\end{figure}
+
+El sensor entrega los valores de temperatura en dos partes de 8 bits cada una. Para obtener el valor real de la medición se utilizó la siguiente fórmula:
+
+\begin{equation}
+	temp = MSB + (0.00390625 * LSB)
+\end{equation}
+
+donde: 
+\begin{itemize}
+	\item $temp$: valor de la temperatura corporal.
+	\item $MSB$: primer byte enviado por el sensor, la parte entera del valor.
+	\item $LSB$: segundo byte enviado por el sensor, la parte decimal del valor.
+\end{itemize}
+
+
+\subsection{Envío del mensaje de texto}
+La comunicación con el módulo de comunicación se estableció configurando el UART2 del microcontrolador a una taza de transferencia de $19200\ baudios$ y mediante comandos AT se envía un mensaje de texto a un número telefónico específico. La conexión física se muestra en las figura \ref{fig:ConexionFisicaGSM}.
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=2.5in]{AvancesPruebas/imagenes/ConexionFisicaGSM.jpg}
+	\caption{Conexión del módulo 4G con el microcontrolador.}
+	\label{fig:ConexionFisicaGSM}
+\end{figure}
+
+
+Para que se realice el envío del mensaje se consideraron las siguientes condiciones:
+\begin{itemize}
+	\item Que el resultado de frecuencia cardíaca se encuentre fuera del rango establecido ($50\ lpm$ - $100\ lpm$).
+	\item Que el resultado de temperatura se encuentre fuera del rango establecido ($36^{\circ}C$ - $37^{\circ}C$).
+	\item Que se agote un temporizador de minutos.
+\end{itemize}
+
+Si se cumple alguna de las condiciones anteriores, se obtiene la fecha y hora proporcionada por la red utilizada por el módulo de comunicación. Una vez que se tienen los tres datos (frecuencia cardíaca, temperatura y fecha y hora), se construye el mensaje de texto, cuyo cuerpo se definió de la siguiente manera: \textit{lpm:XX,temp:XX.XX,fecha:DD/MM/AAAA HH:MM}, y se realiza su envío. En la figura \ref{fig:RecepcionMsj} se muestra la captura de pantalla que contiene el mensaje recibido en el teléfono celular.
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=2in]{AvancesPruebas/imagenes/formatoSMS.png}
+	\caption{Recepción de mensaje enviado por el módulo 4G.}
+	\label{fig:RecepcionMsj}
+\end{figure}
+
+\subsection{Aplicación móvil}
+Se diseño una aplicación móvil en Android para ser utilizado en dispositivos con la versión 6.0 o posteriores. Esta aplicación permite al usuario registrar información de múltiples pacientes y consultar las mediciones de frecuencia cardíaca y temperatura corporal registradas de cada uno de ellos. Estas mediciones se obtienen automáticamente de los mensajes de texto recibidos en el teléfono móvil y son almacenadas en una base de datos. En la figura \ref{fig:casosUso:resumenUI5} se muestra una pantalla de la aplicación, en la que se muestran las mediciones registradas de un paciente.
+
+\begin{figure}[htpb!]
+	\begin{center}
+		\includegraphics[width=2in]{AvancesPruebas/imagenes/app/ui_medicion.png}
+		\caption{IU Consultar registros de signos vitales}
+		\label{fig:casosUso:resumenUI5}
+	\end{center}
+\end{figure}
+
+\section{Resultados}
+Se logró realizar el diseño de un prototipo de sistema embebido que calcula la frecuencia cardíaca con una precisión del 98\%, que obtiene la temperatura corporal y realiza el envío de esta información en un mensaje de texto. \\
+
+En la figura \ref{fig:integracion} se muestra la conexión del sensor de pulso, el sensor de temperatura y el módulo de comunicación con el microcontrolador, utilizando las conexiones proveídas por la tarjeta empleada durante este trabajo. \\
+
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=2.5in]{AvancesPruebas/imagenes/integracion.jpg}
+	\caption{Conexión del sistema embebido.}
+	\label{fig:integracion}
+\end{figure}
+
+Se realizaron pruebas del sistema embebido obteniendo la frecuencia cardíaca 10 veces a 8 personas de diferentes edades, y comparando el resultado obtenido con el esperado obtenido con el método de palpación se calculó el error porcentual de los resultados de las pruebas. En las tablas \ref{table:resultado1} y \ref{table:resultado2} se muestran los resultados obtenidos del cálculo de la frecuencia cardíaca comparado con el valor esperado. \\
+
+\begin{table}[htbp]
+	\centering
+	\subfloat[Resultados Persona 1][Resultados de la Persona 1 con 23 años de edad y frecuencia cardíaca de \textbf{75 lpm}]{
+		\begin{tabular}{|l|l|}
+			\hline
+			\textbf{lpm obtenidos} & \textbf{Error (\%)} \\
+			\hline \hline
+			75 & 0 \\
+			\hline
+			73 & 2.67 \\
+			\hline
+			76 & 1.33 \\
+			\hline
+			74 & 1.33 \\
+			\hline
+			73 & 2.67 \\
+			\hline
+			73 & 2.67 \\
+			\hline
+			73 & 2.67 \\
+			\hline
+			76 & 1.33 \\
+			\hline
+			76 & 1.33 \\
+			\hline
+			77 & 2.67 \\
+			\hline
+		\end{tabular}}
+	\qquad
+	\subfloat[Resultados Persona 2][Resultados de la Persona 2 con 54 años de edad y frecuencia cardíaca de \textbf{57 lpm}]{
+		\begin{tabular}{|l|l|}
+			\hline
+			\textbf{lpm obtenidos} & \textbf{Error (\%)} \\
+			\hline \hline
+			57 & 0 \\
+			\hline
+			55 & 3.51 \\
+			\hline
+			56 & 1.75 \\
+			\hline
+			56 & 1.75 \\
+			\hline
+			57 & 0 \\
+			\hline
+			58 & 1.75 \\
+			\hline
+			56 & 1.75 \\
+			\hline
+			57 & 0 \\
+			\hline
+			57 & 0 \\
+			\hline
+			57 & 0 \\
+			\hline
+		\end{tabular}}
+	
+	\subfloat[Resultados Persona 3][Resultados de la Persona 3 con 17 años de edad y frecuencia cardíaca de \textbf{80 lpm}]{
+		\begin{tabular}{|l|l|}
+			\hline
+			\textbf{lpm obtenidos} & \textbf{Error (\%)} \\
+			\hline \hline
+			79 & 1.25 \\
+			\hline
+			80 & 0 \\
+			\hline
+			80 & 0 \\
+			\hline
+			82 & 2.5 \\
+			\hline
+			80 & 0 \\
+			\hline
+			81 & 1.25 \\
+			\hline
+			80 & 0 \\
+			\hline
+			79 & 1.25 \\
+			\hline
+			81 & 1.25 \\
+			\hline
+			80 & 0 \\
+			\hline
+		\end{tabular}}
+	\qquad
+	\subfloat[Resultados Persona 4][Resultados de la Persona 4 con 64 años de edad y frecuencia cardíaca de \textbf{64 lpm}]{
+		\begin{tabular}{|l|l|}
+			\hline
+			\textbf{lpm obtenidos} & \textbf{Error (\%)} \\
+			\hline \hline
+			65 & 1.56 \\
+			\hline
+			65 & 1.56 \\
+			\hline
+			64 & 0 \\
+			\hline
+			66 & 3.13 \\
+			\hline
+			64 & 0 \\
+			\hline
+			64 & 0 \\
+			\hline
+			64 & 0 \\
+			\hline
+			67 & 4.69 \\
+			\hline
+			65 & 1.56 \\
+			\hline
+			64 & 0 \\
+			\hline
+		\end{tabular}}
+	
+	\caption{Resultados del cálculo de la frecuencia cardíaca de las Personas 1 a 4.}
+	\label{table:resultado1}
+\end{table}
+
+\begin{table}[htbp]
+	\centering
+	\subfloat[Resultados Persona 5][Resultados de la Persona 5 con 7 años de edad y frecuencia cardíaca de \textbf{86 lpm}]{
+		\begin{tabular}{|l|l|}
+			\hline
+			\textbf{lpm obtenidos} & \textbf{Error (\%)} \\
+			\hline \hline
+			85 & 1.16 \\
+			\hline
+			86 & 0 \\
+			\hline
+			85 & 1.16 \\
+			\hline
+			84 & 2.33 \\
+			\hline
+			87 & 1.16 \\
+			\hline
+			86 & 0 \\
+			\hline
+			86 & 0 \\
+			\hline
+			87 & 1.16 \\
+			\hline
+			85 & 1.16 \\
+			\hline
+			85 & 1.16 \\
+			\hline
+		\end{tabular}}
+	\qquad
+	\subfloat[Resultados Persona 6][Resultados de la Persona 6 con 46 años de edad y frecuencia cardíaca de \textbf{73 lpm}]{
+		\begin{tabular}{|l|l|}
+			\hline
+			\textbf{lpm obtenidos} & \textbf{Error (\%)} \\
+			\hline \hline
+			70 & 4.11 \\
+			\hline
+			72 & 1.37 \\
+			\hline
+			73 & 0 \\
+			\hline
+			73 & 0 \\
+			\hline
+			73 & 0 \\
+			\hline
+			72 & 1.37 \\
+			\hline
+			74 & 1.37 \\
+			\hline
+			75 & 2.74 \\
+			\hline
+			72 & 1.37 \\
+			\hline
+			72 & 1.37 \\
+			\hline
+	\end{tabular}}
+	
+	\subfloat[Resultados Persona 7][Resultados de la Persona 7 con 15 años de edad y frecuencia cardíaca de \textbf{68 lpm}]{
+		\begin{tabular}{|l|l|}
+			\hline
+			\textbf{lpm obtenidos} & \textbf{Error (\%)} \\
+			\hline \hline
+			67 & 1.47 \\
+			\hline
+			67 & 1.47 \\
+			\hline
+			68 & 0 \\
+			\hline
+			69 & 1.47 \\
+			\hline
+			68 & 0 \\
+			\hline
+			68 & 0 \\
+			\hline
+			67 & 1.47 \\
+			\hline
+			69 & 1.47 \\
+			\hline
+			69 & 1.47 \\
+			\hline
+			66 & 2.94 \\
+			\hline
+		\end{tabular}}
+	\qquad
+	\subfloat[Resultados Persona 8][Resultados de la Persona 8 con 35 años de edad y frecuencia cardíaca de \textbf{82 lpm}]{
+		\begin{tabular}{|l|l|}
+			\hline
+			\textbf{lpm obtenidos} & \textbf{Error (\%)} \\
+			\hline \hline
+			80 & 2.44 \\
+			\hline
+			81 & 1.22 \\
+			\hline
+			81 & 1.22 \\
+			\hline
+			82 & 0 \\
+			\hline
+			82 & 0 \\
+			\hline
+			82 & 0 \\
+			\hline
+			83 & 1.22 \\
+			\hline
+			81 & 1.22 \\
+			\hline
+			82 & 0 \\
+			\hline
+			84 & 2.44 \\
+			\hline
+		\end{tabular}}
+	
+	\caption{Resultados del cálculo de la frecuencia cardíaca de las Personas 5 a 8.}
+	\label{table:resultado2}
+\end{table}
+
+En la tabla \ref{sensorPulso:promedioError} se muestra el promedio de los errores obtenidos en las pruebas realizadas y se observa que se logró un error porcentual total de 1.17\%, que representa una diferencia de 1 o 2 latidos por minuto del resultado esperado.
+
+\begin{table}[htbp]
+	\begin{center}
+		\begin{tabular}{|l|l|l|}
+			\hline
+			\textbf{Edad (años)} & \textbf{Frecuencia cardíaca (lpm)} & \textbf{Error (\%)} \\
+			\hline \hline
+			23 & 75 & 1.87 \\
+			\hline
+			54 & 60 & 1.05 \\
+			\hline
+			17 & 80 & 0.75 \\
+			\hline
+			15 & 68 & 1.18\\
+			\hline
+			7 & 86 & 0.93 \\
+			\hline
+			64 & 63 & 1.25 \\
+			\hline
+			46 & 73 & 1.37 \\
+			\hline
+			35 & 82 & 0.98 \\
+			\hline
+		\end{tabular}
+		\caption{Promedio de error de las pruebas del cálculo de frecuencia cardíaca.}
+		\label{sensorPulso:promedioError}
+	\end{center}
+\end{table}
+
+Durante la ejecución de las pruebas se midió el tiempo en el que el sistema embebido realizaba las funciones programadas, siendo el menor tiempo posible para la recepción del mensaje de texto en el teléfono móvil de 27 segundos a partir del inicio de la toma de medición de los signos vitales de un paciente.
 
 
 % An example of a floating figure using the graphicx package.
@@ -589,13 +1110,8 @@ Subsubsection text here.
 % \fnbelowfloat command of the stfloats package.
 
 
-
-
-\section{Conclusion}
-The conclusion goes here.
-
-
-
+\section{Conclusiones}
+Con este proyecto terminal se realizó el diseño de un prototipo de sistema embebido para obtener la señal de pulso cardíaco  a partir de un sensor analógico de tipo fotopletismógrafo a la cual se le aplicaron técnicas de procesamiento digital de señales con la que se calculó la frecuencia cardíaca con una eficiencia de 98.83\% de acuerdo a las pruebas realizadas. Además se utilizó un sensor digital para la obtención de la temperatura y se realizó la configuración de un módulo de comunicación 3G/4G para el envío de la información obtenida mediante un mensaje de texto, que gracias a la implementación de una aplicación móvil le permitirá al usuario consultar las mediciones de diferentes pacientes.
 
 
 % if have a single appendix:
@@ -612,22 +1128,23 @@ The conclusion goes here.
 % starts a section numbered zero.)
 %
 
-
-\appendices
-\section{Proof of the First Zonklar Equation}
-Appendix one text goes here.
-
-% you can choose not to have a title for an appendix
-% if you want by leaving the argument blank
-\section{}
-Appendix two text goes here.
+%
+%\appendices
+%\section{Proof of the First Zonklar Equation}
+%Appendix one text goes here.
+%
+%% you can choose not to have a title for an appendix
+%% if you want by leaving the argument blank
+%\section{}
+%Appendix two text goes here.
 
 
 % use section* for acknowledgment
-\section*{Acknowledgment}
-
-
-The authors would like to thank...
+\section*{Reconocimientos}
+Los Autores agradecen a la Escuela Superior de Cómputo
+del Instituto Politécnico Nacional por el apoyo recibido y las
+facilidades otorgadas para el desarrollo del presente trabajo
+terminal. 
 
 
 % Can use something like this to put references on a page
@@ -662,10 +1179,37 @@ The authors would like to thank...
 % (used to reserve space for the reference number labels box)
 \begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%\bibitem{IEEEhowto:kopka}
+%H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+%  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
 
+%%%%%Signos vitales
+\bibitem{aguayoChile} Aguayo, A \& Lagos A (s.f.) Guía Clínica de Control de Signos Vitales. Universidad Pedro de Valdivia, Chile. Disponible en: \url{http://academico.upv.cl/doctos/KINE-4068/\%7B328B1B37-2C2A-4747-8B38-169806A27753%7D/2012/S1/GUIA%20TECNICA%20DE%20CONTROL%20DE%20SIGNOS%20VITALES%20KINE.pdf}
+	
+\bibitem{cobo2011} Cobo, D \& Daza, P (2011). Signos Vitales en Pediatría. Gastrohnup, 13(1), S58-S70. Disponible en: \url{http://bibliotecadigital.univalle.edu.co/bitstream/10893/5810/1/15%20signos.pdf} 
+
+%\bibitem{signos2017} Signos Vitales (2017). Universidad Nacional de Mar del Plata, Argentina. 
+
+\bibitem{valoresFreq} Frecuencia cardíaca normal en reposo. Disponible en: \url{https://www.medicalnewstoday.com/articles/291182.php}
+
+\bibitem{signosvitales2016} Signos vitales (temperatura corporal, pulso, frecuencia respiratoria y presión arterial). (2016). University of Chicago Medicine. Disponible en: \url{http://healthlibrary.uchospitals.edu/Spanish/DiseasesConditions/Adult/NonTraumatic/85,P03963}
+	
+%%%%%Intro
+\bibitem{ocde2016} OECD (2016), OECD Reviews of Health Systems: Mexico 2016, OECD Publishing, Paris. Disponible en: \url{http://dx.doi.org/10.1787/9789264230491-en}
+
+%%%%Metodología
+\bibitem{perez2006V} Perez, A.; et al. (2006). Una metodología para el desarrollo de hardware y software embebidos en sistemas críticos de seguridad. Systemics, Cybernetics and Informatics Journal, vol 3, Num. 2, pp. 70-75.
+
+%%%%Embebidos
+%\bibitem{vahid1999}	Vahid, F \& Givargis, F. (1999). Embedded System Design: An Unified Hardware/Software Approach. University of California Riverside. Disponible en: \url{https://pdfs.semanticscholar.org/3b62/7703e5b937954ec4637c04dc62637e218166.pdf}
+
+%%%%%IoT
+%\bibitem{vermesanIoT} Vermesan, O \& Friess, P. Internet of Things - From Research and Innovation to Market Deployment. Disponible en:  \url{http://www.internet-of-things-research.eu/pdf/IERC_Cluster_Book_2014_Ch.3_SRIA_WEB.pdf}
+%
+%\bibitem{laneIoT} N. D. Lane, E. Miluzzo, H. Lu, D. Peebles, T. Choudhury, and A. T.	Campbell, “A survey of mobile phone sensing,” IEEE Communications magazine, vol. 48, no. 9, 2010.
+%
+%\bibitem{arquitecturaIoT} Sikder, Amit Kumar \& Petracca, Giuseppe \& Aksu, Hidayet \& Jaeger, Trent \& Uluagac, Selcuk. (2018). A Survey on Sensor-based Threats to Internet-of-Things (IoT) Devices and Applications. 
+	
 \end{thebibliography}
 
 % biography section
@@ -709,8 +1253,5 @@ H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
 %\enlargethispage{-5in}
 
 
-
 % that's all folks
 \end{document}
-
-

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 256
-#define FS 16
+#define N 70
+#define FS 512
 
 FILE *fp;
 int val = 0;
@@ -55,7 +55,7 @@ int main(){
 * Función para leer los datos del archivo de entrada con los valores del sensor de pulso
 */
 void leerArchivo(){
-    fp = fopen("../Pruebas/prueba16hz_512_61lpm.txt", "r");
+    fp = fopen("../Pruebas/prueba.txt", "r");
 
     if(fp == NULL){
         perror("Error al abrir el arhivo. \n");

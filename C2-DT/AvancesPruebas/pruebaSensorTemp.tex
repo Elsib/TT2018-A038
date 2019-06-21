@@ -1,7 +1,7 @@
 \newpage
 \section{Sensor de temperatura}
 
-El sensor de temperatura MAX30205 tiene una interfaz de comunicación I2C, para poder comprobar su funcionamiento de forma unitaria, fue necesario configurar la interfaz I2C con la que cuenta el dsPIC30205 y adicionalmente crear las rutinas para mantener la comunicación entre ambos componentes.\\
+El sensor de temperatura MAX30205 tiene una interfaz de comunicación I2C, para poder comprobar su funcionamiento de forma unitaria, fue necesario configurar la interfaz I2C con la que cuenta el microcontrolador y adicionalmente se crearon las rutinas en ensamblador para establecer la comunicación entre ambos componentes.\\
 
 En la figura \ref{fig:DiagramaMAX30205} se muestra el diagrama de tiempo que describe el procedimiento que debe ser seguido para realizar la comunicación entre el MAX30205 y el dsPIC.\\
 
@@ -30,14 +30,14 @@ La conexión entre el sensor de temperatura y el dsPIC se realizó mediante las 
 
 \begin{figure}[htbp!]
 	\centering
-	\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/MAX30205Conexion.png}}
+	\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/MAX30205Conexion.png}}
 	\caption{Conexión del sensor MAX30205.}
 	\label{fig:ConexionLogicaMAX30205}
 \end{figure}
 
 \begin{figure}[htbp!]
 	\centering
-	\fbox{\includegraphics[width=0.7\textwidth]{AvancesPruebas/imagenes/MAX30205ConexionFisica.jpg}}
+	\fbox{\includegraphics[width=0.6\textwidth]{AvancesPruebas/imagenes/MAX30205ConexionFisica.jpg}}
 	\caption{Conexión física del sensor MAX30205.}
 	\label{fig:ConexionFisicaMAX30205}
 \end{figure}
@@ -55,6 +55,17 @@ Finalmente para visualizar los datos recibidos del sensor, se habilitaron las te
 %	\label{fig:ResultadoTerminalMAX30205}
 %\end{figure}
 
-El resultado de esta prueba muestra que el sensor de temperatura MAX30205 funciona de manera esperada y la elección realizada fue correcta.
+Ya que el sensor entrega los valores de temperatura en dos partes de 8 bits cada una. Para obtener el valor real de la medición se utilizó la siguiente fórmula:
+
+\begin{equation}
+temp = MSB + (0.00390625 * LSB)
+\end{equation}
+
+donde: 
+\begin{itemize}
+	\item $temp$: valor de la temperatura corporal.
+	\item $MSB$: primer byte enviado por el sensor, la parte entera del valor.
+	\item $LSB$: segundo byte enviado por el sensor, la parte decimal del valor.
+\end{itemize}
 
 \clearpage
